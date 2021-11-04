@@ -1,6 +1,5 @@
 package io.github.ni554n.bpn.ui
 
-import `in`.aabhasjindal.otptextview.OTPListener
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
@@ -11,27 +10,25 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.google.android.material.slider.Slider
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.switchmaterial.SwitchMaterial
+import io.github.g00fy2.quickie.QRResult
+import io.github.g00fy2.quickie.ScanQRCode
 import io.github.ni554n.bpn.R
 import io.github.ni554n.bpn.databinding.ActivityMainBinding
 import io.github.ni554n.bpn.network.PushNotification
-import io.github.ni554n.bpn.network.enqueue
-import io.github.ni554n.bpn.network.getToken
 import io.github.ni554n.bpn.preferences.UserPreferences
 import io.github.ni554n.bpn.services.ServiceManager
 import logcat.LogPriority
-import logcat.asLog
 import logcat.logcat
-import okhttp3.Response
 import org.koin.android.ext.android.inject
-import java.io.IOException
 
 class MainActivity : AppCompatActivity() {
   private val userPreferences: UserPreferences by inject()
   private val serviceManager: ServiceManager by inject()
   private val push: PushNotification by inject()
 
+  private val scanQrCode = registerForActivityResult(ScanQRCode(), ::scannedResult)
+
   private lateinit var mainActivityBinding: ActivityMainBinding
-  private lateinit var fabToCard: FabToCard
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -109,42 +106,33 @@ class MainActivity : AppCompatActivity() {
       }
     }
 
-    // Sets up the FAB.
-    fabToCard = FabToCard(this@MainActivity, this)
-
-    // Closes pairing dialog on back press.
-    onBackPressedDispatcher.addCallback(this@MainActivity, fabToCard)
-
     refreshFabState(fabPair)
 
     fabPair.setOnClickListener {
       if (userPreferences.notifierGcmToken.isEmpty()) {
-        fabToCard.toggleCardVisibility()
+        scanQrCode.launch(null)
       } else {
         userPreferences.notifierGcmToken = ""
       }
     }
+  }
 
-    pairOtp.run {
-      otpListener = object : OTPListener {
-        override fun onInteractionListener() {}
+  private fun scannedResult(result: QRResult) {
+    when (result) {
+      QRResult.QRMissingPermission -> logcat { "Missing permission" }
+      QRResult.QRUserCanceled -> logcat { "User canceled" }
+      is QRResult.QRError -> logcat(LogPriority.ERROR) {
+        result.exception.localizedMessage ?: "Error"
+      }
+      is QRResult.QRSuccess -> {
+        val token = result.content.rawValue
 
-        override fun onOTPComplete(otp: String) {
-          logcat { "OTP Input: $otp" }
+        logcat { "GCM TOKEN: $token" }
 
-          getToken(otp).enqueue(
-            failure = { error: IOException -> logcat(LogPriority.ERROR) { error.asLog() } }
-          ) { response: Response ->
-            val token: String = response.body?.string().orEmpty()
+        userPreferences.notifierGcmToken = token
 
-            logcat { "GCM TOKEN: $token" }
-
-            userPreferences.notifierGcmToken = token
-
-            // Send a test push notification
-            push.notify(token, "Successfully Paired", "It is working correctly!")
-          }
-        }
+        // Send a test push notification
+        push.notify(token, "Successfully Paired", "It is working correctly!")
       }
     }
   }
@@ -170,7 +158,7 @@ class MainActivity : AppCompatActivity() {
               refreshNotificationServiceState(mainActivityBinding.switchNotificationService)
 
             refreshFabState(mainActivityBinding.fabPair)
-            updateCardState(fabToCard)
+            updateCardState()
           }
 
           UserPreferences.LEVEL_REACHED_NOTIFICATION_TOGGLE,
@@ -196,13 +184,11 @@ class MainActivity : AppCompatActivity() {
     }
   }
 
-  private fun updateCardState(fabToCard: FabToCard) {
+  private fun updateCardState() {
     if (userPreferences.notifierGcmToken.isEmpty()) {
       Snackbar.make(mainActivityBinding.root, R.string.unpaired, Snackbar.LENGTH_SHORT)
         .show()
     } else {
-      fabToCard.toggleCardVisibility()
-
       Snackbar.make(mainActivityBinding.root, R.string.successful_pairing, Snackbar.LENGTH_SHORT)
         .show()
     }

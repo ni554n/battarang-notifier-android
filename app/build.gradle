@@ -63,7 +63,7 @@ dependencies {
   implementation app.constraintLayout
 
   implementation app.okhttp
-  implementation app.otpView
+  implementation app.quickie
 
   testImplementation test.junit
   androidTestImplementation test.extJunit
