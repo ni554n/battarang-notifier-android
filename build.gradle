@@ -1,25 +1,14 @@
 buildscript {
-    apply from: "./dependencies.gradle"
-
-    ext {
-        kotlin_version = "1.4.10"
-    }
+    apply from: './dependencies.gradle'
 
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
 
     dependencies {
         classpath gradlePlugin
         classpath kotlinGradlePlugin
-    }
-}
-
-allprojects {
-    repositories {
-        google()
-        jcenter()
     }
 }
 

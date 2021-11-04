@@ -1,56 +1,71 @@
 plugins {
-    id "com.android.application"
-    id "kotlin-android"
+  id 'com.android.application'
+  id 'kotlin-android'
 }
 
-apply from: "../dependencies.gradle"
+apply from: '../dependencies.gradle'
+apply plugin: 'kotlin-android'
 
 android {
-    buildToolsVersion android.buildTools
-    compileSdkVersion android.compileSdk
+  buildToolsVersion android.buildTools
+  compileSdkVersion android.compileSdk
 
-    defaultConfig {
-        applicationId "io.github.ni554n.bpn"
-        minSdkVersion android.minSdk
-        targetSdkVersion android.compileSdk
-        versionCode android.versionCode
-        versionName android.versionName
+  defaultConfig {
+    applicationId 'io.github.ni554n.bpn'
+    minSdkVersion android.minSdk
+    targetSdkVersion android.targetSdk
+    versionCode android.versionCode
+    versionName android.versionName
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+  }
+
+  buildTypes {
+    debug {
+      applicationIdSuffix '.debug'
+      versionNameSuffix '-debug'
     }
 
-    buildTypes {
-        debug {
-            applicationIdSuffix ".debug"
-            versionNameSuffix "-debug"
-        }
-
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
-        }
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
     }
+  }
 
-    compileOptions {
-        sourceCompatibility = 1.8
-        targetCompatibility = 1.8
-    }
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_11
+    targetCompatibility JavaVersion.VERSION_11
+  }
 
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
+  kotlinOptions {
+    jvmTarget = '11'
+  }
 
-    viewBinding.enabled = true
+  lintOptions {
+    checkDependencies true
+  }
+
+  buildFeatures {
+    viewBinding true
+  }
+
+  kotlinOptions.useIR = true
 }
 
 dependencies {
-    implementation app.kotlinStdlib
-    implementation app.appCompat
-    implementation app.coreKtx
-    implementation app.material
-    implementation app.constraintLayout
+  implementation common.kotlinStdlib
+  implementation common.logcat
+  implementation common.koinAndroid
 
-    testImplementation test.junit
-    androidTestImplementation test.extJunit
-    androidTestImplementation test.espresso
+  implementation app.appCompat
+  implementation app.coreKtx
+  implementation app.material
+  implementation app.constraintLayout
+
+  implementation app.okhttp
+  implementation app.otpView
+
+  testImplementation test.junit
+  androidTestImplementation test.extJunit
+  androidTestImplementation test.espresso
 }

@@ -1,2 +1,13 @@
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+
+    repositories {
+        google()
+        mavenCentral()
+
+        maven { url 'https://jitpack.io' }
+    }
+}
+
+rootProject.name = 'battery-push-notification'
 include ':app'
-rootProject.name = "2080-battery-push-notification"
