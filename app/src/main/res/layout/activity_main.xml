@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:fitsSystemWindows="true"
+  tools:context=".ui.MainActivity"
+  >
+
+  <!-- Appbar -->
+  <!-- Mainly implements scrolling gesture behaviors. -->
+  <com.google.android.material.appbar.AppBarLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fitsSystemWindows="true"
+    app:liftOnScroll="true"
+    >
+
+    <com.google.android.material.appbar.CollapsingToolbarLayout
+      android:layout_width="match_parent"
+      android:layout_height="200dp"
+      android:fitsSystemWindows="true"
+      app:collapsedTitleTextAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+      app:contentScrim="#FF2C2F32"
+      app:expandedTitleMarginBottom="24dp"
+      app:expandedTitleMarginStart="24dp"
+      app:expandedTitleTextAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+      app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+      app:scrimVisibleHeightTrigger="64dp"
+      app:statusBarScrim="@android:color/transparent"
+      app:titleCollapseMode="scale"
+      >
+
+      <ImageView
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_gravity="top|end"
+        android:fitsSystemWindows="true"
+        android:src="@drawable/ic_pair"
+        app:layout_collapseMode="pin"
+        tools:ignore="ContentDescription"
+        />
+
+      <com.google.android.material.appbar.MaterialToolbar
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_collapseMode="pin"
+        app:title="@string/app_name"
+        />
+
+    </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+      android:id="@+id/switch_notification_service"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="16dp"
+      android:layout_marginTop="8dp"
+      android:layout_marginEnd="16dp"
+      android:layout_marginBottom="16dp"
+      android:background="@drawable/switch_background"
+      android:padding="24dp"
+      android:text="@string/notification_service"
+      android:theme="@style/Theme.Material3.Light"
+      android:thumb="@drawable/switch_thumb"
+      app:track="@drawable/switch_track"
+      tools:checked="false"
+      tools:enabled="true"
+      />
+
+  </com.google.android.material.appbar.AppBarLayout>
+
+  <!-- Main Screen -->
+  <androidx.core.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    >
+
+    <!-- TODO:  Remove the extra padding added for testing the scrolling behavior.  -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_margin="16dp"
+      android:paddingBottom="1080dp"
+      >
+
+      <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout_device_name"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/label_device_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:viewBindingIgnore="true"
+        >
+
+        <io.github.ni554n.bpn.ui.views.ImeAwareEditText
+          android:id="@+id/editText_device_name"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          tools:text="Xiaomi Mi 6"
+          />
+
+      </com.google.android.material.textfield.TextInputLayout>
+
+      <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/texView_notify_when"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/notify_when"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout_device_name"
+        tools:viewBindingIgnore="true"
+        />
+
+      <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/checkBox_battery_level_reached"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/battery_level_is_reached_at"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/texView_notify_when"
+        tools:checked="true"
+        />
+
+      <com.google.android.material.slider.Slider
+        android:id="@+id/battery_level_slider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
+        android:contentDescription="@string/battery_level_slider"
+        android:stepSize="5"
+        android:valueFrom="0"
+        android:valueTo="100"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkBox_battery_level_reached"
+        tools:value="80"
+        />
+
+      <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/checkBox_battery_level_low"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/battery_is_low"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/battery_level_slider"
+        tools:checked="true"
+        />
+
+      <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/texView_while"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/label_while"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkBox_battery_level_low"
+        tools:viewBindingIgnore="true"
+        />
+
+      <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/checkBox_is_screen_on"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/screen_is_on"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/texView_while"
+        tools:checked="false"
+        />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+  </androidx.core.widget.NestedScrollView>
+
+  <!-- Extended FAB -->
+  <!-- TODO: This button is blocking the Device Name field -->
+  <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+    android:id="@+id/fab_pair"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|end"
+    android:layout_margin="16dp"
+    android:text="@string/pair_with_device"
+    app:icon="@drawable/ic_pair"
+    />
+
+  <!-- Pairing Card Scrim -->
+  <View
+    android:id="@+id/scrim_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#DD000000"
+    android:fitsSystemWindows="true"
+    android:visibility="gone"
+    />
+
+  <!-- Pairing Card -->
+  <com.google.android.material.card.MaterialCardView
+    android:id="@+id/pairing_card_view"
+    android:layout_width="360dp"
+    android:layout_height="400dp"
+    android:layout_gravity="center"
+    android:visibility="gone"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="8dp"
+    app:strokeWidth="0dp"
+    tools:visibility="visible"
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      >
+
+      <!--  TODO: Instead of this, name field is getting focused Keyboard input-->
+      <!--  TODO: Keyboard is not closing on enter. -->
+      <in.aabhasjindal.otptextview.OtpTextView
+        android:id="@+id/pair_otp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        app:bar_enabled="true"
+        app:bar_height="2dp"
+        app:height="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:length="4"
+        app:otp_text_size="24dp"
+        app:width="40dp"
+        tools:otp="1234"
+        />
+
+      <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+  </com.google.android.material.card.MaterialCardView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

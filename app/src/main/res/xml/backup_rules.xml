@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Back up user data with Auto Backup -->
+<!-- https://developer.android.com/guide/topics/data/autobackup -->
+<full-backup-content>
+  <include
+    domain="sharedpref"
+    path="common.xml"
+    />
+</full-backup-content>

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <dimen name="email_recipient_card_popup_elevation_compat">3dp</dimen>
+</resources>
