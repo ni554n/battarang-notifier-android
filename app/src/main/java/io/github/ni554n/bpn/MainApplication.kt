@@ -13,6 +13,7 @@ import logcat.LogPriority
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
+import org.koin.core.logger.Level
 import org.koin.dsl.module
 
 // This class is falsely reported as unused because of an Android Studio bug.
@@ -30,7 +31,8 @@ class MainApplication : Application() {
 
     // Dependency Injection stuff
     startKoin {
-      androidLogger()
+      // Will be fixed in Koin 3.2.0: https://github.com/InsertKoinIO/koin/issues/1188
+      androidLogger(if (BuildConfig.DEBUG) Level.ERROR else Level.NONE)
       androidContext(this@MainApplication)
 
       modules(module {
