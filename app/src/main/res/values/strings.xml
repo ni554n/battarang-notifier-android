@@ -3,11 +3,11 @@
   <string name="pair_with_device">Pair Device</string>
   <string name="label_device_name">Device Name</string>
   <string name="notification_service">Notification Service</string>
-  <string name="notify_when">Notify When</string>
+  <string name="notify_when">Notify when</string>
   <string name="battery_level_is_reached_at">Charging level is reached %1$d%%</string>
   <string name="battery_level_slider">Slider for adjusting the battery level</string>
   <string name="battery_is_low">Battery is low</string>
-  <string name="label_while">While</string>
+  <string name="label_while">Notify while</string>
   <string name="screen_is_on">Screen is on</string>
   <string name="unpair">Unpair</string>
   <string name="successful_pairing">Pairing successful. Check the other device for confirmation.</string>

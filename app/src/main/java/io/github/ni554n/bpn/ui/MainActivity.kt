@@ -3,10 +3,13 @@ package io.github.ni554n.bpn.ui
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
+import android.view.View
 import android.widget.CompoundButton
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.doAfterTextChanged
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.slider.Slider
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.switchmaterial.SwitchMaterial
@@ -26,15 +29,20 @@ class MainActivity : AppCompatActivity() {
   private val serviceManager: ServiceManager by inject()
   private val push: PushNotification by inject()
 
-  private val scanQrCode = registerForActivityResult(ScanQRCode(), ::scannedResult)
+  private val scanQrCode = registerForActivityResult(ScanQRCode(), ::handleScannedResult)
 
   private lateinit var mainActivityBinding: ActivityMainBinding
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
+    // Requesting to be laid out edge-to-edge.
+    WindowCompat.setDecorFitsSystemWindows(window, false)
+
     // Initialize the screen
-    mainActivityBinding = ActivityMainBinding.inflate(layoutInflater).apply {
+    mainActivityBinding = ActivityMainBinding.inflate(layoutInflater)
+
+    mainActivityBinding.run {
       setContentView(root)
 
       prepareViews()
@@ -46,10 +54,7 @@ class MainActivity : AppCompatActivity() {
    */
   private fun ActivityMainBinding.prepareViews() {
     switchNotificationService.run {
-      val shouldBeEnabled = refreshNotificationServiceState(this)
-
-      if (shouldBeEnabled) serviceManager.startService()
-      else serviceManager.stopService()
+      refreshNotificationServiceState()
 
       setOnCheckedChangeListener { _: CompoundButton, isChecked: Boolean ->
         userPreferences.isMonitoringServiceEnabled = isChecked
@@ -61,6 +66,19 @@ class MainActivity : AppCompatActivity() {
 
       doAfterTextChanged { changedText: Editable? ->
         userPreferences.deviceName = changedText.toString()
+      }
+
+      ViewCompat.setOnApplyWindowInsetsListener(root) { _: View, insets: WindowInsetsCompat ->
+        val imeVisible = insets.isVisible(WindowInsetsCompat.Type.ime())
+
+        if (imeVisible) fabPair.hide()
+        else {
+          if (hasFocus()) clearFocus()
+
+          fabPair.show()
+        }
+
+        insets
       }
     }
 
@@ -106,33 +124,15 @@ class MainActivity : AppCompatActivity() {
       }
     }
 
-    refreshFabState(fabPair)
+    fabPair.run {
+      refreshFabState()
 
-    fabPair.setOnClickListener {
-      if (userPreferences.notifierGcmToken.isEmpty()) {
-        scanQrCode.launch(null)
-      } else {
-        userPreferences.notifierGcmToken = ""
-      }
-    }
-  }
-
-  private fun scannedResult(result: QRResult) {
-    when (result) {
-      QRResult.QRMissingPermission -> logcat { "Missing permission" }
-      QRResult.QRUserCanceled -> logcat { "User canceled" }
-      is QRResult.QRError -> logcat(LogPriority.ERROR) {
-        result.exception.localizedMessage ?: "Error"
-      }
-      is QRResult.QRSuccess -> {
-        val token = result.content.rawValue
-
-        logcat { "GCM TOKEN: $token" }
-
-        userPreferences.notifierGcmToken = token
-
-        // Send a test push notification
-        push.notify(token, "Successfully Paired", "It is working correctly!")
+      fabPair.setOnClickListener {
+        if (userPreferences.notifierGcmToken.isEmpty()) {
+          scanQrCode.launch(null)
+        } else {
+          userPreferences.notifierGcmToken = ""
+        }
       }
     }
   }
@@ -141,56 +141,47 @@ class MainActivity : AppCompatActivity() {
     super.onResume()
 
     userPreferences.run {
-      onChange { _: SharedPreferences, key: String? ->
-        if (key == null) return@onChange
+      startObservingChanges { _: SharedPreferences, key: String? ->
+        if (key == null) return@startObservingChanges
 
         logcat { "$key has been updated." }
 
         when (key) {
-          UserPreferences.MONITORING_SERVICE_TOGGLE -> {
-            if (isMonitoringServiceEnabled) serviceManager.startService()
-            else serviceManager.stopService()
-          }
-
-          // TODO: isMonitoringService is still turned off after token receiving.
-          UserPreferences.NOTIFIER_GCM_TOKEN -> {
-            isMonitoringServiceEnabled =
-              refreshNotificationServiceState(mainActivityBinding.switchNotificationService)
-
-            refreshFabState(mainActivityBinding.fabPair)
-            updateCardState()
-          }
-
+          UserPreferences.MONITORING_SERVICE_TOGGLE,
           UserPreferences.LEVEL_REACHED_NOTIFICATION_TOGGLE,
           UserPreferences.LOW_BATTERY_NOTIFICATION_TOGGLE,
-          -> isMonitoringServiceEnabled =
-            refreshNotificationServiceState(mainActivityBinding.switchNotificationService)
+          -> refreshNotificationServiceState()
+
+          UserPreferences.NOTIFIER_GCM_TOKEN -> refreshBecauseTokenChanged()
         }
       }
     }
+
+    logcat { "onResume: Started observing for sharedPreferences changes" }
   }
 
   override fun onPause() {
     super.onPause()
 
     userPreferences.stopObservingChanges()
+
+    logcat { "onPause: Stopped observing for sharedPreferences changes" }
   }
 
-  private fun refreshFabState(fab: ExtendedFloatingActionButton) {
-    fab.text = if (userPreferences.notifierGcmToken.isEmpty()) {
-      getString(R.string.pair_with_device)
-    } else {
-      getString(R.string.unpair)
-    }
-  }
+  private fun refreshBecauseTokenChanged() {
+    refreshNotificationServiceState()
 
-  private fun updateCardState() {
+    refreshFabState()
+
     if (userPreferences.notifierGcmToken.isEmpty()) {
       Snackbar.make(mainActivityBinding.root, R.string.unpaired, Snackbar.LENGTH_SHORT)
         .show()
     } else {
-      Snackbar.make(mainActivityBinding.root, R.string.successful_pairing, Snackbar.LENGTH_SHORT)
-        .show()
+      Snackbar.make(
+        mainActivityBinding.root,
+        R.string.successful_pairing,
+        Snackbar.LENGTH_SHORT
+      ).show()
     }
   }
 
@@ -198,16 +189,61 @@ class MainActivity : AppCompatActivity() {
   // 1. While setting up the UI
   // 2. After successful pairing & unpairing
   // 3. Both battery reached and low battery checkbox is unchecked
-  private fun refreshNotificationServiceState(switchMaterial: SwitchMaterial): Boolean {
+  private fun refreshNotificationServiceState() {
+    val switchMaterial: SwitchMaterial = mainActivityBinding.switchNotificationService
+
     userPreferences.run {
       val isNotifyWhenEnabled = isLevelReachedNotificationEnabled || isLowBatteryNotificationEnabled
-      val shouldBeEnabled = notifierGcmToken.isNotEmpty() && isNotifyWhenEnabled
+      val shouldBeEnabled = isNotifyWhenEnabled && notifierGcmToken.isNotEmpty()
       val shouldBeChecked = shouldBeEnabled && isMonitoringServiceEnabled
 
       switchMaterial.isEnabled = shouldBeEnabled
       switchMaterial.isChecked = shouldBeChecked
 
-      return shouldBeChecked
+      if (shouldBeChecked) serviceManager.startService()
+      else serviceManager.stopService()
+    }
+  }
+
+  private fun refreshFabState() {
+    mainActivityBinding.fabPair.run {
+      if (userPreferences.notifierGcmToken.isEmpty()) {
+        text = getString(R.string.pair_with_device)
+        setIconResource(R.drawable.ic_fluent_qr_code_filled_24)
+      } else {
+        text = getString(R.string.unpair)
+        setIconResource(R.drawable.ic_material_link_off_round_24)
+      }
+    }
+  }
+
+  private fun handleScannedResult(result: QRResult) {
+    userPreferences.chargingLevelPercentage = 80
+
+    when (result) {
+      QRResult.QRMissingPermission -> logcat { "Missing permission" }
+
+      QRResult.QRUserCanceled -> logcat { "User canceled" }
+
+      is QRResult.QRError -> logcat(LogPriority.ERROR) {
+        result.exception.localizedMessage ?: "Error"
+      }
+
+      is QRResult.QRSuccess -> {
+        val token = result.content.rawValue
+
+        logcat { "GCM TOKEN: $token" }
+
+        userPreferences.notifierGcmToken = token
+        userPreferences.isMonitoringServiceEnabled = true
+
+        // This function is called before onResume has a chance to start observing the sharedPref changes.
+        // Manual refresh is required here to update the screen state.
+        refreshBecauseTokenChanged()
+
+        // Send a test push notification
+        push.notify(token, "Successfully Paired", "It is working correctly!")
+      }
     }
   }
 }

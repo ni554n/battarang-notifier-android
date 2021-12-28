@@ -10,6 +10,7 @@ import io.github.ni554n.bpn.receivers.PowerEventReceivers
 import io.github.ni554n.bpn.services.ServiceManager
 import logcat.AndroidLogcatLogger
 import logcat.LogPriority
+import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -23,7 +24,7 @@ class MainApplication : Application() {
   override fun onCreate() {
     super.onCreate()
 
-    // Enables Android 12 app wide dynamic theme using the Material library.
+    // Enables app wide dynamic theme on Android 12 using the Material library.
     DynamicColors.applyToActivitiesIfAvailable(this)
 
     // Log all priorities in debug builds, no-op in release builds.
@@ -48,6 +49,7 @@ class MainApplication : Application() {
         single {
           PushNotification(
             androidContext().getSystemService(Context.POWER_SERVICE) as PowerManager,
+            OkHttpClient(),
           )
         }
 

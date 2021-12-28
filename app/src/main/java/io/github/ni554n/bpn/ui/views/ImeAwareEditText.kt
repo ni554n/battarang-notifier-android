@@ -5,6 +5,9 @@ import android.util.AttributeSet
 import android.view.KeyEvent
 import com.google.android.material.textfield.TextInputEditText
 
+/**
+ * Removes focus from EditText after hiding the keyboard.
+ */
 class ImeAwareEditText : TextInputEditText {
   constructor(context: Context) : super(context)
 

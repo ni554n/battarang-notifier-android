@@ -10,12 +10,11 @@
     <item name="colorOnSecondary">@android:color/black</item>
   </style>
 
+  <!-- Great resource for configuring Window stuff -->
+  <!-- https://medium.com/androiddevelopers/animating-your-keyboard-fb776a8fb66d -->
   <style name="Theme.Main" parent="Theme.Base">
     <!-- Implement Edge to Edge: https://developer.android.com/training/gestures/edge-to-edge -->
     <item name="android:statusBarColor">@android:color/transparent</item>
     <item name="android:navigationBarColor">@android:color/transparent</item>
-
-    <!-- https://developer.android.com/guide/topics/ui/look-and-feel/darktheme#launch-screens   -->
-    <!--    <item name="android:windowBackground">?android:attr/colorBackground</item>-->
   </style>
 </resources>

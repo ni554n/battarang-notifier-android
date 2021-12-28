@@ -4,7 +4,6 @@ plugins {
 }
 
 apply from: '../dependencies.gradle'
-apply plugin: 'kotlin-android'
 
 android {
   buildToolsVersion android.buildTools
@@ -27,7 +26,7 @@ android {
     }
 
     release {
-      minifyEnabled false
+      minifyEnabled true
       proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
     }
   }

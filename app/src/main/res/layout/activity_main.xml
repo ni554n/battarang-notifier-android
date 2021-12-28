@@ -102,6 +102,8 @@
           android:id="@+id/editText_device_name"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
+          android:imeOptions="actionDone"
+          android:singleLine="true"
           tools:text="Xiaomi Mi 6"
           />
 
@@ -193,7 +195,7 @@
     android:layout_gravity="bottom|end"
     android:layout_margin="16dp"
     android:text="@string/pair_with_device"
-    app:icon="@drawable/ic_pair"
+    tools:icon="@drawable/ic_fluent_qr_code_filled_24"
     />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

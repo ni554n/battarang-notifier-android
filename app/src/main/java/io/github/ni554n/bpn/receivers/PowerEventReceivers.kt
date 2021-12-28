@@ -10,7 +10,6 @@ import android.os.BatteryManager
 import android.os.Build
 import android.os.SystemClock
 import android.view.Display
-import io.github.ni554n.bpn.network.MyInfo
 import io.github.ni554n.bpn.network.PushNotification
 import io.github.ni554n.bpn.preferences.UserPreferences
 import logcat.LogPriority
@@ -27,9 +26,9 @@ class PowerEventReceivers : BroadcastReceiver(), KoinComponent {
   private val userPreferences: UserPreferences by inject()
   private val push: PushNotification by inject()
 
-  private val alarmIntentAction = "${javaClass.name}.check_battery_level"
+  private val alarmsIntentActionName = "${javaClass.name}.check_battery_level"
 
-  private lateinit var pendingIntent: PendingIntent
+  private lateinit var alarmsPendingIntent: PendingIntent
 
   override fun onReceive(context: Context?, intent: Intent?) {
     if (context == null || intent == null) {
@@ -43,77 +42,83 @@ class PowerEventReceivers : BroadcastReceiver(), KoinComponent {
     when (intent.action) {
       // Battery Event Receivers
       Intent.ACTION_BATTERY_LOW -> notifyBatteryIsLow(context)
-      Intent.ACTION_POWER_CONNECTED -> startPowerLevelCheckingAlarm(context)
-      Intent.ACTION_POWER_DISCONNECTED -> stopPowerLevelCheckingAlarm(context)
+      Intent.ACTION_POWER_CONNECTED -> startBatteryLevelCheckingAlarm(context)
+      Intent.ACTION_POWER_DISCONNECTED -> stopBatteryLevelCheckingAlarm(context)
 
       // Alarm Event Receiver
-      alarmIntentAction -> checkIfBatteryLevelReached(context)
+      alarmsIntentActionName -> checkIfBatteryLevelReached(context)
 
-      else -> logcat(LogPriority.ERROR) { "Invalid intent action: ${intent.action} provided." }
+      else -> logcat(LogPriority.ERROR) { "${intent.action} is not a supported Battery or Alarm action" }
     }
   }
 
   private fun notifyBatteryIsLow(context: Context) {
     if (shouldNotify(context)) {
       push.notify(
-        MyInfo.token,
+        userPreferences.notifierGcmToken,
         title = "🔋⚠ Low!",
-        body = "🔌 Connect to a power source!"
+        body = "🔌 Connect to a power source!",
       )
     }
   }
 
-  private fun startPowerLevelCheckingAlarm(context: Context) {
+  private fun startBatteryLevelCheckingAlarm(context: Context) {
+    logcat { "Charger Connected: Starting the Alarm to check the battery level periodically..." }
+
     (context.getSystemService(Context.ALARM_SERVICE) as? AlarmManager)?.setRepeating(
       AlarmManager.ELAPSED_REALTIME_WAKEUP,
       SystemClock.elapsedRealtime(),
       60 * 1_000L, // 1 minute
-      getPendingIntent(context),
+      intentForAlarmsAction(context),
     )
   }
 
-  private fun stopPowerLevelCheckingAlarm(context: Context) {
-    (context.getSystemService(Context.ALARM_SERVICE) as? AlarmManager)?.cancel(getPendingIntent(
-      context))
-  }
+  private fun intentForAlarmsAction(context: Context): PendingIntent {
+    if (this::alarmsPendingIntent.isInitialized) return alarmsPendingIntent
 
-  private fun getPendingIntent(context: Context): PendingIntent {
-    if (this::pendingIntent.isInitialized) return pendingIntent
+    val intent: Intent = Intent(context, this::class.java).setAction(alarmsIntentActionName)
 
-    val intent: Intent = Intent(context, this::class.java).setAction(alarmIntentAction)
+    var pendingFlag: Int = PendingIntent.FLAG_CANCEL_CURRENT
 
-    val pendingFlag: Int = PendingIntent.FLAG_CANCEL_CURRENT.also {
-      if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1) {
-        PendingIntent.FLAG_IMMUTABLE or it // Bitwise OR for setting flags
-      }
+    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1) {
+      pendingFlag = pendingFlag or PendingIntent.FLAG_IMMUTABLE // Bitwise OR for setting flags
     }
 
-    pendingIntent = PendingIntent.getBroadcast(context, 64, intent, pendingFlag)
+    alarmsPendingIntent = PendingIntent.getBroadcast(context, 64, intent, pendingFlag)
 
-    return pendingIntent
+    return alarmsPendingIntent
+  }
+
+  private fun stopBatteryLevelCheckingAlarm(context: Context) {
+    logcat { "Charger Disconnected: Stopping the battery level checking alarm." }
+
+    (context.getSystemService(Context.ALARM_SERVICE) as? AlarmManager)?.cancel(intentForAlarmsAction(
+      context))
   }
 
   private fun checkIfBatteryLevelReached(context: Context) {
     val batteryLevel: Int = (context.getSystemService(Context.BATTERY_SERVICE) as BatteryManager)
       .getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
 
+    logcat { "Battery level = $batteryLevel%" }
+
     if (batteryLevel < userPreferences.chargingLevelPercentage) return
 
-    stopPowerLevelCheckingAlarm(context)
+    stopBatteryLevelCheckingAlarm(context)
 
     if (shouldNotify(context)) {
-      logcat { "Notifying battery level reached at $batteryLevel%" }
+      logcat { "Sending notification because desired battery level has reached" }
 
       push.notify(
-        MyInfo.token,
+        userPreferences.notifierGcmToken,
         title = "🔋⚡ $batteryLevel%",
-        body = "🔌 Disconnect."
+        body = "🔌 Disconnect.",
       )
     }
   }
 
   private fun shouldNotify(context: Context): Boolean {
-    // Preference is set to notify regardless of the display state.
+    // Notifies regardless of the display state.
     if (userPreferences.isNotificationWhileScreenOnEnabled) return true
 
     // Notifies only if no display is on.

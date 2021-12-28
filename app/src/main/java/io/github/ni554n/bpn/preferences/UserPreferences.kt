@@ -25,7 +25,7 @@ class UserPreferences(
 
   // Rename to Notification Service
   var isMonitoringServiceEnabled: Boolean =
-    commonPreferences[MONITORING_SERVICE_TOGGLE] as? Boolean ?: false
+    commonPreferences[MONITORING_SERVICE_TOGGLE] as? Boolean ?: true
     set(value) {
       field = value
 
@@ -79,7 +79,7 @@ class UserPreferences(
       commonSharedPreferences.edit { putString(NOTIFIER_GCM_TOKEN, value) }
     }
 
-  fun onChange(listener: SharedPreferences.OnSharedPreferenceChangeListener) {
+  fun startObservingChanges(listener: SharedPreferences.OnSharedPreferenceChangeListener) {
     opf = listener
 
     commonSharedPreferences.registerOnSharedPreferenceChangeListener(opf)
