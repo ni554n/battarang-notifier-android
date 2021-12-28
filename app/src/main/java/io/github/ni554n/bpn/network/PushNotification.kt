@@ -33,8 +33,7 @@ class PushNotification(
     logcat { postBody }
 
     val request: Request = Request.Builder()
-//            .url("https://webhook.site/e6d74fc2-cae4-45f3-8877-e742521374b2")
-      .url("https://notify.vercel.app/api/notify")
+      .url("https://qnibyq.deta.dev/notify")
       .post(postBody.toRequestBody(jsonMediaType))
       .build()
 
