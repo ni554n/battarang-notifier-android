@@ -11,3 +11,7 @@ local.properties
 !.idea/dictionaries/
 !.idea/codeStyles/
 !.idea/inspectionProfiles/
+
+# VSCode
+.vscode
+.lh

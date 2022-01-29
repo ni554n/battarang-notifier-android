@@ -1,17 +1,3 @@
-buildscript {
-    apply from: './dependencies.gradle'
-
-    repositories {
-        google()
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath gradlePlugin
-        classpath kotlinGradlePlugin
-    }
-}
-
 task clean(type: Delete) {
-    delete rootProject.buildDir
+  delete rootProject.buildDir
 }
