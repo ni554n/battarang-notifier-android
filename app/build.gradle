@@ -40,15 +40,13 @@ android {
     jvmTarget = '11'
   }
 
-  lintOptions {
+  lint {
     checkDependencies true
   }
 
   buildFeatures {
     viewBinding true
   }
-
-  kotlinOptions.useIR = true
 }
 
 dependencies {
