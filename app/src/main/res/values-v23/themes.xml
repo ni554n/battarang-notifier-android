@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <style name="MainTheme" parent="BaseTheme">
+    <item name="android:windowLightStatusBar">?attr/isLightTheme</item>
+  </style>
+
+  <style name="M3SwitchFullWidth" parent="Widget.Material3.CompoundButton.MaterialSwitch">
+    <item name="android:foreground">@drawable/shape_rounded_ripple</item>
+  </style>
+
+  <style name="CheckBoxFullWidth" parent="Widget.Material3.CompoundButton.CheckBox">
+    <!--  Removes the ripple background on the checkbox icon itself, otherwise there will be multiple ripple -->
+    <item name="android:background">@null</item>
+    <item name="android:foreground">@drawable/shape_rounded_ripple</item>
+  </style>
+</resources>

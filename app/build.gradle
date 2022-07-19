@@ -61,6 +61,7 @@ dependencies {
 
   implementation app.okhttp
   implementation app.quickie
+  implementation app.insetter
 
   testImplementation test.junit
   androidTestImplementation test.extJunit

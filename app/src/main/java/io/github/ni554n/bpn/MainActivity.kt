@@ -1,4 +1,4 @@
-package io.github.ni554n.bpn.ui
+package io.github.ni554n.bpn
 
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -6,27 +6,26 @@ import android.text.Editable
 import android.view.View
 import android.widget.CompoundButton
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.core.text.HtmlCompat
+import androidx.core.view.*
 import androidx.core.widget.doAfterTextChanged
+import com.google.android.material.elevation.SurfaceColors
+import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.slider.Slider
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.switchmaterial.SwitchMaterial
+import dev.chrisbanes.insetter.applyInsetter
 import io.github.g00fy2.quickie.QRResult
 import io.github.g00fy2.quickie.ScanQRCode
-import io.github.ni554n.bpn.R
 import io.github.ni554n.bpn.databinding.ActivityMainBinding
 import io.github.ni554n.bpn.network.PushNotification
 import io.github.ni554n.bpn.preferences.UserPreferences
-import io.github.ni554n.bpn.services.ServiceManager
+import io.github.ni554n.bpn.event.BatteryEventReceiversRegisterService
 import logcat.LogPriority
 import logcat.logcat
 import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity() {
   private val userPreferences: UserPreferences by inject()
-  private val serviceManager: ServiceManager by inject()
   private val push: PushNotification by inject()
 
   private val scanQrCode = registerForActivityResult(ScanQRCode(), ::handleScannedResult)
@@ -45,14 +44,35 @@ class MainActivity : AppCompatActivity() {
     mainActivityBinding.run {
       setContentView(root)
 
+      insetViews()
       prepareViews()
     }
   }
 
   /**
-   * Initialize views with data and setup listeners.
+   * Prevents views from overlapping with system drawn elements such as Navigation bar.
+   * */
+  private fun ActivityMainBinding.insetViews() {
+    collapsingToolbarLayout.applyInsetter {
+      type(statusBars = true, navigationBars = true, captionBar = true) {
+        margin(horizontal = true)
+      }
+    }
+
+    switchNotificationServiceContainer.applyInsetter {
+      type(statusBars = true, navigationBars = true, captionBar = true) {
+        padding(horizontal = true)
+      }
+    }
+  }
+
+  /**
+   * Initialize views with user data and setup listeners along the way.
    */
   private fun ActivityMainBinding.prepareViews() {
+    appBarLayout.setBackgroundColor(SurfaceColors.SURFACE_2.getColor(this@MainActivity))
+
+    /* Service Switcher */
     switchNotificationService.run {
       refreshNotificationServiceState()
 
@@ -61,6 +81,7 @@ class MainActivity : AppCompatActivity() {
       }
     }
 
+    /* Device Name Input */
     editTextDeviceName.run {
       setText(userPreferences.deviceName)
 
@@ -82,6 +103,7 @@ class MainActivity : AppCompatActivity() {
       }
     }
 
+    /* Battery Level Reaches Toggle  */
     checkBoxBatteryLevelReached.run {
       isChecked = userPreferences.isLevelReachedNotificationEnabled
 
@@ -90,13 +112,18 @@ class MainActivity : AppCompatActivity() {
       }
     }
 
+    /* Battery Level Slider  */
     batteryLevelSlider.run {
       val batteryLevel: Int = userPreferences.chargingLevelPercentage
 
       value = batteryLevel.toFloat()
 
+      // Template for bolding out the percentage value
+      val batteryLevelReachesStringTemplate = getString(R.string.battery_level_is_reached_at)
+
       checkBoxBatteryLevelReached.text =
-        getString(R.string.battery_level_is_reached_at, batteryLevel)
+        HtmlCompat.fromHtml(batteryLevelReachesStringTemplate.format(batteryLevel),
+          HtmlCompat.FROM_HTML_MODE_COMPACT)
 
       addOnChangeListener { _: Slider, value: Float, _: Boolean ->
         val levelValue: Int = value.toInt()
@@ -104,10 +131,12 @@ class MainActivity : AppCompatActivity() {
         userPreferences.chargingLevelPercentage = levelValue
 
         checkBoxBatteryLevelReached.text =
-          getString(R.string.battery_level_is_reached_at, levelValue)
+          HtmlCompat.fromHtml(batteryLevelReachesStringTemplate.format(levelValue),
+            HtmlCompat.FROM_HTML_MODE_COMPACT)
       }
     }
 
+    /* Low Battery Level Toggle */
     checkBoxBatteryLevelLow.run {
       isChecked = userPreferences.isLowBatteryNotificationEnabled
 
@@ -116,24 +145,52 @@ class MainActivity : AppCompatActivity() {
       }
     }
 
-    checkBoxIsScreenOn.run {
-      isChecked = userPreferences.isNotificationWhileScreenOnEnabled
+    /* Skip if Display On Toggle*/
+    checkBoxSkipWhileDisplayOn.run {
+      isChecked = userPreferences.shouldSkipWhileDisplayOn
 
       setOnCheckedChangeListener { _: CompoundButton, isChecked: Boolean ->
-        userPreferences.isNotificationWhileScreenOnEnabled = isChecked
+        userPreferences.shouldSkipWhileDisplayOn = isChecked
       }
     }
 
+    /* Device Pair-Unpair Button */
     fabPair.run {
-      refreshFabState()
+      if (userPreferences.notifierGcmToken.isEmpty()) {
+        text = getString(R.string.pair_with_device)
+        setIconResource(R.drawable.ic_fluent_qr_code_filled_24)
+      } else {
+        text = getString(R.string.unpair)
+        setIconResource(R.drawable.ic_material_link_off_round_24)
+      }
 
-      fabPair.setOnClickListener {
+      setOnClickListener {
         if (userPreferences.notifierGcmToken.isEmpty()) {
           scanQrCode.launch(null)
         } else {
           userPreferences.notifierGcmToken = ""
         }
       }
+    }
+  }
+
+  // Disables notification service if token is empty
+  // 1. While setting up the UI
+  // 2. After successful pairing & unpairing
+  // 3. Both battery reached and low battery checkbox is unchecked
+  private fun refreshNotificationServiceState() {
+    val switchMaterial: MaterialSwitch = mainActivityBinding.switchNotificationService
+
+    userPreferences.run {
+      val isNotifyWhenEnabled = isLevelReachedNotificationEnabled || isLowBatteryNotificationEnabled
+      val shouldBeEnabled = isNotifyWhenEnabled && notifierGcmToken.isNotEmpty()
+      val shouldBeChecked = shouldBeEnabled && isMonitoringServiceEnabled
+
+      switchMaterial.isEnabled = shouldBeEnabled
+      switchMaterial.isChecked = shouldBeChecked
+
+      if (shouldBeChecked) BatteryEventReceiversRegisterService.startForeground(this@MainActivity)
+      else BatteryEventReceiversRegisterService.stopForeground(this@MainActivity)
     }
   }
 
@@ -160,52 +217,9 @@ class MainActivity : AppCompatActivity() {
     logcat { "onResume: Started observing for sharedPreferences changes" }
   }
 
-  override fun onPause() {
-    super.onPause()
-
-    userPreferences.stopObservingChanges()
-
-    logcat { "onPause: Stopped observing for sharedPreferences changes" }
-  }
-
   private fun refreshBecauseTokenChanged() {
     refreshNotificationServiceState()
 
-    refreshFabState()
-
-    if (userPreferences.notifierGcmToken.isEmpty()) {
-      Snackbar.make(mainActivityBinding.root, R.string.unpaired, Snackbar.LENGTH_SHORT)
-        .show()
-    } else {
-      Snackbar.make(
-        mainActivityBinding.root,
-        R.string.successful_pairing,
-        Snackbar.LENGTH_SHORT
-      ).show()
-    }
-  }
-
-  // Disables notification service if token is empty
-  // 1. While setting up the UI
-  // 2. After successful pairing & unpairing
-  // 3. Both battery reached and low battery checkbox is unchecked
-  private fun refreshNotificationServiceState() {
-    val switchMaterial: SwitchMaterial = mainActivityBinding.switchNotificationService
-
-    userPreferences.run {
-      val isNotifyWhenEnabled = isLevelReachedNotificationEnabled || isLowBatteryNotificationEnabled
-      val shouldBeEnabled = isNotifyWhenEnabled && notifierGcmToken.isNotEmpty()
-      val shouldBeChecked = shouldBeEnabled && isMonitoringServiceEnabled
-
-      switchMaterial.isEnabled = shouldBeEnabled
-      switchMaterial.isChecked = shouldBeChecked
-
-      if (shouldBeChecked) serviceManager.startService()
-      else serviceManager.stopService()
-    }
-  }
-
-  private fun refreshFabState() {
     mainActivityBinding.fabPair.run {
       if (userPreferences.notifierGcmToken.isEmpty()) {
         text = getString(R.string.pair_with_device)
@@ -215,10 +229,19 @@ class MainActivity : AppCompatActivity() {
         setIconResource(R.drawable.ic_material_link_off_round_24)
       }
     }
+
+    if (userPreferences.notifierGcmToken.isEmpty()) {
+      Snackbar.make(mainActivityBinding.root, R.string.unpaired, Snackbar.LENGTH_SHORT)
+        .show()
+    } else {
+      Snackbar.make(mainActivityBinding.root, R.string.successful_pairing, Snackbar.LENGTH_SHORT)
+        .setAnchorView(mainActivityBinding.fabPair)
+        .show()
+    }
   }
 
   private fun handleScannedResult(result: QRResult) {
-    userPreferences.chargingLevelPercentage = 80
+    userPreferences.chargingLevelPercentage = 80 // ???
 
     when (result) {
       QRResult.QRMissingPermission -> logcat { "Missing permission" }
@@ -242,8 +265,16 @@ class MainActivity : AppCompatActivity() {
         refreshBecauseTokenChanged()
 
         // Send a test push notification
-        push.notify(token, "Successfully Paired", "It is working correctly!")
+        push.notifyAsync(token, "Successfully Paired", "It is working correctly!")
       }
     }
+  }
+
+  override fun onPause() {
+    super.onPause()
+
+    userPreferences.stopObservingChanges()
+
+    logcat { "onPause: Stopped observing for sharedPreferences changes" }
   }
 }

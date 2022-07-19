@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+  <!-- Disabled State -->
+  <item android:alpha="0.5" android:color="?attr/colorOnSurfaceVariant" android:state_enabled="false" />
+  <!-- Default State -->
+  <item android:color="?attr/colorOnSurfaceVariant" />
+</selector>

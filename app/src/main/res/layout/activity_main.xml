@@ -1,93 +1,97 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?><!-- This activity is going to be laid out edge-to-edge. -->
+<!-- "fitsSystemWindows" padding behavior: https://medium.com/androiddevelopers/why-would-i-want-to-fitssystemwindows-4e26d9ce1eec -->
+<!-- Also, need to make this "focusable". Otherwise, Android will automatically focus the first EditText upon activity start.  -->
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:fitsSystemWindows="true"
-  tools:context=".ui.MainActivity"
+  android:focusable="true"
+  android:focusableInTouchMode="true"
+  tools:context=".MainActivity"
   >
 
-  <!-- Appbar -->
-  <!-- Mainly implements scrolling gesture behaviors. -->
+  <!-- If dragging isn't disabled on this area, AppBarLayout over-scrolls and goes underneath the status bar. -->
+  <!-- The background color is a tint of ?attr/elevationOverlayColor set dynamically from MainActivity. -->
+  <!-- tools:background is not representing the real color here -->
   <com.google.android.material.appbar.AppBarLayout
+    android:id="@+id/app_bar_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:fitsSystemWindows="true"
-    app:liftOnScroll="true"
+    app:layout_behavior="io.github.ni554n.bpn.ui.views.DragDisabledAppBarLayoutBehavior"
+    tools:background="?attr/colorOnSurfaceInverse"
     >
 
     <com.google.android.material.appbar.CollapsingToolbarLayout
+      android:id="@+id/collapsing_toolbar_layout"
       android:layout_width="match_parent"
       android:layout_height="200dp"
-      android:fitsSystemWindows="true"
-      app:collapsedTitleTextAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-      app:contentScrim="#FF2C2F32"
+      android:background="?attr/colorSecondaryContainer"
+      app:collapsedTitleTextAppearance="@style/TextAppearance.Material3.HeadlineSmall"
       app:expandedTitleMarginBottom="24dp"
       app:expandedTitleMarginStart="24dp"
-      app:expandedTitleTextAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+      app:expandedTitleTextAppearance="@style/TextAppearance.Material3.HeadlineMedium"
       app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
-      app:scrimVisibleHeightTrigger="64dp"
-      app:statusBarScrim="@android:color/transparent"
       app:titleCollapseMode="scale"
       >
 
-      <ImageView
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_gravity="top|end"
-        android:fitsSystemWindows="true"
-        android:src="@drawable/ic_pair"
-        app:layout_collapseMode="pin"
-        tools:ignore="ContentDescription"
-        />
+      <!-- Illustration -->
+      <!--      <ImageView-->
+      <!--        android:layout_width="100dp"-->
+      <!--        android:layout_height="100dp"-->
+      <!--        android:layout_gravity="top|end"-->
+      <!--        android:fitsSystemWindows="true"-->
+      <!--        android:src="@mipmap/ic_launcher"-->
+      <!--        app:layout_collapseMode="pin"-->
+      <!--        tools:ignore="ContentDescription"-->
+      <!--        />-->
 
       <com.google.android.material.appbar.MaterialToolbar
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         app:layout_collapseMode="pin"
         app:title="@string/app_name"
+        app:titleTextColor="?attr/colorOnSecondaryContainer"
         />
 
     </com.google.android.material.appbar.CollapsingToolbarLayout>
 
-    <com.google.android.material.switchmaterial.SwitchMaterial
-      android:id="@+id/switch_notification_service"
+    <FrameLayout
+      android:id="@+id/switch_notification_service_container"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_marginStart="16dp"
-      android:layout_marginTop="8dp"
-      android:layout_marginEnd="16dp"
-      android:layout_marginBottom="16dp"
-      android:background="@drawable/switch_background"
-      android:foreground="@drawable/switch_foreground"
-      android:padding="24dp"
-      android:text="@string/notification_service"
-      android:theme="@style/Theme.Material3.Light"
-      android:textColor="?attr/colorOnPrimaryContainer"
-      android:thumb="@drawable/switch_thumb"
-      app:track="@drawable/switch_track"
-      app:thumbTint="@color/m3_switch_thumb_tint"
-      app:trackTint="@color/m3_switch_track_tint"
-      tools:checked="true"
-      tools:enabled="true"
-      />
+      android:layout_margin="16dp"
+      >
 
+      <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/switch_notification_service"
+        style="@style/M3SwitchFullWidth"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_rounded"
+        android:padding="24dp"
+        android:text="@string/notification_service"
+        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+        android:textColor="@color/switch_state_aware_text_colors"
+        tools:checked="true"
+        tools:enabled="true"
+        />
+    </FrameLayout>
   </com.google.android.material.appbar.AppBarLayout>
 
-  <!-- Main Screen -->
+  <!-- Preferences -->
   <androidx.core.widget.NestedScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:scrollbars="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     >
 
-    <!-- TODO:  Remove the extra padding added for testing the scrolling behavior.  -->
     <androidx.constraintlayout.widget.ConstraintLayout
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:layout_margin="16dp"
-      android:paddingBottom="1080dp"
       >
 
       <com.google.android.material.textfield.TextInputLayout
@@ -95,11 +99,13 @@
         style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
         android:hint="@string/label_device_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:viewBindingIgnore="true"
+        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium"
         >
 
         <io.github.ni554n.bpn.ui.views.ImeAwareEditText
@@ -117,33 +123,42 @@
         android:id="@+id/texView_notify_when"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
         android:layout_marginTop="24dp"
+        android:letterSpacing="0.2"
+        android:lineSpacingExtra="2sp"
         android:text="@string/notify_when"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout_device_name"
-        tools:viewBindingIgnore="true"
         />
 
       <com.google.android.material.checkbox.MaterialCheckBox
         android:id="@+id/checkBox_battery_level_reached"
+        style="@style/CheckBoxFullWidth"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="16dp"
+        android:paddingHorizontal="4dp"
+        android:paddingVertical="16dp"
         android:text="@string/battery_level_is_reached_at"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/texView_notify_when"
         tools:checked="true"
+        tools:text="Battery level reaches ~80%"
         />
 
       <com.google.android.material.slider.Slider
         android:id="@+id/battery_level_slider"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="18dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginEnd="16dp"
         android:contentDescription="@string/battery_level_slider"
-        android:stepSize="5"
+        android:stepSize="1"
         android:valueFrom="0"
         android:valueTo="100"
         app:layout_constraintEnd_toEndOf="parent"
@@ -154,8 +169,13 @@
 
       <com.google.android.material.checkbox.MaterialCheckBox
         android:id="@+id/checkBox_battery_level_low"
+        style="@style/CheckBoxFullWidth"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="16dp"
+        android:paddingHorizontal="4dp"
+        android:paddingVertical="16dp"
         android:text="@string/battery_is_low"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -167,31 +187,50 @@
         android:id="@+id/texView_while"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
         android:layout_marginTop="8dp"
-        android:text="@string/label_while"
+        android:letterSpacing="0.2"
+        android:text="@string/label_but"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/checkBox_battery_level_low"
-        tools:viewBindingIgnore="true"
         />
 
       <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/checkBox_is_screen_on"
+        android:id="@+id/checkBox_skip_while_display_on"
+        style="@style/CheckBoxFullWidth"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/screen_is_on"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="16dp"
+        android:paddingHorizontal="4dp"
+        android:paddingVertical="16dp"
+        android:text="@string/skip_if_display_on"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/texView_while"
         tools:checked="false"
         />
 
+      <!--      Temporarily Extending the layout for testing the scrolling behavior -->
+      <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/texView_about"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="600dp"
+        android:gravity="center"
+        android:text="@string/app_name"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkBox_skip_while_display_on"
+        />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
   </androidx.core.widget.NestedScrollView>
 
-  <!-- Extended FAB -->
-  <!-- TODO: This button is blocking the Device Name field -->
   <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
     android:id="@+id/fab_pair"
     android:layout_width="wrap_content"
@@ -203,3 +242,4 @@
     />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
