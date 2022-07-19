@@ -34,18 +34,9 @@
       </intent-filter>
     </activity>
 
-    <service
-      android:name=".services.PowerEventListenerService"
-      android:exported="false"
-      />
-
+    <!--  This receiver is initially disabled because it is controlled by the PowerEventListenerService  -->
     <receiver
-      android:name=".receivers.PowerEventReceivers"
-      android:exported="false"
-      />
-
-    <receiver
-      android:name=".receivers.BootEventReceiver"
+      android:name=".BootEventReceiver"
       android:enabled="false"
       android:exported="true"
       >
@@ -56,6 +47,16 @@
         <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
       </intent-filter>
     </receiver>
+
+    <receiver
+      android:name=".event.receivers.BatteryEventReceivers"
+      android:exported="false"
+      />
+
+    <service
+      android:name=".event.BatteryEventReceiversRegisterService"
+      android:exported="false"
+      />
   </application>
 
 </manifest>

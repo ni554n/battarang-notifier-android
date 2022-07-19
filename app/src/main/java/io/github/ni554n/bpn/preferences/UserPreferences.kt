@@ -1,7 +1,10 @@
 package io.github.ni554n.bpn.preferences
 
+import android.content.Context
 import android.content.SharedPreferences
+import android.hardware.display.DisplayManager
 import android.os.Build
+import android.view.Display
 import androidx.core.content.edit
 
 class UserPreferences(
@@ -13,7 +16,7 @@ class UserPreferences(
     const val LEVEL_REACHED_NOTIFICATION_TOGGLE = "charging_level_reached_notification_toggle"
     const val CHARGING_LEVEL_PERCENTAGE = "charging_level_percentage"
     const val LOW_BATTERY_NOTIFICATION_TOGGLE = "low_battery_notification_toggle"
-    const val NOTIFICATION_WHILE_SCREEN_ON = "notification_while_screen_on_toggle"
+    const val SKIP_WHILE_SCREEN_ON = "notification_while_screen_on_toggle"
     const val NOTIFIER_GCM_TOKEN = "notifier_gcm_token"
     const val USER_DEVICE_NAME = "user_device_name"
   }
@@ -64,12 +67,12 @@ class UserPreferences(
       commonSharedPreferences.edit { putBoolean(LOW_BATTERY_NOTIFICATION_TOGGLE, value) }
     }
 
-  var isNotificationWhileScreenOnEnabled: Boolean =
-    commonPreferences[NOTIFICATION_WHILE_SCREEN_ON] as? Boolean ?: false
+  var shouldSkipWhileDisplayOn: Boolean =
+    commonPreferences[SKIP_WHILE_SCREEN_ON] as? Boolean ?: true
     set(value) {
       field = value
 
-      commonSharedPreferences.edit { putBoolean(NOTIFICATION_WHILE_SCREEN_ON, value) }
+      commonSharedPreferences.edit { putBoolean(SKIP_WHILE_SCREEN_ON, value) }
     }
 
   var notifierGcmToken: String = commonPreferences[NOTIFIER_GCM_TOKEN] as? String ?: ""
@@ -78,6 +81,16 @@ class UserPreferences(
 
       commonSharedPreferences.edit { putString(NOTIFIER_GCM_TOKEN, value) }
     }
+
+  fun shouldNotify(context: Context): Boolean {
+    // Should notify regardless of the display state.
+    if (shouldSkipWhileDisplayOn) return true
+
+    // Notifies only if every display is OFF.
+    return (context.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager)
+      .displays
+      .none { display: Display -> display.state == Display.STATE_ON }
+  }
 
   fun startObservingChanges(listener: SharedPreferences.OnSharedPreferenceChangeListener) {
     opf = listener

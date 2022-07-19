@@ -11,17 +11,11 @@ import java.io.IOException
 
 class PushNotification(
   private val powerManager: PowerManager,
-  private val client: OkHttpClient,
+  private val okHttpClient: OkHttpClient,
 ) {
   private val jsonMediaType: MediaType = "application/json; charset=utf-8".toMediaType()
 
-  fun notify(token: String, title: String, body: String) {
-    // Securing Wakelock for 10 seconds.
-    val wakeLock: PowerManager.WakeLock = powerManager.run {
-      newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "${javaClass.name}::notify")
-        .apply { acquire(10 * 1000L) } // 10 seconds
-    }
-
+  fun notifyAsync(token: String, title: String, body: String, onSuccess: () -> Unit = {}) {
     val postBody: String = """
             |{
             |  "token": "$token",
@@ -30,54 +24,52 @@ class PushNotification(
             |}
             |""".trimMargin()
 
-    logcat { postBody }
+    logcat { "Sending an API request with $postBody" }
 
-    val request: Request = Request.Builder()
+    val apiRequest: Request = Request.Builder()
       .url("https://qnibyq.deta.dev/notify")
       .post(postBody.toRequestBody(jsonMediaType))
       .build()
 
     // Invalidate token on 400
     // https://firebase.google.com/docs/cloud-messaging/manage-tokens
-    client.newCall(request).enqueue(
-      always = { wakeLock.release() },
-    ) { response: Response ->
+    okHttpClient.newCall(apiRequest).async { response: Response ->
       response.use {
         if (response.isSuccessful.not()) {
-          logError(Exception("${response.code}: ${response.message}"))
+          logcat(LogPriority.ERROR) { "API request failed with $response.code: $response.message" }
         }
 
-        logcat(javaClass.name) { response.toString() }
+        logcat { "Successful API response: $response" }
+        onSuccess()
       }
     }
   }
-}
 
-/**
- * Extension function for providing cleaner Kotlin styled callbacks over OkHttp's Java API.
- */
-fun Call.enqueue(
-  always: () -> Unit = {},
-  failure: (e: IOException) -> Unit = ::logError,
-  success: (response: Response) -> Unit,
-) {
-  enqueue(responseCallback = object : Callback {
-    override fun onFailure(call: Call, e: IOException) {
-      failure(e)
-
-      always()
+  /**
+   * Extension function for providing cleaner Kotlin styled callbacks over OkHttp's Java API.
+   */
+  private fun Call.async(
+    success: (response: Response) -> Unit,
+  ) {
+    // Securing a partial wakelock for up to 10 seconds.
+    val wakeLock: PowerManager.WakeLock = powerManager.run {
+      newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "${javaClass.name}::notify")
+        .apply { acquire(10 * 1000L) } // 10 seconds
     }
 
-    override fun onResponse(call: Call, response: Response) {
-      success(response)
+    enqueue(responseCallback = object : Callback {
+      override fun onFailure(call: Call, e: IOException) {
+        logcat(LogPriority.ERROR) { e.asLog() }
 
-      always()
-    }
-  })
-}
+        wakeLock.release()
+      }
 
-fun logError(error: Exception) {
-  logcat("OKHttp: ${::logError::javaClass.name}", LogPriority.ERROR) {
-    error.asLog()
+      override fun onResponse(call: Call, response: Response) {
+        success(response)
+
+        wakeLock.release()
+      }
+    })
   }
 }
+
