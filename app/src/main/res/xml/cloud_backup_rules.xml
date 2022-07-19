@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- Back up user data with Auto Backup -->
+<!-- Back up user data with Auto Backup for Android 11 or below -->
 <!-- https://developer.android.com/guide/topics/data/autobackup -->
 <full-backup-content>
   <include

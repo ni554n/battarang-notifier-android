@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Back up user data with Auto Backup -->
+<!-- https://developer.android.com/guide/topics/data/autobackup -->
+<data-extraction-rules>
+  <cloud-backup>
+    <include
+      domain="sharedpref"
+      path="common.xml"
+    />
+  </cloud-backup>
+  <!--
+  <device-transfer>
+      <include .../>
+      <exclude .../>
+  </device-transfer>
+  -->
+</data-extraction-rules>
