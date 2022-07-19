@@ -17,9 +17,6 @@ import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 import org.koin.dsl.module
 
-// This class is falsely reported as unused because of an Android Studio bug.
-// https://issuetracker.google.com/issues/74514347
-@Suppress("unused")
 class MainApplication : Application() {
   override fun onCreate() {
     super.onCreate()
@@ -32,8 +29,7 @@ class MainApplication : Application() {
 
     // Dependency Injection stuff
     startKoin {
-      // Will be fixed in Koin 3.2.0: https://github.com/InsertKoinIO/koin/issues/1188
-      androidLogger(if (BuildConfig.DEBUG) Level.ERROR else Level.NONE)
+      androidLogger()
       androidContext(this@MainApplication)
 
       modules(module {
