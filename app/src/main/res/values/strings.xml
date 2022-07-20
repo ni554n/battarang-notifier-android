@@ -12,4 +12,5 @@
   <string name="unpair">Unpair</string>
   <string name="successful_pairing">Pairing successful. Check the other device for confirmation.</string>
   <string name="unpaired">Device unpaired</string>
+  <string name="quickie_overlay_string">Visit <b>bpn.anissan.com</b> from the other device</string>
 </resources>

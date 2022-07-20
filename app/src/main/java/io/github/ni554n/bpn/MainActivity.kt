@@ -15,7 +15,9 @@ import com.google.android.material.slider.Slider
 import com.google.android.material.snackbar.Snackbar
 import dev.chrisbanes.insetter.applyInsetter
 import io.github.g00fy2.quickie.QRResult
-import io.github.g00fy2.quickie.ScanQRCode
+import io.github.g00fy2.quickie.ScanCustomCode
+import io.github.g00fy2.quickie.config.BarcodeFormat
+import io.github.g00fy2.quickie.config.ScannerConfig
 import io.github.ni554n.bpn.databinding.ActivityMainBinding
 import io.github.ni554n.bpn.network.PushNotification
 import io.github.ni554n.bpn.preferences.UserPreferences
@@ -28,7 +30,13 @@ class MainActivity : AppCompatActivity() {
   private val userPreferences: UserPreferences by inject()
   private val push: PushNotification by inject()
 
-  private val scanQrCode = registerForActivityResult(ScanQRCode(), ::handleScannedResult)
+  private val scanQrCode = registerForActivityResult(ScanCustomCode(), ::handleScannedResult)
+  private val qrConfig = ScannerConfig.build {
+    setBarcodeFormats(listOf(BarcodeFormat.FORMAT_QR_CODE))
+    setOverlayDrawableRes(R.drawable.ic_fluent_qr_code_filled_128)
+    setOverlayStringRes(R.string.quickie_overlay_string)
+    setHapticSuccessFeedback(true)
+  }
 
   private lateinit var mainActivityBinding: ActivityMainBinding
 
@@ -178,7 +186,7 @@ class MainActivity : AppCompatActivity() {
 
       setOnClickListener {
         if (userPreferences.notifierGcmToken.isEmpty()) {
-          scanQrCode.launch(null)
+          scanQrCode.launch(qrConfig)
         } else {
           userPreferences.notifierGcmToken = ""
         }
