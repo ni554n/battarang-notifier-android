@@ -54,14 +54,26 @@ class MainActivity : AppCompatActivity() {
    * */
   private fun ActivityMainBinding.insetViews() {
     collapsingToolbarLayout.applyInsetter {
-      type(statusBars = true, navigationBars = true, captionBar = true) {
+      type(navigationBars = true) {
         margin(horizontal = true)
       }
     }
 
     switchNotificationServiceContainer.applyInsetter {
-      type(statusBars = true, navigationBars = true, captionBar = true) {
+      type(navigationBars = true) {
         padding(horizontal = true)
+      }
+    }
+
+    nestedScrollView.applyInsetter {
+      type(navigationBars = true) {
+        margin(horizontal = true)
+      }
+    }
+
+    fabPair.applyInsetter {
+      type(navigationBars = true) {
+        margin(horizontal = true, vertical = true)
       }
     }
   }
@@ -232,6 +244,7 @@ class MainActivity : AppCompatActivity() {
 
     if (userPreferences.notifierGcmToken.isEmpty()) {
       Snackbar.make(mainActivityBinding.root, R.string.unpaired, Snackbar.LENGTH_SHORT)
+        .setAnchorView(mainActivityBinding.fabPair)
         .show()
     } else {
       Snackbar.make(mainActivityBinding.root, R.string.successful_pairing, Snackbar.LENGTH_SHORT)

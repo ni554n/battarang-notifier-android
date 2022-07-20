@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?><!-- This activity is going to be laid out edge-to-edge. -->
-<!-- "fitsSystemWindows" padding behavior: https://medium.com/androiddevelopers/why-would-i-want-to-fitssystemwindows-4e26d9ce1eec -->
-<!-- Also, need to make this "focusable". Otherwise, Android will automatically focus the first EditText upon activity start.  -->
+<!-- Need to make this "focusable". Otherwise, Android will automatically focus the first EditText upon activity start.  -->
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:fitsSystemWindows="true"
   android:focusable="true"
   android:focusableInTouchMode="true"
   tools:context=".MainActivity"
   >
 
+  <!-- "fitsSystemWindows" padding behavior: https://medium.com/androiddevelopers/why-would-i-want-to-fitssystemwindows-4e26d9ce1eec -->
   <!-- If dragging isn't disabled on this area, AppBarLayout over-scrolls and goes underneath the status bar. -->
   <!-- The background color is a tint of ?attr/elevationOverlayColor set dynamically from MainActivity. -->
   <!-- tools:background is not representing the real color here -->
@@ -83,6 +82,7 @@
 
   <!-- Preferences -->
   <androidx.core.widget.NestedScrollView
+    android:id="@+id/nested_scroll_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scrollbars="vertical"
