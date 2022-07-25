@@ -38,10 +38,6 @@ android {
     jvmTarget = '11'
   }
 
-  lint {
-    checkDependencies true
-  }
-
   buildFeatures {
     viewBinding true
   }
