@@ -15,8 +15,6 @@ android {
     targetSdkVersion android.targetSdk
     versionCode android.versionCode
     versionName android.versionName
-
-    testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
   }
 
   buildTypes {
@@ -62,8 +60,4 @@ dependencies {
   implementation app.okhttp
   implementation app.quickie
   implementation app.insetter
-
-  testImplementation test.junit
-  androidTestImplementation test.extJunit
-  androidTestImplementation test.espresso
 }
