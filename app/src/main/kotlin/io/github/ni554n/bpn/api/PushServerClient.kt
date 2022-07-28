@@ -1,6 +1,7 @@
 package io.github.ni554n.bpn.network
 
 import android.os.PowerManager
+import io.github.ni554n.bpn.BuildConfig
 import logcat.LogPriority
 import logcat.asLog
 import logcat.logcat
@@ -27,7 +28,7 @@ class PushNotification(
     logcat { "Sending an API request with $postBody" }
 
     val apiRequest: Request = Request.Builder()
-      .url("https://qnibyq.deta.dev/notify")
+      .url(BuildConfig.PUSH_SERVER_URL)
       .post(postBody.toRequestBody(jsonMediaType))
       .build()
 

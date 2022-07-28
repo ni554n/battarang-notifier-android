@@ -5,6 +5,9 @@ plugins {
 
 apply from: '../dependencies.gradle'
 
+def localProperties = new Properties()
+localProperties.load(new FileInputStream(rootProject.file('local.properties')))
+
 android {
   buildToolsVersion android.buildTools
   compileSdkVersion android.compileSdk
@@ -15,6 +18,8 @@ android {
     targetSdkVersion android.targetSdk
     versionCode android.versionCode
     versionName android.versionName
+
+    buildConfigField('String', 'PUSH_SERVER_URL', localProperties['PUSH_SERVER_URL'])
   }
 
   buildTypes {
