@@ -4,17 +4,18 @@ import android.app.Application
 import android.content.Context
 import android.os.PowerManager
 import com.google.android.material.color.DynamicColors
-import io.github.ni554n.bpn.network.PushNotification
-import io.github.ni554n.bpn.preferences.UserPreferences
-import io.github.ni554n.bpn.event.receivers.BatteryEventReceivers
-import io.github.ni554n.bpn.event.receivers.handlers.BatteryEventHandlers
+import io.github.ni554n.bpn.api.PushServerClient
+import io.github.ni554n.bpn.storage.UserPreferences
+import io.github.ni554n.bpn.event.receivers.PowerBroadcastReceivers
+import io.github.ni554n.bpn.event.receivers.AlarmBroadcastReceivers
+import io.github.ni554n.bpn.event.receivers.handlers.BroadcastedEventHandlers
 import logcat.AndroidLogcatLogger
 import logcat.LogPriority
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
-import org.koin.core.module.dsl.factoryOf
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 class MainApplication : Application() {
@@ -27,7 +28,7 @@ class MainApplication : Application() {
     // Setup "Logcat" for debug builds, skip in release builds.
     AndroidLogcatLogger.installOnDebuggableApp(this, minPriority = LogPriority.VERBOSE)
 
-    // Dependency Injection stuff
+    /* Dependency Injection */
     startKoin {
       androidLogger()
       androidContext(this@MainApplication)
@@ -41,14 +42,15 @@ class MainApplication : Application() {
         }
 
         single {
-          PushNotification(
+          PushServerClient(
             androidContext().getSystemService(Context.POWER_SERVICE) as PowerManager,
             OkHttpClient(),
           )
         }
 
-        factoryOf(::BatteryEventReceivers)
-        factoryOf(::BatteryEventHandlers)
+        singleOf(::PowerBroadcastReceivers)
+        singleOf(::AlarmBroadcastReceivers)
+        singleOf(::BroadcastedEventHandlers)
       })
     }
   }

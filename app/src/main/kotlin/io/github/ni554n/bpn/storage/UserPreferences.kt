@@ -1,4 +1,4 @@
-package io.github.ni554n.bpn.preferences
+package io.github.ni554n.bpn.storage
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -16,7 +16,7 @@ class UserPreferences(
     const val LEVEL_REACHED_NOTIFICATION_TOGGLE = "charging_level_reached_notification_toggle"
     const val CHARGING_LEVEL_PERCENTAGE = "charging_level_percentage"
     const val LOW_BATTERY_NOTIFICATION_TOGGLE = "low_battery_notification_toggle"
-    const val SKIP_WHILE_SCREEN_ON = "notification_while_screen_on_toggle"
+    const val SKIP_WHILE_SCREEN_ON_TOGGLE = "skip_while_screen_on_toggle"
     const val NOTIFIER_GCM_TOKEN = "notifier_gcm_token"
     const val USER_DEVICE_NAME = "user_device_name"
   }
@@ -43,7 +43,6 @@ class UserPreferences(
       userSharedPreferences.edit { putString(USER_DEVICE_NAME, value) }
     }
 
-  // Replace Enabled with Checked
   var isLevelReachedNotificationEnabled: Boolean =
     commonPreferences[LEVEL_REACHED_NOTIFICATION_TOGGLE] as? Boolean ?: true
     set(value) {
@@ -67,12 +66,12 @@ class UserPreferences(
       commonSharedPreferences.edit { putBoolean(LOW_BATTERY_NOTIFICATION_TOGGLE, value) }
     }
 
-  var shouldSkipWhileDisplayOn: Boolean =
-    commonPreferences[SKIP_WHILE_SCREEN_ON] as? Boolean ?: true
+  var isSkipWhileDisplayOnEnabled: Boolean =
+    commonPreferences[SKIP_WHILE_SCREEN_ON_TOGGLE] as? Boolean ?: true
     set(value) {
       field = value
 
-      commonSharedPreferences.edit { putBoolean(SKIP_WHILE_SCREEN_ON, value) }
+      commonSharedPreferences.edit { putBoolean(SKIP_WHILE_SCREEN_ON_TOGGLE, value) }
     }
 
   var notifierGcmToken: String = commonPreferences[NOTIFIER_GCM_TOKEN] as? String ?: ""
@@ -82,14 +81,18 @@ class UserPreferences(
       commonSharedPreferences.edit { putString(NOTIFIER_GCM_TOKEN, value) }
     }
 
+  /**
+   * Determines if notifications should be sent based on the preference and current display state.
+   * */
   fun shouldNotify(context: Context): Boolean {
-    // Should notify regardless of the display state.
-    if (shouldSkipWhileDisplayOn) return true
+    // If this option is Selected, make sure every display is OFF before notifying.
+    if (isSkipWhileDisplayOnEnabled) {
+      return (context.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager)
+        .displays
+        .none { display: Display -> display.state == Display.STATE_ON }
+    }
 
-    // Notifies only if every display is OFF.
-    return (context.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager)
-      .displays
-      .none { display: Display -> display.state == Display.STATE_ON }
+    return true
   }
 
   fun startObservingChanges(listener: SharedPreferences.OnSharedPreferenceChangeListener) {

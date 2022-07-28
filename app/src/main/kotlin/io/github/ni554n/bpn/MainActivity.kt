@@ -19,16 +19,16 @@ import io.github.g00fy2.quickie.ScanCustomCode
 import io.github.g00fy2.quickie.config.BarcodeFormat
 import io.github.g00fy2.quickie.config.ScannerConfig
 import io.github.ni554n.bpn.databinding.ActivityMainBinding
-import io.github.ni554n.bpn.network.PushNotification
-import io.github.ni554n.bpn.preferences.UserPreferences
-import io.github.ni554n.bpn.event.BatteryEventReceiversRegisterService
+import io.github.ni554n.bpn.api.PushServerClient
+import io.github.ni554n.bpn.storage.UserPreferences
+import io.github.ni554n.bpn.event.BroadcastReceiverRegistererService
 import logcat.LogPriority
 import logcat.logcat
 import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity() {
   private val userPreferences: UserPreferences by inject()
-  private val push: PushNotification by inject()
+  private val pushServerClient: PushServerClient by inject()
 
   private val scanQrCode = registerForActivityResult(ScanCustomCode(), ::handleScannedResult)
   private val qrConfig = ScannerConfig.build {
@@ -51,16 +51,15 @@ class MainActivity : AppCompatActivity() {
 
     mainActivityBinding.run {
       setContentView(root)
-
-      insetViews()
-      prepareViews()
+      insetViewPositions()
+      setupViews()
     }
   }
 
   /**
-   * Prevents views from overlapping with system drawn elements such as Navigation bar.
+   * Prevents views from overlapping with the system elements such as status bar or navigation bar.
    * */
-  private fun ActivityMainBinding.insetViews() {
+  private fun ActivityMainBinding.insetViewPositions() {
     collapsingToolbarLayout.applyInsetter {
       type(navigationBars = true) {
         margin(horizontal = true)
@@ -89,7 +88,7 @@ class MainActivity : AppCompatActivity() {
   /**
    * Initialize views with user data and setup listeners along the way.
    */
-  private fun ActivityMainBinding.prepareViews() {
+  private fun ActivityMainBinding.setupViews() {
     appBarLayout.setBackgroundColor(SurfaceColors.SURFACE_2.getColor(this@MainActivity))
 
     /* Service Switcher */
@@ -167,10 +166,10 @@ class MainActivity : AppCompatActivity() {
 
     /* Skip if Display On Toggle*/
     checkBoxSkipWhileDisplayOn.run {
-      isChecked = userPreferences.shouldSkipWhileDisplayOn
+      isChecked = userPreferences.isSkipWhileDisplayOnEnabled
 
       setOnCheckedChangeListener { _: CompoundButton, isChecked: Boolean ->
-        userPreferences.shouldSkipWhileDisplayOn = isChecked
+        userPreferences.isSkipWhileDisplayOnEnabled = isChecked
       }
     }
 
@@ -209,8 +208,8 @@ class MainActivity : AppCompatActivity() {
       switchMaterial.isEnabled = shouldBeEnabled
       switchMaterial.isChecked = shouldBeChecked
 
-      if (shouldBeChecked) BatteryEventReceiversRegisterService.startForeground(this@MainActivity)
-      else BatteryEventReceiversRegisterService.stopForeground(this@MainActivity)
+      if (shouldBeChecked) BroadcastReceiverRegistererService.start(this@MainActivity)
+      else BroadcastReceiverRegistererService.stop(this@MainActivity)
     }
   }
 
@@ -262,8 +261,6 @@ class MainActivity : AppCompatActivity() {
   }
 
   private fun handleScannedResult(result: QRResult) {
-    userPreferences.chargingLevelPercentage = 80 // ???
-
     when (result) {
       QRResult.QRMissingPermission -> logcat { "Missing permission" }
 
@@ -286,7 +283,7 @@ class MainActivity : AppCompatActivity() {
         refreshBecauseTokenChanged()
 
         // Send a test push notification
-        push.notifyAsync(token, "Successfully Paired", "It is working correctly!")
+        pushServerClient.postNotification(token, "Successfully Paired", "It is working correctly!")
       }
     }
   }

@@ -35,7 +35,7 @@
       </intent-filter>
     </activity>
 
-    <!--  This receiver is initially disabled because it is controlled by the PowerEventListenerService  -->
+    <!--  This receiver is initially disabled because it is controlled programmatically based on Service status.  -->
     <receiver
       android:name=".BootEventReceiver"
       android:enabled="false"
@@ -49,13 +49,14 @@
       </intent-filter>
     </receiver>
 
+    <!--  To receive the event triggered by the alarm, Manifest entry is required.  -->
     <receiver
-      android:name=".event.receivers.BatteryEventReceivers"
+      android:name=".event.receivers.AlarmBroadcastReceivers"
       android:exported="false"
       />
 
     <service
-      android:name=".event.BatteryEventReceiversRegisterService"
+      android:name=".event.BroadcastReceiverRegistererService"
       android:exported="false"
       />
   </application>

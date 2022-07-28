@@ -7,27 +7,42 @@ import android.content.Intent
 import android.os.BatteryManager
 import android.os.Build
 import android.os.SystemClock
-import io.github.ni554n.bpn.network.PushNotification
-import io.github.ni554n.bpn.preferences.UserPreferences
-import io.github.ni554n.bpn.event.receivers.BatteryEventReceivers
+import io.github.ni554n.bpn.event.receivers.AlarmBroadcastReceivers
+import io.github.ni554n.bpn.api.PushServerClient
+import io.github.ni554n.bpn.storage.UserPreferences
 import logcat.logcat
 
-class BatteryEventHandlers(
+class BroadcastedEventHandlers(
   private val context: Context,
   private val userPreferences: UserPreferences,
-  private val pushNotification: PushNotification,
+  private val pushServerClient: PushServerClient,
 ) {
   private val alarmManager: AlarmManager =
     context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
+  private val currentBatteryLevel: Int
+    get() {
+      val currentLevel: Int = (context.getSystemService(Context.BATTERY_SERVICE) as BatteryManager)
+        .getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
+
+      logcat { "Battery level = $currentLevel%" }
+      return currentLevel
+    }
+
   private lateinit var batteryLevelCheckerAlarmPendingIntent: PendingIntent
 
   fun startBatteryLevelCheckerAlarm() {
+    // Maybe the user wants to fully charge the battery this time.
+    if (currentBatteryLevel > userPreferences.chargingLevelPercentage) {
+      logcat { "Charger Connected: But not setting the alarm because battery level is already ahead of the preferred level." }
+      return
+    }
+
     batteryLevelCheckerAlarmPendingIntent = run {
       val uniqueId = 64
 
-      val alarmEventIntent: Intent = Intent(context, BatteryEventReceivers::class.java)
-        .setAction(ACTION_ALARM_BATTERY_LEVEL_CHECK)
+      val alarmEventIntent: Intent = Intent(context, AlarmBroadcastReceivers::class.java)
+        .setAction(AlarmBroadcastReceivers.ACTION_CHECK_BATTERY_LEVEL)
 
       // From Android 12+, it is mandatory to add a mutability flag on pending intents.
       // FLAG_IMMUTABLE added in API 23.
@@ -51,15 +66,17 @@ class BatteryEventHandlers(
   }
 
   fun stopBatteryLevelCheckerAlarm() {
+    logcat { "Requested to stop the periodic alarm" }
+
     if (::batteryLevelCheckerAlarmPendingIntent.isInitialized.not()) return
 
     alarmManager.cancel(batteryLevelCheckerAlarmPendingIntent)
-    logcat { "Stopped the periodic alarm" }
+    logcat { "Stopped the periodic battery level checker alarm" }
   }
 
   fun notifyBatteryIsLow() {
     if (userPreferences.shouldNotify(context)) {
-      pushNotification.notifyAsync(
+      pushServerClient.postNotification(
         userPreferences.notifierGcmToken,
         title = "🔋⚠ Low!",
         body = "🔌 Connect to a power source!",
@@ -71,7 +88,7 @@ class BatteryEventHandlers(
     }
   }
 
-  fun checkIfBatteryLevelReached() {
+  fun notifyAfterLevelReached() {
     logcat { "Triggered alarm event for battery level check" }
 
     if (userPreferences.shouldNotify(context).not()) {
@@ -79,24 +96,16 @@ class BatteryEventHandlers(
       return
     }
 
-    val currentLevel: Int = (context.getSystemService(Context.BATTERY_SERVICE) as BatteryManager)
-      .getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
+    if (currentBatteryLevel < userPreferences.chargingLevelPercentage) return
 
-    logcat { "Battery level = $currentLevel%" }
-
-    if (currentLevel < userPreferences.chargingLevelPercentage) return
-
-    pushNotification.notifyAsync(
-      userPreferences.notifierGcmToken,
-      title = "🔋⚡ $currentLevel%",
+    pushServerClient.postNotification(
+      token = userPreferences.notifierGcmToken,
+      title = "🔋⚡ $currentBatteryLevel%",
       body = "🔌 Disconnect.",
     ) {
-      stopBatteryLevelCheckerAlarm()
-      logcat { "Notification has been sent successfully. Alarm is now stopped." }
-    }
-  }
+      logcat { "Notification has been sent successfully." }
 
-  companion object {
-    val ACTION_ALARM_BATTERY_LEVEL_CHECK = "${BatteryEventHandlers::class.java.name}.check_battery_level"
+      stopBatteryLevelCheckerAlarm()
+    }
   }
 }
