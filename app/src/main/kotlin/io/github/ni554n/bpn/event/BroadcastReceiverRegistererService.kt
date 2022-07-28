@@ -26,8 +26,8 @@ import org.koin.android.ext.android.inject
  * This service can be started and stopped easily with the helper functions in companion object.
  */
 class BroadcastReceiverRegistererService : Service() {
-  private val systemBroadcastReceivers: PowerBroadcastReceivers by inject()
-  private val localBroadcastReceivers: AlarmBroadcastReceivers by inject()
+  private val powerBroadcastReceivers: PowerBroadcastReceivers by inject()
+  private val alarmBroadcastReceivers: AlarmBroadcastReceivers by inject()
 
   private val currentBatteryStatus: Int?
     get() = registerReceiver(
@@ -44,11 +44,11 @@ class BroadcastReceiverRegistererService : Service() {
     }
 
     /* Register the implicit Broadcast Receivers */
-    registerReceiver(systemBroadcastReceivers,
-      systemBroadcastReceivers.intentFiltersBasedOnPreference)
+    registerReceiver(powerBroadcastReceivers,
+      powerBroadcastReceivers.intentFiltersBasedOnPreference)
 
     LocalBroadcastManager.getInstance(this)
-      .registerReceiver(localBroadcastReceivers, localBroadcastReceivers.intentFilters)
+      .registerReceiver(alarmBroadcastReceivers, alarmBroadcastReceivers.intentFilters)
 
     logcat { "Registered the implicit Broadcast Receivers." }
 
@@ -64,8 +64,8 @@ class BroadcastReceiverRegistererService : Service() {
   }
 
   override fun onDestroy() {
-    unregisterReceiver(systemBroadcastReceivers)
-    LocalBroadcastManager.getInstance(this).unregisterReceiver(localBroadcastReceivers)
+    unregisterReceiver(powerBroadcastReceivers)
+    LocalBroadcastManager.getInstance(this).unregisterReceiver(alarmBroadcastReceivers)
 
     resumeAfterBoot(false)
 
