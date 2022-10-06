@@ -1,7 +1,7 @@
 ext.android = [
   buildTools : '33.0.0',
-  compileSdk : 32,
-  targetSdk  : 32,
+  compileSdk : 33,
+  targetSdk  : 33,
   minSdk     : 21,
   versionCode: 1,
   versionName: '0.1.0', // TODO change version before release
@@ -9,22 +9,22 @@ ext.android = [
 
 ext.version = [
   // Plugins
-  gradlePlugin    : '7.2.1',
+  gradlePlugin    : '7.3.0',
 
   // Kotlin
-  kotlin          : '1.7.0',
+  kotlin          : '1.7.20',
 
   // AndroidX
-  appCompat       : '1.6.0-alpha05',
-  core            : '1.9.0-alpha05',
-  material        : '1.7.0-alpha02',
+  appCompat       : '1.7.0-alpha01',
+  core            : '1.9.0',
+  material        : '1.8.0-alpha01',
   constraintLayout: '2.1.4',
 
   // Third party
-  koin            : '3.2.0',
+  koin            : '3.2.2',
   logcat          : '0.1',
   okhttp          : '5.0.0-alpha.10',
-  quickie         : '1.5.0',
+  quickie         : '1.5.1',
   insetter        : '0.6.1',
 ]
 
