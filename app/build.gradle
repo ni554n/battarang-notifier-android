@@ -13,7 +13,7 @@ android {
   compileSdkVersion android.compileSdk
 
   defaultConfig {
-    applicationId 'io.github.ni554n.bpn'
+    applicationId 'com.anissan.bpn'
     minSdkVersion android.minSdk
     targetSdkVersion android.targetSdk
     versionCode android.versionCode

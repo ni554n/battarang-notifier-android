@@ -1,11 +1,11 @@
-package io.github.ni554n.bpn
+package com.anissan.bpn
 
 import android.content.BroadcastReceiver
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import io.github.ni554n.bpn.event.BroadcastReceiverRegistererService
+import com.anissan.bpn.event.BroadcastReceiverRegistererService
 import logcat.LogPriority
 import logcat.logcat
 

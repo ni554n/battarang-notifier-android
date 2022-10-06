@@ -1,14 +1,13 @@
-package io.github.ni554n.bpn
+package com.anissan.bpn
 
 import android.app.Application
-import android.content.Context
 import android.os.PowerManager
 import com.google.android.material.color.DynamicColors
-import io.github.ni554n.bpn.api.PushServerClient
-import io.github.ni554n.bpn.storage.UserPreferences
-import io.github.ni554n.bpn.event.receivers.PowerBroadcastReceivers
-import io.github.ni554n.bpn.event.receivers.AlarmBroadcastReceivers
-import io.github.ni554n.bpn.event.receivers.handlers.BroadcastedEventHandlers
+import com.anissan.bpn.api.PushServerClient
+import com.anissan.bpn.storage.UserPreferences
+import com.anissan.bpn.event.receivers.PowerBroadcastReceivers
+import com.anissan.bpn.event.receivers.AlarmBroadcastReceivers
+import com.anissan.bpn.event.receivers.handlers.BroadcastedEventHandlers
 import logcat.AndroidLogcatLogger
 import logcat.LogPriority
 import okhttp3.OkHttpClient
@@ -43,7 +42,7 @@ class MainApplication : Application() {
 
         single {
           PushServerClient(
-            androidContext().getSystemService(Context.POWER_SERVICE) as PowerManager,
+            androidContext().getSystemService(POWER_SERVICE) as PowerManager,
             OkHttpClient(),
           )
         }

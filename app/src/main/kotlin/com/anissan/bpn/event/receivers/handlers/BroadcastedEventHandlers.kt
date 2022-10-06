@@ -1,4 +1,4 @@
-package io.github.ni554n.bpn.event.receivers.handlers
+package com.anissan.bpn.event.receivers.handlers
 
 import android.app.AlarmManager
 import android.app.PendingIntent
@@ -7,9 +7,9 @@ import android.content.Intent
 import android.os.BatteryManager
 import android.os.Build
 import android.os.SystemClock
-import io.github.ni554n.bpn.event.receivers.AlarmBroadcastReceivers
-import io.github.ni554n.bpn.api.PushServerClient
-import io.github.ni554n.bpn.storage.UserPreferences
+import com.anissan.bpn.event.receivers.AlarmBroadcastReceivers
+import com.anissan.bpn.api.PushServerClient
+import com.anissan.bpn.storage.UserPreferences
 import logcat.logcat
 
 class BroadcastedEventHandlers(

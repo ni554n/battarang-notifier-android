@@ -1,4 +1,4 @@
-package io.github.ni554n.bpn.ui.views
+package com.anissan.bpn.ui.views
 
 import android.content.Context
 import android.util.AttributeSet

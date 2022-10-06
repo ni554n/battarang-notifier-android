@@ -1,10 +1,10 @@
-package io.github.ni554n.bpn.event.receivers
+package com.anissan.bpn.event.receivers
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import io.github.ni554n.bpn.event.receivers.handlers.BroadcastedEventHandlers
+import com.anissan.bpn.event.receivers.handlers.BroadcastedEventHandlers
 import logcat.LogPriority
 import logcat.logcat
 import org.koin.core.component.KoinComponent

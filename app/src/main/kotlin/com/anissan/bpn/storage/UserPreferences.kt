@@ -1,4 +1,4 @@
-package io.github.ni554n.bpn.storage
+package com.anissan.bpn.storage
 
 import android.content.Context
 import android.content.SharedPreferences

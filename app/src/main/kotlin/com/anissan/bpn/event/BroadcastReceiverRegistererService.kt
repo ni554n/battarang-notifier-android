@@ -1,4 +1,4 @@
-package io.github.ni554n.bpn.event
+package com.anissan.bpn.event
 
 import android.app.*
 import android.content.Context
@@ -11,10 +11,10 @@ import android.provider.Settings
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import io.github.ni554n.bpn.BootEventReceiver.Companion.resumeAfterBoot
-import io.github.ni554n.bpn.MainActivity
-import io.github.ni554n.bpn.event.receivers.AlarmBroadcastReceivers
-import io.github.ni554n.bpn.event.receivers.PowerBroadcastReceivers
+import com.anissan.bpn.BootEventReceiver.Companion.resumeAfterBoot
+import com.anissan.bpn.MainActivity
+import com.anissan.bpn.event.receivers.AlarmBroadcastReceivers
+import com.anissan.bpn.event.receivers.PowerBroadcastReceivers
 import logcat.logcat
 import org.koin.android.ext.android.inject
 
@@ -90,7 +90,7 @@ class BroadcastReceiverRegistererService : Service() {
     }
 
     fun stop(context: Context) {
-      if (::thisServiceIntent.isInitialized.not()) return
+      if (Companion::thisServiceIntent.isInitialized.not()) return
 
       // If an alarm is already in progress, only stopping this service won't stop the alarm.
       // It needs to be stopped explicitly.

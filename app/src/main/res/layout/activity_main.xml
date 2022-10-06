@@ -8,7 +8,7 @@
   android:layout_height="match_parent"
   android:focusable="true"
   android:focusableInTouchMode="true"
-  tools:context=".MainActivity"
+  tools:context="com.anissan.bpn.MainActivity"
   >
 
   <!-- "fitsSystemWindows" padding behavior: https://medium.com/androiddevelopers/why-would-i-want-to-fitssystemwindows-4e26d9ce1eec -->
@@ -20,7 +20,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:fitsSystemWindows="true"
-    app:layout_behavior="io.github.ni554n.bpn.ui.views.DragDisabledAppBarLayoutBehavior"
+    app:layout_behavior="com.anissan.bpn.ui.views.DragDisabledAppBarLayoutBehavior"
     tools:background="?attr/colorOnSurfaceInverse"
     >
 
@@ -109,7 +109,7 @@
         app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium"
         >
 
-        <io.github.ni554n.bpn.ui.views.ImeAwareEditText
+        <com.anissan.bpn.ui.views.ImeAwareEditText
           android:id="@+id/editText_device_name"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"

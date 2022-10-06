@@ -7,6 +7,6 @@ Android Client for sending notification to the Receiver devices.
 
 ## Information
 
-**Author:** [Nissan Ahmed](https://ni554n.github.io) ([@ni554n](https://twitter.com/ni554n))
+**Author:** [Nissan Ahmed](https://anissan.com) ([@ni554n](https://twitter.com/ni554n))
 
 **Donate:** [PayPal](https://paypal.me/ni554n)

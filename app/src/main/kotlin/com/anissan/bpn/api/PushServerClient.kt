@@ -1,7 +1,7 @@
-package io.github.ni554n.bpn.api
+package com.anissan.bpn.api
 
 import android.os.PowerManager
-import io.github.ni554n.bpn.BuildConfig
+import com.anissan.bpn.BuildConfig
 import logcat.LogPriority
 import logcat.asLog
 import logcat.logcat

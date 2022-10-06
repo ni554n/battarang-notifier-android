@@ -1,4 +1,4 @@
-package io.github.ni554n.bpn
+package com.anissan.bpn
 
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -18,10 +18,10 @@ import io.github.g00fy2.quickie.QRResult
 import io.github.g00fy2.quickie.ScanCustomCode
 import io.github.g00fy2.quickie.config.BarcodeFormat
 import io.github.g00fy2.quickie.config.ScannerConfig
-import io.github.ni554n.bpn.databinding.ActivityMainBinding
-import io.github.ni554n.bpn.api.PushServerClient
-import io.github.ni554n.bpn.storage.UserPreferences
-import io.github.ni554n.bpn.event.BroadcastReceiverRegistererService
+import com.anissan.bpn.databinding.ActivityMainBinding
+import com.anissan.bpn.api.PushServerClient
+import com.anissan.bpn.storage.UserPreferences
+import com.anissan.bpn.event.BroadcastReceiverRegistererService
 import logcat.LogPriority
 import logcat.logcat
 import org.koin.android.ext.android.inject
