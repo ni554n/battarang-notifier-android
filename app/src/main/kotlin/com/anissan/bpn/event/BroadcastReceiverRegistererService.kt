@@ -15,7 +15,7 @@ import com.anissan.bpn.BootEventReceiver.Companion.resumeAfterBoot
 import com.anissan.bpn.MainActivity
 import com.anissan.bpn.event.receivers.AlarmBroadcastReceivers
 import com.anissan.bpn.event.receivers.PowerBroadcastReceivers
-import logcat.logcat
+import com.anissan.bpn.utils.logV
 import org.koin.android.ext.android.inject
 
 /**
@@ -50,7 +50,7 @@ class BroadcastReceiverRegistererService : Service() {
     LocalBroadcastManager.getInstance(this)
       .registerReceiver(alarmBroadcastReceivers, alarmBroadcastReceivers.intentFilters)
 
-    logcat { "Registered the implicit Broadcast Receivers." }
+    logV { "Registered the implicit Broadcast Receivers." }
 
     // Battery level monitoring alarm is triggered by the power connection event.
     // If the charger is already connected before starting this service, then manually
@@ -86,7 +86,7 @@ class BroadcastReceiverRegistererService : Service() {
         context.startService(thisServiceIntent)
       }
 
-      logcat { "Started this foreground service successfully" }
+      logV { "Started this foreground service successfully" }
     }
 
     fun stop(context: Context) {
@@ -98,7 +98,7 @@ class BroadcastReceiverRegistererService : Service() {
         .sendBroadcast(Intent(AlarmBroadcastReceivers.ACTION_STOP_ALARM))
 
       context.stopService(thisServiceIntent)
-      logcat { "Stopped the foreground service" }
+      logV { "Stopped the foreground service" }
     }
   }
 }

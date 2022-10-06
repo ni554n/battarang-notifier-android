@@ -6,8 +6,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import com.anissan.bpn.event.BroadcastReceiverRegistererService
-import logcat.LogPriority
-import logcat.logcat
+import com.anissan.bpn.utils.logE
+import com.anissan.bpn.utils.logV
+import com.anissan.bpn.utils.logW
 
 /**
  * Receives the boot completed event as well as the event after an app update.
@@ -19,16 +20,16 @@ class BootEventReceiver : BroadcastReceiver() {
 
   override fun onReceive(context: Context?, intent: Intent?) {
     if (context == null) {
-      logcat(LogPriority.WARN) { "onReceive() received a null Context" }
+      logW { "onReceive() received a null Context" }
       return
     }
 
     val action = intent?.action ?: run {
-      logcat(LogPriority.WARN) { "onReceive() received a null Intent" }
+      logW { "onReceive() received a null Intent" }
       return
     }
 
-    logcat { """Received the Intent Action: "$action"""" }
+    logV { """Received the Intent Action: "$action"""" }
 
     when (action) {
       "android.intent.action.BOOT_COMPLETED",
@@ -37,7 +38,7 @@ class BootEventReceiver : BroadcastReceiver() {
       "android.intent.action.MY_PACKAGE_REPLACED",
       -> BroadcastReceiverRegistererService.start(context)
 
-      else -> logcat(LogPriority.ERROR) { "$action is not a supported action by this receiver" }
+      else -> logE { "$action is not a supported action by this receiver" }
     }
   }
 
@@ -60,7 +61,7 @@ class BootEventReceiver : BroadcastReceiver() {
       )
 
       val stateStatus: String = if (toggle) "enabled" else "disabled"
-      logcat { "Boot event Receiver Component is now $stateStatus." }
+      logV { "Boot event Receiver Component is now $stateStatus." }
     }
   }
 }

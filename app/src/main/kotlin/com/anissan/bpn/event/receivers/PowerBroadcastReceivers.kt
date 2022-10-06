@@ -4,10 +4,11 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import com.anissan.bpn.storage.UserPreferences
 import com.anissan.bpn.event.receivers.handlers.BroadcastedEventHandlers
-import logcat.LogPriority
-import logcat.logcat
+import com.anissan.bpn.storage.UserPreferences
+import com.anissan.bpn.utils.logE
+import com.anissan.bpn.utils.logV
+import com.anissan.bpn.utils.logW
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -34,11 +35,11 @@ class PowerBroadcastReceivers : BroadcastReceiver(), KoinComponent {
 
   override fun onReceive(context: Context?, intent: Intent?) {
     val action = intent?.action ?: run {
-      logcat(LogPriority.WARN) { "onReceive() received a null Intent" }
+      logW { "onReceive() received a null Intent" }
       return
     }
 
-    logcat { """Received the Intent Action: "$action"""" }
+    logV { """Received the Intent Action: "$action"""" }
 
     broadcastedEventHandlers.run {
       when (action) {
@@ -47,7 +48,7 @@ class PowerBroadcastReceivers : BroadcastReceiver(), KoinComponent {
 
         Intent.ACTION_BATTERY_LOW -> notifyBatteryIsLow()
 
-        else -> logcat(LogPriority.ERROR) { "$action is not a supported action by this receiver" }
+        else -> logE { "$action is not a supported action by this receiver" }
       }
     }
   }

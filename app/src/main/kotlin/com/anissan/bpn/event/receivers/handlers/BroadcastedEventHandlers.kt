@@ -7,10 +7,10 @@ import android.content.Intent
 import android.os.BatteryManager
 import android.os.Build
 import android.os.SystemClock
-import com.anissan.bpn.event.receivers.AlarmBroadcastReceivers
 import com.anissan.bpn.api.PushServerClient
+import com.anissan.bpn.event.receivers.AlarmBroadcastReceivers
 import com.anissan.bpn.storage.UserPreferences
-import logcat.logcat
+import com.anissan.bpn.utils.logV
 
 class BroadcastedEventHandlers(
   private val context: Context,
@@ -25,7 +25,7 @@ class BroadcastedEventHandlers(
       val currentLevel: Int = (context.getSystemService(Context.BATTERY_SERVICE) as BatteryManager)
         .getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
 
-      logcat { "Battery level = $currentLevel%" }
+      logV { "Battery level = $currentLevel%" }
       return currentLevel
     }
 
@@ -34,7 +34,7 @@ class BroadcastedEventHandlers(
   fun startBatteryLevelCheckerAlarm() {
     // Maybe the user wants to fully charge the battery this time.
     if (currentBatteryLevel > userPreferences.chargingLevelPercentage) {
-      logcat { "Charger Connected: But not setting the alarm because battery level is already ahead of the preferred level." }
+      logV { "Charger Connected: But not setting the alarm because battery level is already ahead of the preferred level." }
       return
     }
 
@@ -62,16 +62,16 @@ class BroadcastedEventHandlers(
       batteryLevelCheckerAlarmPendingIntent,
     )
 
-    logcat { "Charger Connected: Starting an Alarm to check the battery level at a minute interval..." }
+    logV { "Charger Connected: Starting an Alarm to check the battery level at a minute interval..." }
   }
 
   fun stopBatteryLevelCheckerAlarm() {
-    logcat { "Requested to stop the periodic alarm" }
+    logV { "Requested to stop the periodic alarm" }
 
     if (::batteryLevelCheckerAlarmPendingIntent.isInitialized.not()) return
 
     alarmManager.cancel(batteryLevelCheckerAlarmPendingIntent)
-    logcat { "Stopped the periodic battery level checker alarm" }
+    logV { "Stopped the periodic battery level checker alarm" }
   }
 
   fun notifyBatteryIsLow() {
@@ -82,17 +82,17 @@ class BroadcastedEventHandlers(
         body = "🔌 Connect to a power source!",
       )
 
-      logcat { "Battery low event has been notified successfully" }
+      logV { "Battery low event has been notified successfully" }
     } else {
-      logcat { "Skipped battery low push notification due to user preference" }
+      logV { "Skipped battery low push notification due to user preference" }
     }
   }
 
   fun notifyAfterLevelReached() {
-    logcat { "Triggered alarm event for battery level check" }
+    logV { "Triggered alarm event for battery level check" }
 
     if (userPreferences.shouldNotify(context).not()) {
-      logcat { "Skipped alarm event due to user preference" }
+      logV { "Skipped alarm event due to user preference" }
       return
     }
 
@@ -103,7 +103,7 @@ class BroadcastedEventHandlers(
       title = "🔋⚡ $currentBatteryLevel%",
       body = "🔌 Disconnect.",
     ) {
-      logcat { "Notification has been sent successfully." }
+      logV { "Notification has been sent successfully." }
 
       stopBatteryLevelCheckerAlarm()
     }

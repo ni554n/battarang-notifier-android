@@ -50,7 +50,7 @@ android {
 
 dependencies {
   implementation common.kotlinStdlib
-  implementation common.logcat
+  implementation common.annotations
   implementation common.koinAndroid
 
   implementation app.appCompat

@@ -2,9 +2,8 @@ package com.anissan.bpn.api
 
 import android.os.PowerManager
 import com.anissan.bpn.BuildConfig
-import logcat.LogPriority
-import logcat.asLog
-import logcat.logcat
+import com.anissan.bpn.utils.logE
+import com.anissan.bpn.utils.logV
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -30,7 +29,7 @@ class PushServerClient(
             |}
             |""".trimMargin()
 
-    logcat { "Sending an API request with $postBody" }
+    logV { "Sending an API request with $postBody" }
 
     val apiRequest: Request = Request.Builder()
       .url(BuildConfig.PUSH_SERVER_URL)
@@ -42,10 +41,10 @@ class PushServerClient(
     okHttpClient.newCall(apiRequest).onAsyncResponse { response: Response ->
       response.use {
         if (response.isSuccessful.not()) {
-          logcat(LogPriority.ERROR) { "API request failed with $response.code: $response.message" }
+          logE { "API request failed with $response.code: $response.message" }
         }
 
-        logcat { "Successful API response: $response" }
+        logV { "Successful API response: $response" }
         onSuccessfulPost()
       }
     }
@@ -66,7 +65,7 @@ class PushServerClient(
 
     enqueue(responseCallback = object : Callback {
       override fun onFailure(call: Call, e: IOException) {
-        logcat(LogPriority.ERROR) { e.asLog() }
+        logE(e)
 
         wakeLock.release()
       }

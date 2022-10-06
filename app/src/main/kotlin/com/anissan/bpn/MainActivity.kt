@@ -7,8 +7,16 @@ import android.view.View
 import android.widget.CompoundButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
-import androidx.core.view.*
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.doAfterTextChanged
+import com.anissan.bpn.api.PushServerClient
+import com.anissan.bpn.databinding.ActivityMainBinding
+import com.anissan.bpn.event.BroadcastReceiverRegistererService
+import com.anissan.bpn.storage.UserPreferences
+import com.anissan.bpn.utils.logE
+import com.anissan.bpn.utils.logV
 import com.google.android.material.elevation.SurfaceColors
 import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.slider.Slider
@@ -18,12 +26,6 @@ import io.github.g00fy2.quickie.QRResult
 import io.github.g00fy2.quickie.ScanCustomCode
 import io.github.g00fy2.quickie.config.BarcodeFormat
 import io.github.g00fy2.quickie.config.ScannerConfig
-import com.anissan.bpn.databinding.ActivityMainBinding
-import com.anissan.bpn.api.PushServerClient
-import com.anissan.bpn.storage.UserPreferences
-import com.anissan.bpn.event.BroadcastReceiverRegistererService
-import logcat.LogPriority
-import logcat.logcat
 import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity() {
@@ -220,7 +222,7 @@ class MainActivity : AppCompatActivity() {
       startObservingChanges { _: SharedPreferences, key: String? ->
         if (key == null) return@startObservingChanges
 
-        logcat { "$key has been updated." }
+        logV { "$key has been updated." }
 
         when (key) {
           UserPreferences.MONITORING_SERVICE_TOGGLE,
@@ -233,7 +235,7 @@ class MainActivity : AppCompatActivity() {
       }
     }
 
-    logcat { "onResume: Started observing for sharedPreferences changes" }
+    logV { "onResume: Started observing for sharedPreferences changes" }
   }
 
   private fun refreshBecauseTokenChanged() {
@@ -262,18 +264,18 @@ class MainActivity : AppCompatActivity() {
 
   private fun handleScannedResult(result: QRResult) {
     when (result) {
-      QRResult.QRMissingPermission -> logcat { "Missing permission" }
+      QRResult.QRMissingPermission -> logV { "Missing permission" }
 
-      QRResult.QRUserCanceled -> logcat { "User canceled" }
+      QRResult.QRUserCanceled -> logV { "User canceled" }
 
-      is QRResult.QRError -> logcat(LogPriority.ERROR) {
+      is QRResult.QRError -> logE {
         result.exception.localizedMessage ?: "Error"
       }
 
       is QRResult.QRSuccess -> {
         val token = result.content.rawValue
 
-        logcat { "GCM TOKEN: $token" }
+        logV { "GCM TOKEN: $token" }
 
         userPreferences.notifierGcmToken = token
         userPreferences.isMonitoringServiceEnabled = true
@@ -293,6 +295,6 @@ class MainActivity : AppCompatActivity() {
 
     userPreferences.stopObservingChanges()
 
-    logcat { "onPause: Stopped observing for sharedPreferences changes" }
+    logV { "onPause: Stopped observing for sharedPreferences changes" }
   }
 }
