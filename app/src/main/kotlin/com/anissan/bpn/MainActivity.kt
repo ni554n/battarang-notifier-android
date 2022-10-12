@@ -1,10 +1,14 @@
 package com.anissan.bpn
 
+import android.content.ClipboardManager
+import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.view.View
 import android.widget.CompoundButton
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
 import androidx.core.view.ViewCompat
@@ -13,10 +17,13 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.doAfterTextChanged
 import com.anissan.bpn.api.PushServerClient
 import com.anissan.bpn.databinding.ActivityMainBinding
+import com.anissan.bpn.databinding.DialogPairBinding
 import com.anissan.bpn.event.BroadcastReceiverRegistererService
 import com.anissan.bpn.storage.UserPreferences
 import com.anissan.bpn.utils.logE
 import com.anissan.bpn.utils.logV
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.elevation.SurfaceColors
 import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.slider.Slider
@@ -173,6 +180,10 @@ class MainActivity : AppCompatActivity() {
       setOnCheckedChangeListener { _: CompoundButton, isChecked: Boolean ->
         userPreferences.isSkipWhileDisplayOnEnabled = isChecked
       }
+    }
+
+    licenses.setOnClickListener {
+      startActivity(Intent(this@MainActivity, OssLicensesMenuActivity::class.java))
     }
 
     /* Device Pair-Unpair Button */

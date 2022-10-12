@@ -43,4 +43,9 @@
   </style>
 
   <style name="MainTheme" parent="BaseTheme" />
+
+  <style name="OssTheme" parent="MainTheme">
+    <item name="windowActionBar">true</item>
+    <item name="windowNoTitle">false</item>
+  </style>
 </resources>

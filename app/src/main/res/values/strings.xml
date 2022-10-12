@@ -4,6 +4,7 @@
   <string name="label_device_name">Device Name</string>
   <string name="notification_service">Notification Service</string>
   <string name="notify_when">Notify when</string>
+  <string name="licenses">Licenses</string>
   <string name="battery_level_is_reached_at">Battery level reaches <![CDATA[ <b>~%1$d%%</b> ]]></string>
   <string name="battery_level_slider">Slider for adjusting the battery level</string>
   <string name="battery_is_low">Battery is <u>low</u></string>

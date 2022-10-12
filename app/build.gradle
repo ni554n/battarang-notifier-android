@@ -1,6 +1,7 @@
 plugins {
   id 'com.android.application'
   id 'org.jetbrains.kotlin.android'
+  id 'com.google.android.gms.oss-licenses-plugin'
 }
 
 // Read private properties from local.properties
@@ -56,6 +57,7 @@ dependencies {
   implementation 'androidx.core:core-ktx:1.9.0'
   implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
   implementation 'com.google.android.material:material:1.8.0-alpha01'
+  implementation 'com.google.android.gms:play-services-oss-licenses:17.0.0'
 
   implementation 'io.insert-koin:koin-android:3.2.2'
   implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.10'

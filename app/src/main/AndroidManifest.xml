@@ -34,6 +34,16 @@
       </intent-filter>
     </activity>
 
+    <activity
+      android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
+      android:theme="@style/OssTheme"
+      />
+
+    <activity
+      android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
+      android:theme="@style/OssTheme"
+      />
+
     <!--  This receiver is initially disabled because it is controlled programmatically based on Service status.  -->
     <receiver
       android:name=".BootEventReceiver"
