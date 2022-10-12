@@ -1,14 +1,9 @@
+// https://developer.android.com/studio/build
 pluginManagement {
   repositories {
     gradlePluginPortal()
     google()
     mavenCentral()
-  }
-
-  apply from: './dependencies.gradle'
-  plugins {
-    id gradlePluginId version version.gradlePlugin apply false
-    id kotlinGradlePluginId version version.kotlin apply false
   }
 }
 
