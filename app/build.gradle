@@ -20,7 +20,7 @@ android {
     versionName '0.1.0'
 
     buildConfigField('String', 'PUSH_SERVER_URL', localProperties['PUSH_SERVER_URL'])
-    resValue('string', 'receiver_url', localProperties['RECEIVER_URL'])
+    resValue('string', 'receiver_domain', localProperties['RECEIVER_DOMAIN'])
   }
 
   buildTypes {

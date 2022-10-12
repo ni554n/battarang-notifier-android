@@ -3,7 +3,13 @@
 Android Client for sending notification to the Receiver devices.
 
 ## Setup
-1. Add your own API server URL: `PUSH_SERVER_URL="https://..."` on local.properties file
+
+1. Add these values on local.properties file
+
+```properties
+PUSH_SERVER_URL="https://..."
+RECEIVER_URL="https://..."
+```
 
 ## Information
 

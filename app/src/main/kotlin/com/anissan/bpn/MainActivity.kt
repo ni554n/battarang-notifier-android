@@ -150,8 +150,10 @@ class MainActivity : AppCompatActivity() {
       val batteryLevelReachesStringTemplate = getString(R.string.battery_level_is_reached_at)
 
       checkBoxBatteryLevelReached.text =
-        HtmlCompat.fromHtml(batteryLevelReachesStringTemplate.format(batteryLevel),
-          HtmlCompat.FROM_HTML_MODE_COMPACT)
+        HtmlCompat.fromHtml(
+          batteryLevelReachesStringTemplate.format(batteryLevel),
+          HtmlCompat.FROM_HTML_MODE_COMPACT
+        )
 
       addOnChangeListener { _: Slider, value: Float, _: Boolean ->
         val levelValue: Int = value.toInt()
@@ -159,8 +161,10 @@ class MainActivity : AppCompatActivity() {
         userPreferences.chargingLevelPercentage = levelValue
 
         checkBoxBatteryLevelReached.text =
-          HtmlCompat.fromHtml(batteryLevelReachesStringTemplate.format(levelValue),
-            HtmlCompat.FROM_HTML_MODE_COMPACT)
+          HtmlCompat.fromHtml(
+            batteryLevelReachesStringTemplate.format(levelValue),
+            HtmlCompat.FROM_HTML_MODE_COMPACT
+          )
       }
     }
 
@@ -284,21 +288,31 @@ class MainActivity : AppCompatActivity() {
       }
 
       is QRResult.QRSuccess -> {
-        val token = result.content.rawValue
-
-        logV { "GCM TOKEN: $token" }
-
-        userPreferences.notifierGcmToken = token
-        userPreferences.isMonitoringServiceEnabled = true
-
-        // This function is called before onResume has a chance to start observing the sharedPref changes.
-        // Manual refresh is required here to update the screen state.
-        refreshBecauseTokenChanged()
-
-        // Send a test push notification
-        pushServerClient.postNotification(token, "Successfully Paired", "It is working correctly!")
+        saveToken(result.content.rawValue)
       }
     }
+  }
+
+  private fun saveToken(token: String) {
+    logV { "GCM TOKEN: $token" }
+
+    if (token.isBlank()) {
+      Snackbar.make(mainActivityBinding.root, R.string.token_invalid, Snackbar.LENGTH_LONG)
+        .setAnchorView(mainActivityBinding.fabPair)
+        .show()
+
+      return
+    }
+
+    userPreferences.notifierGcmToken = token
+    userPreferences.isMonitoringServiceEnabled = true
+
+    // This function is called before onResume has a chance to start observing the sharedPref changes.
+    // Manual refresh is required here to update the screen state.
+    refreshBecauseTokenChanged()
+
+    // Send a test push notification
+    pushServerClient.postNotification(token, "Successfully Paired", "It is working correctly!")
   }
 
   override fun onPause() {

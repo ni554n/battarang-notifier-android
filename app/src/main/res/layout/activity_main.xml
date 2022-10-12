@@ -8,7 +8,7 @@
   android:layout_height="match_parent"
   android:focusable="true"
   android:focusableInTouchMode="true"
-  tools:context="com.anissan.bpn.MainActivity"
+  tools:context=".MainActivity"
   >
 
   <!-- "fitsSystemWindows" padding behavior: https://medium.com/androiddevelopers/why-would-i-want-to-fitssystemwindows-4e26d9ce1eec -->
@@ -130,6 +130,7 @@
         android:lineSpacingExtra="2sp"
         android:text="@string/notify_when"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+        android:textColor="?attr/colorOnSecondaryContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout_device_name"
@@ -193,6 +194,7 @@
         android:letterSpacing="0.2"
         android:text="@string/label_but"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+        android:textColor="?attr/colorOnSecondaryContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/checkBox_battery_level_low"

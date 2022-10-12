@@ -100,8 +100,8 @@ class BroadcastedEventHandlers(
 
     pushServerClient.postNotification(
       token = userPreferences.notifierGcmToken,
-      title = "🔋⚡ $currentBatteryLevel%",
-      body = "🔌 Disconnect.",
+      title = "🔋 $currentBatteryLevel%",
+      body = "⚡ Disconnect.",
     ) {
       logV { "Notification has been sent successfully." }
 

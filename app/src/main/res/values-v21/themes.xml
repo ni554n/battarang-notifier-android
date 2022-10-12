@@ -5,8 +5,4 @@
     <item name="android:windowTranslucentStatus">true</item>
     <item name="android:windowTranslucentNavigation">true</item>
   </style>
-
-  <style name="M3SwitchFullWidth" parent="Widget.Material3.CompoundButton.MaterialSwitch" />
-
-  <style name="CheckBoxFullWidth" parent="Widget.Material3.CompoundButton.CheckBox" />
 </resources>
