@@ -95,30 +95,40 @@
       android:layout_height="match_parent"
       >
 
-      <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout_device_name"
-        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+      <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_device_name_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="16dp"
-        android:hint="@string/label_device_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium"
+        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Small"
+        app:strokeWidth="0dp"
         >
 
-        <com.anissan.bpn.ui.views.ImeAwareEditText
-          android:id="@+id/editText_device_name"
+        <com.google.android.material.textfield.TextInputLayout
+          android:id="@+id/textInputLayout_device_name"
+          style="?attr/textInputFilledStyle"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:imeOptions="actionDone"
-          android:singleLine="true"
-          tools:text="Xiaomi Mi 6"
-          />
+          android:hint="@string/label_device_name"
+          app:startIconDrawable="@drawable/ic_phone_24"
+          app:startIconTint="?attr/colorPrimary"
+          >
 
-      </com.google.android.material.textfield.TextInputLayout>
+          <com.anissan.bpn.ui.views.ImeAwareEditText
+            android:id="@+id/editText_device_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
+            tools:text="Xiaomi Mi 6"
+            />
+
+        </com.google.android.material.textfield.TextInputLayout>
+      </com.google.android.material.card.MaterialCardView>
 
       <com.google.android.material.textview.MaterialTextView
         android:id="@+id/texView_notify_when"
@@ -133,7 +143,7 @@
         android:textColor="?attr/colorOnSecondaryContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout_device_name"
+        app:layout_constraintTop_toBottomOf="@+id/card_device_name_input"
         />
 
       <com.google.android.material.checkbox.MaterialCheckBox
