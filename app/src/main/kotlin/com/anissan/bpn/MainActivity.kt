@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.text.Editable
 import android.view.View
 import android.widget.CompoundButton
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
 import androidx.core.view.ViewCompat
@@ -42,7 +41,7 @@ class MainActivity : AppCompatActivity() {
   private val scanQrCode = registerForActivityResult(ScanCustomCode(), ::handleScannedResult)
   private val qrConfig = ScannerConfig.build {
     setBarcodeFormats(listOf(BarcodeFormat.FORMAT_QR_CODE))
-    setOverlayDrawableRes(R.drawable.ic_fluent_qr_code_filled_128)
+    setOverlayDrawableRes(R.drawable.ic_qr_code_48)
     setOverlayStringRes(R.string.quickie_overlay_string)
     setHapticSuccessFeedback(true)
   }
@@ -192,19 +191,57 @@ class MainActivity : AppCompatActivity() {
 
     /* Device Pair-Unpair Button */
     fabPair.run {
-      if (userPreferences.notifierGcmToken.isEmpty()) {
+      if (userPreferences.notifierGcmToken.isBlank()) {
         text = getString(R.string.pair_with_device)
-        setIconResource(R.drawable.ic_fluent_qr_code_filled_24)
+        setIconResource(R.drawable.ic_handshake_24)
       } else {
         text = getString(R.string.unpair)
-        setIconResource(R.drawable.ic_material_link_off_round_24)
+        setIconResource(R.drawable.ic_unpair_24)
       }
 
       setOnClickListener {
-        if (userPreferences.notifierGcmToken.isEmpty()) {
-          scanQrCode.launch(qrConfig)
+        if (userPreferences.notifierGcmToken.isBlank()) {
+          val dialogContentView = DialogPairBinding.inflate(layoutInflater)
+
+          dialogContentView.receiverLink.setOnClickListener {
+            val shareIntent = Intent().apply {
+              action = Intent.ACTION_SEND
+              type = "text/plain"
+              putExtra(Intent.EXTRA_TEXT, "https://${getString(R.string.receiver_domain)}")
+            }
+
+            startActivity(Intent.createChooser(shareIntent, null))
+          }
+
+          MaterialAlertDialogBuilder(context, R.style.M3AlertDialog_Centered_FullWidthButtons)
+            .setIcon(R.drawable.ic_handshake_24)
+            .setTitle(getString(R.string.pair_dialog_title))
+            .setView(dialogContentView.root)
+            .setNeutralButton(getString(R.string.pair_dialog_paste_button)) { _, _ ->
+              val clipboard = (getSystemService(Context.CLIPBOARD_SERVICE)) as? ClipboardManager
+              val clipboardText: CharSequence =
+                clipboard?.primaryClip?.getItemAt(0)?.text ?: ""
+
+              saveToken(clipboardText.toString())
+            }
+            .setPositiveButton(getString(R.string.pair_dialog_scan_button)) { _, _ ->
+              scanQrCode.launch(qrConfig)
+            }
+            .show()
         } else {
-          userPreferences.notifierGcmToken = ""
+          MaterialAlertDialogBuilder(context)
+            .setMessage(getString(R.string.unpair_dialog_content))
+            .setPositiveButton(getString(R.string.unpair_dialog_button_unpair)) { _, _ ->
+              userPreferences.notifierGcmToken = ""
+            }
+            .setNegativeButton(getString(R.string.unpair_dialog_button_send)) { _, _ ->
+              pushServerClient.postNotification(
+                userPreferences.notifierGcmToken,
+                "Successfully Paired",
+                "It is working correctly!"
+              )
+            }
+            .show()
         }
       }
     }
@@ -257,12 +294,12 @@ class MainActivity : AppCompatActivity() {
     refreshNotificationServiceState()
 
     mainActivityBinding.fabPair.run {
-      if (userPreferences.notifierGcmToken.isEmpty()) {
+      if (userPreferences.notifierGcmToken.isBlank()) {
         text = getString(R.string.pair_with_device)
-        setIconResource(R.drawable.ic_fluent_qr_code_filled_24)
+        setIconResource(R.drawable.ic_handshake_24)
       } else {
         text = getString(R.string.unpair)
-        setIconResource(R.drawable.ic_material_link_off_round_24)
+        setIconResource(R.drawable.ic_unpair_24)
       }
     }
 

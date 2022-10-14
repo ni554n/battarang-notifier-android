@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical"
+  android:padding="16dp"
+  tools:context=".MainActivity"
+  >
+
+  <com.google.android.material.button.MaterialButton
+    android:id="@+id/receiver_link"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:backgroundTint="?attr/colorSurfaceVariant"
+    android:paddingVertical="16dp"
+    android:text="@string/receiver_domain"
+    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+    android:textColor="?attr/colorOnSurfaceVariant"
+    app:icon="@drawable/ic_share_24"
+    app:iconGravity="textEnd"
+    app:iconTint="?attr/colorOnSurfaceVariant"
+    />
+
+  <com.google.android.material.textview.MaterialTextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginTop="16dp"
+    android:text="@string/pair_dialog_content"
+    android:textAlignment="center"
+    />
+</LinearLayout>

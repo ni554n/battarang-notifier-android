@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!-- https://developer.android.com/develop/ui/views/layout/linear#equal-weight -->
+  <style name="DialogButton.FullWidth" parent="Widget.Material3.Button.TextButton.Dialog">
+    <item name="android:layout_width">0dp</item>
+    <item name="android:layout_weight">1</item>
+    <item name="android:maxWidth">@null</item>
+  </style>
+
+  <style name="DialogButton.Left" parent="DialogButton.FullWidth">
+    <item name="iconSize">17dp</item>
+    <item name="icon">@drawable/ic_paste_24</item>
+  </style>
+
+  <style name="DialogButton.Right" parent="DialogButton.FullWidth">
+    <item name="iconSize">18dp</item>
+    <item name="icon">@drawable/ic_qr_code_48</item>
+  </style>
+
+  <!-- A theme overlay for dialogs with a center aligned title text, icon and buttons that span the width of the dialog. -->
+  <style name="M3AlertDialog.Centered.FullWidthButtons" parent="ThemeOverlay.Material3.MaterialAlertDialog.Centered">
+    <!-- Mark spacer as gone (2) when showing full width buttons -->
+    <item name="materialAlertDialogButtonSpacerVisibility">2</item>
+    <item name="tint">?attr/colorOnSurface</item>
+    <item name="buttonBarNeutralButtonStyle">@style/DialogButton.Left</item>
+    <item name="buttonBarPositiveButtonStyle">@style/DialogButton.Right</item>
+  </style>
+</resources>

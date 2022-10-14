@@ -252,7 +252,7 @@
     android:layout_gravity="bottom|end"
     android:layout_margin="16dp"
     android:text="@string/pair_with_device"
-    tools:icon="@drawable/ic_fluent_qr_code_filled_24"
+    tools:icon="@drawable/ic_handshake_24"
     />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

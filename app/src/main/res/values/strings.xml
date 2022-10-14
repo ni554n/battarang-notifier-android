@@ -1,17 +1,34 @@
 <resources>
   <string name="app_name">Battery Push Notifier</string>
-  <string name="pair_with_device">Pair Device</string>
-  <string name="label_device_name">Device Name</string>
+  <string name="receiver_app_name">Battery Push Receiver</string>
+
+  <!-- Configs -->
   <string name="notification_service">Notification Service</string>
+
+  <string name="label_device_name">Device Name</string>
+
   <string name="notify_when">Notify when</string>
-  <string name="licenses">Licenses</string>
   <string name="battery_level_is_reached_at">Battery level reaches <![CDATA[ <b>~%1$d%%</b> ]]></string>
   <string name="battery_level_slider">Slider for adjusting the battery level</string>
   <string name="battery_is_low">Battery is <u>low</u></string>
   <string name="label_but">But</string>
   <string name="skip_if_display_on">Skip while display is <u>on</u></string>
-  <string name="unpair">Unpair</string>
-  <string name="successful_pairing">Pairing successful. Check the other device for confirmation.</string>
-  <string name="unpaired">Device unpaired</string>
-  <string name="quickie_overlay_string">Visit <b>bpn.anissan.com</b> from the other device</string>
+
+  <string name="pair_with_device">Pair Receiver</string>
+  <string name="unpair">Unpair || Test</string>
+  <string name="pair_dialog_title">Visit this link from the other device</string>
+  <string name="pair_dialog_content">On the Receiver “Enable Notification” and scan or paste the token into this device.\n\nIf pairing is successful, you’ll receive a confirmation notification on that device.</string>
+  <string name="pair_dialog_paste_button">Paste Token</string>
+  <string name="pair_dialog_scan_button">Scan QR</string>
+  <string name="unpair_dialog_content">Do you want to Unpair or Send a test notification?</string>
+  <string name="unpair_dialog_button_unpair">Unpair</string>
+  <string name="unpair_dialog_button_send">Send Notification</string>
+
+  <string name="token_invalid">Token is invalid. Make sure to Scan or Paste correct token from Receiver app.</string>
+  <string name="quickie_overlay_string">Point to the Receiver app</string>
+
+  <string name="licenses">Licenses</string>
+
+  <string name="successful_pairing">Check the other device for confirmation notification</string>
+  <string name="unpaired">Receiver unpaired successfully</string>
 </resources>

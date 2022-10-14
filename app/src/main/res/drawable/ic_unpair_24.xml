@@ -1,0 +1,56 @@
+<!-- Phosphor Icons > Regular > Link Break -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+  android:width="24dp"
+  android:height="24dp"
+  android:viewportWidth="256"
+  android:viewportHeight="256"
+  >
+  <path
+    android:fillColor="#00000000"
+    android:pathData="M96,72L96,48"
+    android:strokeWidth="16"
+    android:strokeColor="#000000"
+    android:strokeLineCap="round"
+    android:strokeLineJoin="round"
+    />
+  <path
+    android:fillColor="#00000000"
+    android:pathData="M160,208L160,184"
+    android:strokeWidth="16"
+    android:strokeColor="#000000"
+    android:strokeLineCap="round"
+    android:strokeLineJoin="round"
+    />
+  <path
+    android:fillColor="#00000000"
+    android:pathData="M72,96L48,96"
+    android:strokeWidth="16"
+    android:strokeColor="#000000"
+    android:strokeLineCap="round"
+    android:strokeLineJoin="round"
+    />
+  <path
+    android:fillColor="#00000000"
+    android:pathData="M208,160L184,160"
+    android:strokeWidth="16"
+    android:strokeColor="#000000"
+    android:strokeLineCap="round"
+    android:strokeLineJoin="round"
+    />
+  <path
+    android:fillColor="#00000000"
+    android:pathData="M71,128.4 L59.7,139.7a40,40 0,0 0,56.6 56.6L127.6,185"
+    android:strokeWidth="16"
+    android:strokeColor="#000000"
+    android:strokeLineCap="round"
+    android:strokeLineJoin="round"
+    />
+  <path
+    android:fillColor="#00000000"
+    android:pathData="M185,127.6l11.3,-11.3a40,40 0,0 0,-56.6 -56.6L128.4,71"
+    android:strokeWidth="16"
+    android:strokeColor="#000000"
+    android:strokeLineCap="round"
+    android:strokeLineJoin="round"
+    />
+</vector>
