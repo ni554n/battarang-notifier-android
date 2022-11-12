@@ -59,8 +59,8 @@ dependencies {
   implementation 'com.google.android.material:material:1.8.0-alpha01'
   implementation 'com.google.android.gms:play-services-oss-licenses:17.0.0'
 
-  implementation 'io.insert-koin:koin-android:3.2.2'
+  implementation 'io.insert-koin:koin-android:3.3.0'
   implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.10'
-  implementation 'io.github.g00fy2.quickie:quickie-bundled:1.5.1'
+  implementation 'io.github.g00fy2.quickie:quickie-bundled:1.5.2'
   implementation 'dev.chrisbanes.insetter:insetter:0.6.1'
 }
