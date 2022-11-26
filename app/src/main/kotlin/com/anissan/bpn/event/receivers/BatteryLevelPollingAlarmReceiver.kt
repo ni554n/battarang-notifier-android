@@ -12,10 +12,12 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 /**
- * Receives the periodic event to check for battery level sent by the Alarm and a
- * couple of Local broadcast to start and stop the alarm.
+ * Mainly for managing the alarm event that checks current battery level percentage.
+ * There's a method to directly listens for battery level change sent by the system, but it gets
+ * called too frequently. It is more efficient to check the percentage periodically as this alarm
+ * starts only when device is charging.
  */
-class AlarmBroadcastReceivers : BroadcastReceiver(), KoinComponent {
+class BatteryLevelPollingAlarmReceiver : BroadcastReceiver(), KoinComponent {
   private val broadcastedEventHandlers: BroadcastedEventHandlers by inject()
 
   val intentFilters = IntentFilter().apply {
@@ -35,8 +37,8 @@ class AlarmBroadcastReceivers : BroadcastReceiver(), KoinComponent {
       when (action) {
         ACTION_CHECK_BATTERY_LEVEL -> notifyAfterLevelReached()
 
-        ACTION_BATTERY_STATUS_CHARGING -> startBatteryLevelCheckerAlarm()
-        ACTION_STOP_ALARM -> stopBatteryLevelCheckerAlarm()
+        ACTION_BATTERY_STATUS_CHARGING -> startBatteryLevelPollingAlarm()
+        ACTION_STOP_ALARM -> stopBatteryLevelPollingAlarm()
 
         else -> logE { "$action is not a supported action by this receiver" }
       }
@@ -44,7 +46,7 @@ class AlarmBroadcastReceivers : BroadcastReceiver(), KoinComponent {
   }
 
   companion object {
-    private val thisPackageName = AlarmBroadcastReceivers::class.java.name
+    private val thisPackageName = BatteryLevelPollingAlarmReceiver::class.java.name
 
     val ACTION_CHECK_BATTERY_LEVEL = "$thisPackageName.check_battery_level"
     val ACTION_BATTERY_STATUS_CHARGING = "$thisPackageName.battery_status_charging"

@@ -1,8 +1,18 @@
 <resources>
   <string name="app_name">Battery Push Notifier</string>
-  <string name="receiver_app_name">Battery Push Receiver</string>
+
+  <!-- Notification -->
+  <string name="notifier_service_channel">Push Notifier Service</string>
+  <string name="notifier_service_channel_description">It is safe to turn off or minimize this channel</string>
+
+  <string name="service_notification_ticker">Started Battery Push Notifier service</string>
+  <string name="service_notification_content_title">Waiting for battery events</string>
+  <string name="service_notification_content_text">This service doesn\'t use any resources but required for keeping the push notifier service alive. It is safe to minimize or turn off this notification channel from the "Notification Settings".</string>
+
+  <string name="service_notification_channel_settings">Notification Settings</string>
 
   <!-- Configs -->
+
   <string name="notification_service">Notification Service</string>
 
   <string name="label_device_name">Device Name</string>
@@ -10,12 +20,12 @@
   <string name="notify_when">Notify when</string>
   <string name="battery_level_is_reached_at">Battery level reaches <![CDATA[ <b>~%1$d%%</b> ]]></string>
   <string name="battery_level_slider">Slider for adjusting the battery level</string>
-  <string name="battery_is_low">Battery is <u>low</u></string>
-  <string name="label_but">But</string>
-  <string name="skip_if_display_on">Skip while display is <u>on</u></string>
+  <string name="battery_is_low">Battery is <b>LOW</b></string>
+  <string name="label_but">But …</string>
+  <string name="skip_if_display_on">Skip while display is <b>ON</b></string>
 
   <string name="pair_with_device">Pair Receiver</string>
-  <string name="unpair">Unpair || Test</string>
+  <string name="unpair">Unpair / Test</string>
   <string name="pair_dialog_title">Visit this link from the other device</string>
   <string name="pair_dialog_content">On the Receiver “Enable Notification” and scan or paste the token into this device.\n\nIf pairing is successful, you’ll receive a confirmation notification on that device.</string>
   <string name="pair_dialog_paste_button">Paste Token</string>

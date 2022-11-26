@@ -2,10 +2,10 @@ package com.anissan.bpn
 
 import android.app.Application
 import android.os.PowerManager
-import com.anissan.bpn.api.PushServerClient
-import com.anissan.bpn.event.receivers.AlarmBroadcastReceivers
-import com.anissan.bpn.event.receivers.PowerBroadcastReceivers
+import com.anissan.bpn.event.receivers.BatteryLevelPollingAlarmReceiver
+import com.anissan.bpn.event.receivers.BatteryStatusReceiver
 import com.anissan.bpn.event.receivers.handlers.BroadcastedEventHandlers
+import com.anissan.bpn.network.PushServerClient
 import com.anissan.bpn.storage.UserPreferences
 import com.anissan.bpn.utils.SystemLogBackend
 import com.anissan.bpn.utils.Ulog
@@ -47,8 +47,8 @@ class MainApplication : Application() {
           )
         }
 
-        singleOf(::PowerBroadcastReceivers)
-        singleOf(::AlarmBroadcastReceivers)
+        singleOf(::BatteryStatusReceiver)
+        singleOf(::BatteryLevelPollingAlarmReceiver)
         singleOf(::BroadcastedEventHandlers)
       })
     }

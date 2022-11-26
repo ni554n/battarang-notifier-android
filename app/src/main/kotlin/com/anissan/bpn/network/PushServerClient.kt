@@ -1,4 +1,4 @@
-package com.anissan.bpn.api
+package com.anissan.bpn.network
 
 import android.os.PowerManager
 import com.anissan.bpn.BuildConfig

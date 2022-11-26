@@ -37,12 +37,12 @@
 
     <activity
       android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
-      android:theme="@style/OssTheme"
+      android:theme="@style/LicenseTheme"
       />
 
     <activity
       android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
-      android:theme="@style/OssTheme"
+      android:theme="@style/LicenseTheme"
       />
 
     <!--  This receiver is initially disabled because it is controlled programmatically based on Service status.  -->
@@ -61,7 +61,7 @@
 
     <!--  To receive the event triggered by the alarm, Manifest entry is required.  -->
     <receiver
-      android:name=".event.receivers.AlarmBroadcastReceivers"
+      android:name=".event.receivers.BatteryLevelPollingAlarmReceiver"
       android:exported="false"
       />
 

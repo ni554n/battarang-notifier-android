@@ -13,59 +13,65 @@ import androidx.core.app.NotificationCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.anissan.bpn.BootEventReceiver.Companion.resumeAfterBoot
 import com.anissan.bpn.MainActivity
-import com.anissan.bpn.event.receivers.AlarmBroadcastReceivers
-import com.anissan.bpn.event.receivers.PowerBroadcastReceivers
+import com.anissan.bpn.R
+import com.anissan.bpn.event.receivers.BatteryLevelPollingAlarmReceiver
+import com.anissan.bpn.event.receivers.BatteryStatusReceiver
 import com.anissan.bpn.utils.logV
 import org.koin.android.ext.android.inject
 
 /**
- * Most of the implicit broadcast receivers no longer work if declared from Manifest.
- * This Service is required to register the Receivers dynamically and to listen
+ * Most implicit broadcast receivers can not be declared in the manifest anymore.
+ * This Service is responsible for registering the Receivers and listening
  * for the broadcasted events as long as the notification service is enabled.
  *
  * This service can be started and stopped easily with the helper functions in companion object.
  */
 class BroadcastReceiverRegistererService : Service() {
-  private val powerBroadcastReceivers: PowerBroadcastReceivers by inject()
-  private val alarmBroadcastReceivers: AlarmBroadcastReceivers by inject()
-
-  private val currentBatteryStatus: Int?
-    get() = registerReceiver(
-      null,
-      IntentFilter(Intent.ACTION_BATTERY_CHANGED),
-    )?.getIntExtra(BatteryManager.EXTRA_STATUS, -1)
+  private val batteryStatusReceiver: BatteryStatusReceiver by inject()
+  private val batteryLevelPollingAlarmReceiver: BatteryLevelPollingAlarmReceiver by inject()
 
   override fun onCreate() {
     // Background services can be killed by the System at anytime.
     // Since Oreo, foreground services with a persistent notification is required for long
-    // running tasks.
+    // running tasks. It's all in here:
+    // https://developer.android.com/guide/components/foreground-services
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
       startForeground(128, buildServiceNotification())
     }
 
-    /* Register the implicit Broadcast Receivers */
-    registerReceiver(powerBroadcastReceivers,
-      powerBroadcastReceivers.intentFiltersBasedOnPreference)
+    registerReceiver(
+      batteryStatusReceiver,
+      batteryStatusReceiver.intentFiltersBasedOnPreference,
+    )
 
     LocalBroadcastManager.getInstance(this)
-      .registerReceiver(alarmBroadcastReceivers, alarmBroadcastReceivers.intentFilters)
+      .registerReceiver(
+        batteryLevelPollingAlarmReceiver,
+        batteryLevelPollingAlarmReceiver.intentFilters,
+      )
 
     logV { "Registered the implicit Broadcast Receivers." }
 
-    // Battery level monitoring alarm is triggered by the power connection event.
-    // If the charger is already connected before starting this service, then manually
-    // trigger the monitoring alarm.
+    // Corner case: if the charger is already connected before starting this service, then manually
+    // start the battery level polling alarm.
+
+    val currentBatteryStatus: Int? =
+      registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED))?.getIntExtra(
+        BatteryManager.EXTRA_STATUS,
+        -1,
+      )
+
     if (currentBatteryStatus == BatteryManager.BATTERY_STATUS_CHARGING) {
       LocalBroadcastManager.getInstance(this)
-        .sendBroadcast(Intent(AlarmBroadcastReceivers.ACTION_BATTERY_STATUS_CHARGING))
+        .sendBroadcast(Intent(BatteryLevelPollingAlarmReceiver.ACTION_BATTERY_STATUS_CHARGING))
     }
 
     resumeAfterBoot(true)
   }
 
   override fun onDestroy() {
-    unregisterReceiver(powerBroadcastReceivers)
-    LocalBroadcastManager.getInstance(this).unregisterReceiver(alarmBroadcastReceivers)
+    unregisterReceiver(batteryStatusReceiver)
+    LocalBroadcastManager.getInstance(this).unregisterReceiver(batteryLevelPollingAlarmReceiver)
 
     resumeAfterBoot(false)
 
@@ -95,18 +101,19 @@ class BroadcastReceiverRegistererService : Service() {
       // If an alarm is already in progress, only stopping this service won't stop the alarm.
       // It needs to be stopped explicitly.
       LocalBroadcastManager.getInstance(context)
-        .sendBroadcast(Intent(AlarmBroadcastReceivers.ACTION_STOP_ALARM))
+        .sendBroadcast(Intent(BatteryLevelPollingAlarmReceiver.ACTION_STOP_ALARM))
 
       context.stopService(thisServiceIntent)
-      logV { "Stopped the foreground service" }
+      logV { "Stopped the foreground service." }
     }
   }
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
 private fun Context.buildServiceNotification(): Notification {
-  val batteryStateChannelId = createBatteryStateChannel()
+  val batteryStateChannelId = createNotificationServiceChannel()
 
+  // A new activity will be created on every notification click regardless of an existing activity.
   val notificationTapActionPendingIntent: PendingIntent = PendingIntent.getActivity(
     this,
     256,
@@ -114,7 +121,7 @@ private fun Context.buildServiceNotification(): Notification {
     PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
   )
 
-  val minimizeButtonActionPendingIntent: PendingIntent = PendingIntent.getActivity(
+  val channelSettingsIntent: PendingIntent = PendingIntent.getActivity(
     this,
     512,
     Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS).apply {
@@ -125,36 +132,37 @@ private fun Context.buildServiceNotification(): Notification {
   )
 
   return NotificationCompat.Builder(this, batteryStateChannelId)
-    .setContentTitle("Listening for battery related events idly") // TODO Extract these to string resource
-    .setContentText("You can tap the Minimize button to open the channel settings and tap turn on Minimize to this service notification in the silent section. May need to toggle the Notification Service for it to minimize.")
+    .setContentTitle(getString(R.string.service_notification_content_title))
+    .setContentText(getString(R.string.service_notification_content_text))
     .setSmallIcon(android.R.drawable.ic_lock_idle_low_battery)
-    .setTicker("Battery State Ticker") // Remove it if the UX feels better
-    .setPriority(NotificationCompat.PRIORITY_MIN)
+    .setTicker(getString(R.string.service_notification_ticker))
     .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
     .setContentIntent(notificationTapActionPendingIntent)
     .addAction(
       android.R.drawable.ic_lock_idle_low_battery,
-      "Minimize this Notification",
-      minimizeButtonActionPendingIntent,
+      getString(R.string.service_notification_channel_settings),
+      channelSettingsIntent,
     ).build()
 }
 
-// Notification channel will not be created multiple times
+/**
+ * This function is safe to call multiple times as the Channels get created only once.
+ */
 @RequiresApi(Build.VERSION_CODES.O)
-private fun Context.createBatteryStateChannel(): String {
-  val channelId = "BATTERY_STATE"
+private fun Context.createNotificationServiceChannel(): String {
+  val channelId = "PUSH_NOTIFIER_SERVICE"
 
-  val batteryStateChannel: NotificationChannel = NotificationChannel(
+  val notifierServiceChannel: NotificationChannel = NotificationChannel(
     channelId,
-    "Battery Event Listener",
-    NotificationManager.IMPORTANCE_MIN,
+    getString(R.string.notifier_service_channel),
+    NotificationManager.IMPORTANCE_LOW, // Lowest level we are allowed to go
   ).apply {
-    description = "Listens for battery states"
+    description = getString(R.string.notifier_service_channel_description)
     setShowBadge(false)
   }
 
   (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).createNotificationChannel(
-    batteryStateChannel
+    notifierServiceChannel
   )
 
   return channelId

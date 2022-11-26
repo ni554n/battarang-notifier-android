@@ -13,16 +13,16 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 /**
- * Receives power connection events and low battery event broadcasted by the System.
+ * Receives charger connection events and battery low event broadcasted by the System.
  */
-class PowerBroadcastReceivers : BroadcastReceiver(), KoinComponent {
+class BatteryStatusReceiver : BroadcastReceiver(), KoinComponent {
   private val userPreferences: UserPreferences by inject()
   private val broadcastedEventHandlers: BroadcastedEventHandlers by inject()
 
   val intentFiltersBasedOnPreference: IntentFilter
     get() = IntentFilter().apply {
       userPreferences.run {
-        if (isLevelReachedNotificationEnabled) {
+        if (isMaxLevelNotificationEnabled) {
           addAction(Intent.ACTION_POWER_CONNECTED)
           addAction(Intent.ACTION_POWER_DISCONNECTED)
         }
@@ -43,8 +43,8 @@ class PowerBroadcastReceivers : BroadcastReceiver(), KoinComponent {
 
     broadcastedEventHandlers.run {
       when (action) {
-        Intent.ACTION_POWER_CONNECTED -> startBatteryLevelCheckerAlarm()
-        Intent.ACTION_POWER_DISCONNECTED -> stopBatteryLevelCheckerAlarm()
+        Intent.ACTION_POWER_CONNECTED -> startBatteryLevelPollingAlarm()
+        Intent.ACTION_POWER_DISCONNECTED -> stopBatteryLevelPollingAlarm()
 
         Intent.ACTION_BATTERY_LOW -> notifyBatteryIsLow()
 

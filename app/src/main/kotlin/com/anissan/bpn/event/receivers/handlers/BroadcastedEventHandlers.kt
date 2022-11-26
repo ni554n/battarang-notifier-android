@@ -7,11 +7,16 @@ import android.content.Intent
 import android.os.BatteryManager
 import android.os.Build
 import android.os.SystemClock
-import com.anissan.bpn.api.PushServerClient
-import com.anissan.bpn.event.receivers.AlarmBroadcastReceivers
+import com.anissan.bpn.event.receivers.BatteryLevelPollingAlarmReceiver
+import com.anissan.bpn.event.receivers.BatteryStatusReceiver
+import com.anissan.bpn.network.PushServerClient
 import com.anissan.bpn.storage.UserPreferences
 import com.anissan.bpn.utils.logV
 
+/**
+ * Collection of event handler functions used in both [BatteryLevelPollingAlarmReceiver] & [BatteryStatusReceiver]
+ * in one place.
+ */
 class BroadcastedEventHandlers(
   private val context: Context,
   private val userPreferences: UserPreferences,
@@ -20,57 +25,49 @@ class BroadcastedEventHandlers(
   private val alarmManager: AlarmManager =
     context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
-  private val currentBatteryLevel: Int
-    get() {
-      val currentLevel: Int = (context.getSystemService(Context.BATTERY_SERVICE) as BatteryManager)
-        .getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
+  private val alarmId: Int = 64
 
-      logV { "Battery level = $currentLevel%" }
-      return currentLevel
+  private val pollingAlarmIntent: Intent =
+    Intent(context, BatteryLevelPollingAlarmReceiver::class.java)
+      .setAction(BatteryLevelPollingAlarmReceiver.ACTION_CHECK_BATTERY_LEVEL)
+
+  // From Android 12+, it is mandatory to add a mutability flag on pending intents.
+  // FLAG_IMMUTABLE added in API 23.
+  private val pendingIntentFlag: Int =
+    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1) {
+      PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE
+    } else {
+      PendingIntent.FLAG_CANCEL_CURRENT
     }
 
-  private lateinit var batteryLevelCheckerAlarmPendingIntent: PendingIntent
-
-  fun startBatteryLevelCheckerAlarm() {
+  fun startBatteryLevelPollingAlarm() {
     // Maybe the user wants to fully charge the battery this time.
-    if (currentBatteryLevel > userPreferences.chargingLevelPercentage) {
+    if (checkCurrentBatteryLevel() > userPreferences.maxChargingLevelPercentage) {
       logV { "Charger Connected: But not setting the alarm because battery level is already ahead of the preferred level." }
       return
-    }
-
-    batteryLevelCheckerAlarmPendingIntent = run {
-      val uniqueId = 64
-
-      val alarmEventIntent: Intent = Intent(context, AlarmBroadcastReceivers::class.java)
-        .setAction(AlarmBroadcastReceivers.ACTION_CHECK_BATTERY_LEVEL)
-
-      // From Android 12+, it is mandatory to add a mutability flag on pending intents.
-      // FLAG_IMMUTABLE added in API 23.
-      val pendingFlag: Int = if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1) {
-        PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE
-      } else {
-        PendingIntent.FLAG_CANCEL_CURRENT
-      }
-
-      PendingIntent.getBroadcast(context, uniqueId, alarmEventIntent, pendingFlag)
     }
 
     alarmManager.setRepeating(
       AlarmManager.ELAPSED_REALTIME_WAKEUP,
       SystemClock.elapsedRealtime(),
       60 * 1_000L, // 1 minute
-      batteryLevelCheckerAlarmPendingIntent,
+      PendingIntent.getBroadcast(context, alarmId, pollingAlarmIntent, pendingIntentFlag),
     )
 
     logV { "Charger Connected: Starting an Alarm to check the battery level at a minute interval..." }
   }
 
-  fun stopBatteryLevelCheckerAlarm() {
+  fun stopBatteryLevelPollingAlarm() {
     logV { "Requested to stop the periodic alarm" }
 
-    if (::batteryLevelCheckerAlarmPendingIntent.isInitialized.not()) return
-
-    alarmManager.cancel(batteryLevelCheckerAlarmPendingIntent)
+    alarmManager.cancel(
+      PendingIntent.getBroadcast(
+        context,
+        alarmId,
+        pollingAlarmIntent,
+        pendingIntentFlag
+      )
+    )
     logV { "Stopped the periodic battery level checker alarm" }
   }
 
@@ -96,7 +93,9 @@ class BroadcastedEventHandlers(
       return
     }
 
-    if (currentBatteryLevel < userPreferences.chargingLevelPercentage) return
+    val currentBatteryLevel: Int = checkCurrentBatteryLevel()
+
+    if (currentBatteryLevel < userPreferences.maxChargingLevelPercentage) return
 
     pushServerClient.postNotification(
       token = userPreferences.notifierGcmToken,
@@ -105,7 +104,15 @@ class BroadcastedEventHandlers(
     ) {
       logV { "Notification has been sent successfully." }
 
-      stopBatteryLevelCheckerAlarm()
+      stopBatteryLevelPollingAlarm()
     }
+  }
+
+  private fun checkCurrentBatteryLevel(): Int {
+    val currentLevel: Int = (context.getSystemService(Context.BATTERY_SERVICE) as BatteryManager)
+      .getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
+
+    logV { "Battery level = $currentLevel%" }
+    return currentLevel
   }
 }
