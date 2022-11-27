@@ -2,6 +2,4 @@
 <resources>
 
   <style name="M3SwitchFullWidth" parent="Widget.Material3.CompoundButton.MaterialSwitch" />
-
-  <style name="CheckBoxFullWidth" parent="Widget.Material3.CompoundButton.CheckBox" />
 </resources>

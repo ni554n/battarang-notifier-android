@@ -6,8 +6,6 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:focusable="true"
-  android:focusableInTouchMode="true"
   tools:context=".MainActivity"
   >
 
@@ -32,7 +30,7 @@
       app:collapsedTitleTextAppearance="@style/TextAppearance.Material3.HeadlineSmall"
       app:expandedTitleMarginBottom="24dp"
       app:expandedTitleMarginStart="24dp"
-      app:expandedTitleTextAppearance="@style/TextAppearance.Material3.HeadlineMedium"
+      app:expandedTitleTextAppearance="@style/TextAppearance.Material3.TitleMediumLarge"
       app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
       app:titleCollapseMode="scale"
       >
@@ -75,6 +73,7 @@
         android:text="@string/notification_service"
         android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
         android:textColor="@color/switch_state_aware_text_colors"
+        app:thumbIcon="@drawable/ic_switch_checked"
         tools:checked="true"
         tools:enabled="true"
         />
@@ -90,9 +89,14 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     >
 
+    <!--  On some Android version, during activity start, first EditText gets focused automatically.
+     And clearing the EditText focus won't work if the focus can't move to anywhere else.
+     So enabling focusing on this layout can solve those issues. -->
     <androidx.constraintlayout.widget.ConstraintLayout
       android:layout_width="match_parent"
       android:layout_height="match_parent"
+      android:focusable="true"
+      android:focusableInTouchMode="true"
       >
 
       <com.google.android.material.card.MaterialCardView
@@ -114,14 +118,19 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:hint="@string/label_device_name"
+          app:endIconContentDescription="Save"
+          app:endIconDrawable="@drawable/ic_save_24"
+          app:endIconMode="custom"
+          app:endIconTint="?attr/colorSecondary"
           app:startIconDrawable="@drawable/ic_phone_24"
           app:startIconTint="?attr/colorPrimary"
           >
 
-          <com.anissan.bpn.ui.views.ImeAwareEditText
+          <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editText_device_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:drawablePadding="2dp"
             android:imeOptions="actionDone"
             android:singleLine="true"
             tools:text="Xiaomi Mi 6"
@@ -130,100 +139,162 @@
         </com.google.android.material.textfield.TextInputLayout>
       </com.google.android.material.card.MaterialCardView>
 
-      <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/texView_notify_when"
+      <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_config"
+        style="?attr/materialCardViewFilledStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="24dp"
-        android:letterSpacing="0.2"
-        android:lineSpacingExtra="2sp"
-        android:text="@string/notify_when"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
-        android:textColor="?attr/colorOnSecondaryContainer"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/card_device_name_input"
-        />
+        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Small"
+        >
 
-      <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/checkBox_battery_level_reached"
-        style="@style/CheckBoxFullWidth"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="16dp"
-        android:paddingHorizontal="4dp"
-        android:paddingVertical="16dp"
-        android:text="@string/battery_level_is_reached_at"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/texView_notify_when"
-        tools:checked="true"
-        tools:text="Battery level reaches ~80%"
-        />
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          android:paddingTop="16dp"
+          android:paddingBottom="8dp"
+          >
 
-      <com.google.android.material.slider.Slider
-        android:id="@+id/battery_level_slider"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:layout_marginEnd="16dp"
-        android:contentDescription="@string/battery_level_slider"
-        android:stepSize="1"
-        android:valueFrom="0"
-        android:valueTo="100"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox_battery_level_reached"
-        tools:value="80"
-        />
+          <!-- Notify When -->
+          <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/texView_notify_when"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginStart="54dp"
+            android:letterSpacing="0.2"
+            android:text="@string/notify_when"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+            android:textColor="?attr/colorOnSecondaryContainer"
+            android:textStyle="bold"
+            />
 
-      <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/checkBox_battery_level_low"
-        style="@style/CheckBoxFullWidth"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="16dp"
-        android:paddingHorizontal="4dp"
-        android:paddingVertical="16dp"
-        android:text="@string/battery_is_low"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/battery_level_slider"
-        tools:checked="true"
-        />
+          <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_battery_level_reached"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardBackgroundColor="@android:color/transparent"
+            app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.None"
+            app:strokeWidth="0dp"
+            >
 
-      <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/texView_while"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="8dp"
-        android:letterSpacing="0.2"
-        android:text="@string/label_but"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
-        android:textColor="?attr/colorOnSecondaryContainer"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox_battery_level_low"
-        />
+            <com.google.android.material.checkbox.MaterialCheckBox
+              android:id="@+id/check_box_max_battery_level"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginStart="12dp"
+              android:background="@null"
+              android:clickable="false"
+              android:drawablePadding="0dp"
+              android:focusable="false"
+              android:paddingHorizontal="10dp"
+              android:text="@string/battery_level_reaches"
+              tools:checked="true"
+              tools:text="Battery level reaches ~80%"
+              />
+          </com.google.android.material.card.MaterialCardView>
 
-      <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/checkBox_skip_while_display_on"
-        style="@style/CheckBoxFullWidth"
-        android:layout_width="match_parent"
+          <com.google.android.material.slider.Slider
+            android:id="@+id/battery_level_slider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="42dp"
+            android:layout_marginEnd="16dp"
+            android:contentDescription="@string/battery_level_slider"
+            android:stepSize="1"
+            android:valueFrom="0"
+            android:valueTo="100"
+            app:trackColorInactive="@null"
+            tools:value="80"
+            />
+
+          <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_battery_level_low"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardBackgroundColor="@android:color/transparent"
+            app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.None"
+            app:strokeWidth="0dp"
+            >
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+              android:id="@+id/checkBox_battery_level_low"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginStart="12dp"
+              android:background="@null"
+              android:clickable="false"
+              android:drawablePadding="0dp"
+              android:focusable="false"
+              android:paddingHorizontal="10dp"
+              android:text="@string/battery_is_low"
+              tools:checked="true"
+              />
+          </com.google.android.material.card.MaterialCardView>
+
+          <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/texView_but"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginStart="54dp"
+            android:layout_marginTop="8dp"
+            android:letterSpacing="0.2"
+            android:text="@string/label_but"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+            android:textColor="?attr/colorOnSecondaryContainer"
+            android:textStyle="bold"
+            />
+
+          <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_skip_while_display_on"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardBackgroundColor="@android:color/transparent"
+            app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.None"
+            app:strokeWidth="0dp"
+            >
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+              android:id="@+id/checkBox_skip_while_display_on"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginStart="12dp"
+              android:background="@null"
+              android:clickable="false"
+              android:drawablePadding="0dp"
+              android:focusable="false"
+              android:paddingHorizontal="10dp"
+              android:text="@string/skip_if_display_on"
+              tools:checked="false"
+              />
+          </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+      </com.google.android.material.card.MaterialCardView>
+
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/licenses"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="16dp"
-        android:paddingHorizontal="4dp"
-        android:paddingVertical="16dp"
-        android:text="@string/skip_if_display_on"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/licenses"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/texView_while"
-        tools:checked="false"
+        app:layout_constraintTop_toBottomOf="@+id/card_config"
         />
 
       <!--      Temporarily Extending the layout for testing the scrolling behavior -->
@@ -238,20 +309,8 @@
         android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox_skip_while_display_on"
+        app:layout_constraintTop_toBottomOf="@+id/licenses"
         />
-
-      <com.google.android.material.button.MaterialButton
-        android:id="@+id/licenses"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/licenses"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox_skip_while_display_on"
-        />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
   </androidx.core.widget.NestedScrollView>
 
