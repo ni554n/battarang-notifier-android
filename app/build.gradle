@@ -10,7 +10,7 @@ localProperties.load(new FileInputStream(rootProject.file('local.properties')))
 
 android {
   namespace 'com.anissan.bpn'
-  buildToolsVersion '33.0.0'
+  buildToolsVersion '33.0.1'
   compileSdkVersion 33
 
   defaultConfig {
@@ -50,8 +50,8 @@ android {
 }
 
 dependencies {
-  implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.7.20'
-  implementation 'org.jetbrains:annotations:23.0.0'
+  implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.8.0'
+  implementation 'org.jetbrains:annotations:24.0.0'
 
   implementation 'androidx.appcompat:appcompat:1.7.0-alpha01'
   implementation 'androidx.core:core-ktx:1.9.0'
@@ -59,8 +59,8 @@ dependencies {
   implementation 'com.google.android.material:material:1.8.0-alpha01'
   implementation 'com.google.android.gms:play-services-oss-licenses:17.0.0'
 
-  implementation 'io.insert-koin:koin-android:3.3.0'
+  implementation 'io.insert-koin:koin-android:3.3.2'
   implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.10'
-  implementation 'io.github.g00fy2.quickie:quickie-bundled:1.5.2'
+  implementation 'io.github.g00fy2.quickie:quickie-bundled:1.6.0'
   implementation 'dev.chrisbanes.insetter:insetter:0.6.1'
 }
