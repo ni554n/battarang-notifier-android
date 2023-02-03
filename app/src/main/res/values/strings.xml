@@ -1,5 +1,5 @@
 <resources>
-  <string name="app_name">Battery Push Notifier</string>
+  <string name="app_name">Battarang</string>
 
   <!-- Notification -->
   <string name="notifier_service_channel">Push Notifier Service</string>

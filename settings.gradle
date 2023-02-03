@@ -18,5 +18,5 @@ dependencyResolutionManagement {
   }
 }
 
-rootProject.name = 'Battery Push Notifier'
+rootProject.name = 'Battarang Notifier'
 include ':app'
