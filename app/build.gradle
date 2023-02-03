@@ -4,10 +4,6 @@ plugins {
   id 'com.google.android.gms.oss-licenses-plugin'
 }
 
-// Read private properties from local.properties
-def localProperties = new Properties()
-localProperties.load(new FileInputStream(rootProject.file('local.properties')))
-
 android {
   namespace 'com.anissan.bpn'
   buildToolsVersion '33.0.1'
@@ -19,8 +15,16 @@ android {
     versionCode 1
     versionName '0.1.0'
 
-    buildConfigField('String', 'PUSH_SERVER_URL', localProperties['PUSH_SERVER_URL'])
-    resValue('string', 'receiver_domain', localProperties['RECEIVER_DOMAIN'])
+    // Generating "BuildConfig.*" properties
+    Properties buildConfigProperties = new Properties()
+    buildConfigProperties.load(new FileInputStream(rootProject.file('build-config.properties')))
+    buildConfigProperties.each { key, value -> { buildConfigField('String', key, "\"$value\"") } }
+    // Values read as is; they need to be "quoted" to become strings
+
+    // Generating "@string/*" resource values
+    Properties resourceConfig = new Properties()
+    resourceConfig.load(new FileInputStream(rootProject.file('res-value.properties')))
+    resourceConfig.each { key, value -> { resValue('string', key, value) } }
   }
 
   buildTypes {

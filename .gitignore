@@ -1,14 +1,16 @@
-# Gradle files
-.gradle/
-build/
-release/
-
-# Local configuration file (sdk path, etc)
-local.properties
-
 # IntelliJ
 *.iml
 .idea/
 !.idea/dictionaries/
 !.idea/codeStyles/
 !.idea/inspectionProfiles/
+
+# Gradle files
+.gradle/
+build/
+release/
+
+# Local configuration file (sdk path, secrets, etc)
+local.properties
+build-config.properties
+res-value.properties

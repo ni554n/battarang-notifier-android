@@ -4,12 +4,10 @@ Android Client for sending notification to the Receiver devices.
 
 ## Setup
 
-1. Add these values on local.properties file
+1. Rename [build-config.sample.properties](build-config.sample.properties)
+   to `build-config.properties` and populate the values
+2. Same goes to [res-config.sample.properties](res-config.sample.properties)
 
-```properties
-PUSH_SERVER_URL="https://..."
-RECEIVER_URL="https://..."
-```
 
 ## Information
 
