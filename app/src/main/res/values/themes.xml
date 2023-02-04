@@ -39,6 +39,13 @@
   <style name="BaseTheme" parent="CustomTheme">
     <item name="android:statusBarColor">@android:color/transparent</item>
     <item name="android:navigationBarColor">@android:color/transparent</item>
+
+    <item name="bottomSheetDialogTheme">@style/ModalBottomSheetDialog</item>
+  </style>
+
+  <style name="ModalBottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
+    <item name="bottomSheetStyle">@style/ModalBottomSheet</item>
+    <item name="android:navigationBarColor">@android:color/transparent</item>
   </style>
 
   <style name="MainTheme" parent="BaseTheme" />

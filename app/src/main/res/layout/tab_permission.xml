@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="?colorSurface"
+  android:clickable="false"
+  android:focusable="false"
+  android:scrollbars="vertical"
+  >
+
+  <LinearLayout
+    android:id="@+id/layout_optimizer_config"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:baselineAligned="false"
+    android:orientation="vertical"
+    >
+
+    <!-- Ignore Battery Optimization -->
+    <com.google.android.material.card.MaterialCardView
+      android:id="@+id/card_ignore_battery_optimization"
+      style="?materialCardViewFilledStyle"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="16dp"
+      android:clickable="true"
+      android:focusable="true"
+      app:cardBackgroundColor="@android:color/transparent"
+      app:cardCornerRadius="0dp"
+      app:contentPadding="24dp"
+      app:contentPaddingBottom="12dp"
+      app:contentPaddingTop="12dp"
+      >
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:baselineAligned="false"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        >
+
+        <LinearLayout
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:baselineAligned="false"
+          android:orientation="vertical"
+          >
+
+          <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="4dp"
+            android:text="@string/ignore_battery_optimization"
+            android:textAppearance="?textAppearanceTitleLarge"
+            />
+
+          <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/ignore_battery_optimization_text"
+            />
+        </LinearLayout>
+
+        <com.google.android.material.materialswitch.MaterialSwitch
+          android:id="@+id/switch_ignore_battery_optimization"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:padding="8dp"
+          app:thumbIcon="@drawable/switch_thumb_icon"
+          tools:checked="true"
+          />
+      </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- App hibernation -->
+    <com.google.android.material.card.MaterialCardView
+      android:id="@+id/card_disable_hibernation"
+      style="?materialCardViewFilledStyle"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:clickable="true"
+      android:focusable="true"
+      app:cardBackgroundColor="@android:color/transparent"
+      app:cardCornerRadius="0dp"
+      app:contentPadding="24dp"
+      app:contentPaddingBottom="12dp"
+      app:contentPaddingTop="12dp"
+      >
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:baselineAligned="false"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        >
+
+        <LinearLayout
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:baselineAligned="false"
+          android:orientation="vertical"
+          >
+
+          <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="4dp"
+            android:text="@string/disable_app_hibernation"
+            android:textAppearance="?textAppearanceTitleLarge"
+            />
+
+          <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/app_hibernation_text"
+            />
+        </LinearLayout>
+
+        <com.google.android.material.materialswitch.MaterialSwitch
+          android:id="@+id/switch_disable_hibernation"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:padding="8dp"
+          app:thumbIcon="@drawable/switch_thumb_icon"
+          tools:checked="true"
+          />
+      </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Auto Start -->
+    <com.google.android.material.card.MaterialCardView
+      android:id="@+id/card_allow_auto_start"
+      style="?materialCardViewFilledStyle"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="12dp"
+      android:clickable="true"
+      android:focusable="true"
+      app:cardBackgroundColor="@android:color/transparent"
+      app:cardCornerRadius="0dp"
+      app:contentPadding="24dp"
+      app:contentPaddingBottom="12dp"
+      app:contentPaddingTop="12dp"
+      >
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:baselineAligned="false"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        >
+
+        <LinearLayout
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:baselineAligned="false"
+          android:orientation="vertical"
+          >
+
+          <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="4dp"
+            android:text="@string/allow_autostart"
+            android:textAppearance="?textAppearanceTitleLarge"
+            />
+
+          <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/allow_autostart_text"
+            />
+        </LinearLayout>
+
+        <ImageView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:padding="8dp"
+          android:src="@drawable/ic_chevron_right"
+          tools:ignore="ContentDescription"
+          />
+      </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.divider.MaterialDivider
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_marginVertical="8dp"
+      android:alpha="0.3"
+      />
+
+    <!-- Info -->
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="16dp"
+      android:layout_marginBottom="24dp"
+      android:baselineAligned="false"
+      android:gravity="center_vertical"
+      android:orientation="horizontal"
+      >
+
+      <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:padding="8dp"
+        android:src="@drawable/ic_info"
+        tools:ignore="ContentDescription"
+        />
+
+      <com.google.android.material.textview.MaterialTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:text="@string/instruction"
+        android:textAppearance="?textAppearanceBodyMedium"
+        />
+    </LinearLayout>
+  </LinearLayout>
+</androidx.core.widget.NestedScrollView>

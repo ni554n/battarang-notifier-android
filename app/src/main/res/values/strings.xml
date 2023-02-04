@@ -42,7 +42,17 @@
   <string name="token_invalid">Token is invalid. Make sure to Scan or Paste correct token from Receiver app.</string>
   <string name="quickie_overlay_string">Point to the Receiver app</string>
 
-  <string name="licenses">Licenses</string>
+  <string name="about">About</string>
+
+  <!-- Battery Optimization Restrictions -->
+  <string name="remove_battery_restrictions">Remove Battery Restrictions</string>
+  <string name="ignore_battery_optimization">Ignore Battery Optimization</string>
+  <string name="ignore_battery_optimization_text">System will pause this service whenever your device is unused for some time. You won\'t get any push notifications during that time without this permission.</string>
+  <string name="disable_app_hibernation">Disable App Hibernation</string>
+  <string name="app_hibernation_text">If you don\'t actively interact with this app for a few days, system will pause this service until you open this app again. As this is an automation app that requires no interaction, this permission must be given.</string>
+  <string name="allow_autostart">Allow Auto-start</string>
+  <string name="allow_autostart_text">Some OEMs keep a whitelist of known apps that can resume their services after phone restart. Without that permission, this service won\'t be able to resume as expected.</string>
+  <string name="instruction">Allowing these should be sufficient for consistent service. If it\'s not, please visit the Tutorial tab for more comprehensive device specific instructions.</string>
 
   <string name="successful_pairing">Check the other device for confirmation notification</string>
   <string name="unpaired">Receiver unpaired successfully</string>

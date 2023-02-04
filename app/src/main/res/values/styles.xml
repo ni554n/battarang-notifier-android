@@ -17,13 +17,10 @@
     <item name="icon">@drawable/ic_qr_code_48</item>
   </style>
 
-  <!-- A theme overlay for dialogs with a center aligned title text, icon and buttons that span the width of the dialog. -->
-  <style name="M3AlertDialog.Centered.FullWidthButtons" parent="ThemeOverlay.Material3.MaterialAlertDialog.Centered">
-    <!-- Mark spacer as gone (2) when showing full width buttons -->
-    <item name="materialAlertDialogButtonSpacerVisibility">2</item>
-    <item name="tint">?attr/colorOnSurface</item>
-    <item name="buttonBarNeutralButtonStyle">@style/DialogButton.Left</item>
-    <item name="buttonBarPositiveButtonStyle">@style/DialogButton.Right</item>
+  <style name="ModalBottomSheet" parent="Widget.Material3.BottomSheet.Modal">
+    <item name="enableEdgeToEdge">true</item>
+    <item name="behavior_fitToContents">false</item>
+    <item name="paddingBottomSystemWindowInsets">false</item>
   </style>
 
   <style name="CustomOutlineBox" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">

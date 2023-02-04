@@ -17,6 +17,8 @@ import com.anissan.bpn.databinding.DialogPairBinding
 import com.anissan.bpn.event.BroadcastReceiverRegistererService
 import com.anissan.bpn.network.PushServerClient
 import com.anissan.bpn.storage.UserPreferences
+import com.anissan.bpn.ui.about.AboutSheet
+import com.anissan.bpn.ui.optimizationremover.OptimizationRemoverSheet
 import com.anissan.bpn.utils.logE
 import com.anissan.bpn.utils.logV
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
@@ -141,8 +143,26 @@ class MainActivity : AppCompatActivity() {
   private fun ActivityMainBinding.setupNotificationServiceToggleSwitch() {
     refreshMonitoringServiceState()
 
+    cardNotificationService.setOnClickListener {
+      if (paired) {
+        switchNotificationService.performClick()
+      } else {
+        // Giving an option to open the Pairing Dialog even though this card looks disabled in this state.
+        // Not going to enable the Switch itself because it turns on instantly upon clicked.
+        buildPairingDialog().show()
+      }
+    }
+
     switchNotificationService.setOnCheckedChangeListener { _: CompoundButton, isChecked: Boolean ->
       userPreferences.isMonitoringServiceEnabled = isChecked
+    }
+  }
+
+  private fun ActivityMainBinding.setupBatteryExemptionGuide() {
+    cardBatteryExemption.setOnClickListener {
+      OptimizationRemoverSheet.show(supportFragmentManager)
+
+      it.visibility = View.GONE
     }
   }
 
@@ -248,6 +268,23 @@ class MainActivity : AppCompatActivity() {
       setOnCheckedChangeListener { _: CompoundButton, isChecked: Boolean ->
         userPreferences.isSkipWhileDisplayOnEnabled = isChecked
       }
+    }
+  }
+
+  /**
+   * Checkbox have a ripple animation set only on its checkmark icon, not the text beside it.
+   * Setting a custom ripple on the whole checkbox doesn't work if margin is applied and the ripple won't reach the edges.
+   * The only workaround I found is to use a full bleed wrapper card (which already has a nice ripple effect built-in)
+   * and disabling the checkbox so that the card behind gets the click. But then I have to programmatically
+   * pass the card clicks to the checkbox.
+   */
+  private fun MaterialCheckBox.bindClicksFrom(card: MaterialCardView) {
+    card.setOnClickListener { performClick() }
+  }
+
+  private fun ActivityMainBinding.setupRemoveRestrictionsButton() {
+    removeRestrictionsButton.setOnClickListener {
+      OptimizationRemoverSheet.show(supportFragmentManager)
     }
   }
 
