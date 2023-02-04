@@ -10,48 +10,49 @@
   >
 
   <!-- "fitsSystemWindows" padding behavior: https://medium.com/androiddevelopers/why-would-i-want-to-fitssystemwindows-4e26d9ce1eec -->
-  <!-- If dragging isn't disabled on this area, AppBarLayout over-scrolls and goes underneath the status bar. -->
-  <!-- The background color is a tint of ?attr/elevationOverlayColor set dynamically from MainActivity. -->
-  <!-- tools:background is not representing the real color here -->
+  <!-- If dragging behavior isn't disabled in this layout, AppBarLayout over-scrolls and goes underneath the status bar. -->
+  <!--   Studio Preview UI is broken after 1.8.0-alpha01. Nulling out "layout_behavior" at least render something. -->
   <com.google.android.material.appbar.AppBarLayout
     android:id="@+id/app_bar_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:fitsSystemWindows="true"
     app:layout_behavior="com.anissan.bpn.ui.views.DragDisabledAppBarLayoutBehavior"
-    tools:background="?attr/colorOnSurfaceInverse"
+    tools:layout_behavior="@null"
     >
 
     <com.google.android.material.appbar.CollapsingToolbarLayout
       android:id="@+id/collapsing_toolbar_layout"
+      style="?collapsingToolbarLayoutLargeStyle"
       android:layout_width="match_parent"
       android:layout_height="200dp"
-      android:background="?attr/colorSecondaryContainer"
-      app:collapsedTitleTextAppearance="@style/TextAppearance.Material3.HeadlineSmall"
+      app:collapsedTitleTextAppearance="?textAppearanceTitleLarge"
+      app:contentScrim="?colorSurfaceVariant"
       app:expandedTitleMarginBottom="24dp"
       app:expandedTitleMarginStart="24dp"
-      app:expandedTitleTextAppearance="@style/TextAppearance.Material3.TitleMediumLarge"
+      app:expandedTitleTextAppearance="?textAppearanceDisplaySmall"
+      app:expandedTitleTextColor="?colorOnPrimaryContainer"
       app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
       app:titleCollapseMode="scale"
       >
 
       <!-- Illustration -->
       <!--      <ImageView-->
-      <!--        android:layout_width="100dp"-->
-      <!--        android:layout_height="100dp"-->
+      <!--        android:layout_width="180dp"-->
+      <!--        android:layout_height="150dp"-->
       <!--        android:layout_gravity="top|end"-->
-      <!--        android:fitsSystemWindows="true"-->
-      <!--        android:src="@mipmap/ic_launcher"-->
+      <!--        android:src="@drawable/star_3"-->
       <!--        app:layout_collapseMode="pin"-->
+      <!--        app:tint="@color/primary_opacity_5_percent"-->
       <!--        tools:ignore="ContentDescription"-->
       <!--        />-->
 
       <com.google.android.material.appbar.MaterialToolbar
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="?actionBarSize"
         app:layout_collapseMode="pin"
         app:title="@string/app_name"
-        app:titleTextColor="?attr/colorOnSecondaryContainer"
+        app:titleTextColor="?colorOnSecondaryContainer"
         />
 
     </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -212,29 +213,37 @@
             So enabling focusing on the parent can solve those issues. -->
       <com.google.android.material.card.MaterialCardView
         android:id="@+id/card_device_name_input"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="16dp"
+        android:descendantFocusability="beforeDescendants"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        app:cardBackgroundColor="?colorSecondaryContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Small"
+        app:layout_constraintTop_toBottomOf="@+id/barrier_dynamic"
+        app:layout_constraintWidth_max="@dimen/card_max_width"
+        app:shapeAppearance="?shapeAppearanceCornerSmall"
         app:strokeWidth="0dp"
         >
 
         <com.google.android.material.textfield.TextInputLayout
           android:id="@+id/textInputLayout_device_name"
-          style="?attr/textInputFilledStyle"
+          style="@style/CustomOutlineBox"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:hint="@string/label_device_name"
+          android:textColorHint="?colorSecondary"
+          app:boxBackgroundColor="@color/primary_opacity_5_percent"
+          app:boxStrokeWidth="2dp"
           app:endIconContentDescription="Save"
-          app:endIconDrawable="@drawable/ic_save_24"
+          app:endIconDrawable="@drawable/ic_save"
           app:endIconMode="custom"
-          app:endIconTint="?attr/colorSecondary"
-          app:startIconDrawable="@drawable/ic_phone_24"
-          app:startIconTint="?attr/colorPrimary"
+          app:endIconTint="?colorPrimary"
+          app:startIconDrawable="@drawable/ic_phone"
+          app:startIconTint="?colorPrimary"
           >
 
           <com.google.android.material.textfield.TextInputEditText
@@ -411,16 +420,20 @@
         </LinearLayout>
       </com.google.android.material.card.MaterialCardView>
 
-      <com.google.android.material.button.MaterialButton
-        android:id="@+id/licenses"
-        android:layout_width="wrap_content"
+      <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_button_bar"
+        style="?materialCardViewFilledStyle"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginHorizontal="16dp"
         android:layout_marginTop="16dp"
-        android:text="@string/licenses"
+        app:cardBackgroundColor="@color/primary_opacity_5_percent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/card_config"
-        />
+        app:layout_constraintWidth_max="@dimen/card_max_width"
+        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Small"
+        >
 
         <LinearLayout
           android:layout_width="match_parent"
@@ -498,9 +511,8 @@
     android:layout_height="wrap_content"
     android:layout_gravity="bottom|end"
     android:layout_margin="16dp"
-    android:text="@string/pair_with_device"
-    tools:icon="@drawable/ic_handshake_24"
+    tools:icon="@drawable/ic_handshake"
+    tools:text="@string/pair_with_device"
     />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
-

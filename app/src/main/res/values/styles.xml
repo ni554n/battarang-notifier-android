@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <!-- https://developer.android.com/develop/ui/views/layout/linear#equal-weight -->
-  <style name="DialogButton.FullWidth" parent="Widget.Material3.Button.TextButton.Dialog">
-    <item name="android:layout_width">0dp</item>
-    <item name="android:layout_weight">1</item>
-    <item name="android:maxWidth">@null</item>
+
+  <style name="PairingDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog.Centered">
+    <item name="tint">?colorOnSurface</item>
+    <item name="buttonBarPositiveButtonStyle">@style/ScanQrButton</item>
   </style>
 
-  <style name="DialogButton.Left" parent="DialogButton.FullWidth">
-    <item name="iconSize">17dp</item>
-    <item name="icon">@drawable/ic_paste_24</item>
+  <style name="UnpairDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+    <item name="materialAlertDialogTitleTextStyle">@style/UnpairDialogTitle</item>
   </style>
 
-  <style name="DialogButton.Right" parent="DialogButton.FullWidth">
+  <style name="UnpairDialogTitle" parent="MaterialAlertDialog.Material3.Title.Text">
+    <item name="android:textAppearance">?attr/textAppearanceTitleMedium</item>
+  </style>
+
+  <style name="ScanQrButton" parent="Widget.Material3.Button">
     <item name="iconSize">18dp</item>
-    <item name="icon">@drawable/ic_qr_code_48</item>
+    <item name="icon">@drawable/ic_qr_code</item>
   </style>
 
   <style name="ModalBottomSheet" parent="Widget.Material3.BottomSheet.Modal">

@@ -30,14 +30,14 @@
   <string name="skip_if_display_on_template">Skip while display is on</string>
 
   <string name="pair_with_device">Pair Receiver</string>
-  <string name="unpair">Unpair / Test</string>
+  <string name="unpair">Unpair</string>
   <string name="pair_dialog_title">Visit this link from the other device</string>
   <string name="pair_dialog_content">On the Receiver “Enable Notification” and scan or paste the token into this device.\n\nIf pairing is successful, you’ll receive a confirmation notification on that device.</string>
-  <string name="pair_dialog_paste_button">Paste Token</string>
+  <string name="pair_dialog_paste_button">Paste instead</string>
   <string name="pair_dialog_scan_button">Scan QR</string>
-  <string name="unpair_dialog_content">Do you want to Unpair or Send a test notification?</string>
+  <string name="unpair_dialog_content">Are you sure?</string>
   <string name="unpair_dialog_button_unpair">Unpair</string>
-  <string name="unpair_dialog_button_send">Send Notification</string>
+  <string name="unpair_dialog_button_cancel">Cancel</string>
 
   <string name="token_invalid">Token is invalid. Make sure to Scan or Paste correct token from Receiver app.</string>
   <string name="quickie_overlay_string">Point to the Receiver app</string>

@@ -1,6 +1,7 @@
 package com.anissan.bpn
 
 import android.content.ClipboardManager
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Typeface
@@ -12,12 +13,13 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.view.View
 import android.widget.CompoundButton
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.text.HtmlCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.widget.NestedScrollView
 import com.anissan.bpn.databinding.ActivityMainBinding
 import com.anissan.bpn.databinding.DialogPairBinding
 import com.anissan.bpn.event.BroadcastReceiverRegistererService
@@ -47,30 +49,36 @@ class MainActivity : AppCompatActivity() {
 
   private lateinit var mainActivityBinding: ActivityMainBinding
 
+  private val paired: Boolean
+    get() = userPreferences.notifierGcmToken.isNotBlank()
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
     // Requesting this layout to be laid out edge-to-edge.
     WindowCompat.setDecorFitsSystemWindows(window, false)
 
-    mainActivityBinding = ActivityMainBinding.inflate(layoutInflater)
+    ActivityMainBinding.inflate(layoutInflater).run {
+      mainActivityBinding = this
 
-    mainActivityBinding.run {
       setContentView(root)
 
+      // Manually adjusting the padding and margins as the Window is now edge-to-edge.
       insetViewPositions()
 
-      setupAppBar()
+      // Each `setup*` function initializes the Views with its saved data from UserPref, as well as
+      // registers the event listeners.
+
       setupNotificationServiceToggleSwitch()
+      setupBatteryExemptionGuide()
 
       setupDeviceNameInputField()
 
       setupMaxBatteryLevelToggleCheckbox()
-      setupMaxBatteryLevelSlider()
-
       setupLowBatteryToggleCheckbox()
       setupSkipIfDisplayOnToggleCheckbox()
 
+      setupRemoveRestrictionsButton()
       setupAbout()
 
       setupDevicePairingFab()
@@ -139,10 +147,6 @@ class MainActivity : AppCompatActivity() {
         margin(horizontal = true, vertical = true)
       }
     }
-  }
-
-  private fun ActivityMainBinding.setupAppBar() {
-    appBarLayout.setBackgroundColor(SurfaceColors.SURFACE_2.getColor(this@MainActivity))
   }
 
   private fun ActivityMainBinding.setupNotificationServiceToggleSwitch() {
@@ -389,24 +393,35 @@ class MainActivity : AppCompatActivity() {
       }
     }
 
-    // Hide the FAB when keyboard shows up, otherwise it can overlap with the input field on smaller device.
-    ViewCompat.setOnApplyWindowInsetsListener(root) { _: View, insets: WindowInsetsCompat ->
-      val isKeyboardVisible = insets.isVisible(WindowInsetsCompat.Type.ime())
-      if (isKeyboardVisible) fabPair.hide() else fabPair.show()
-
-      insets
+    aboutButton.setOnClickListener {
+      AboutSheet.show(supportFragmentManager)
     }
   }
 
-  private fun refreshFabUi() {
-    mainActivityBinding.fabPair.run {
-      if (userPreferences.notifierGcmToken.isBlank()) {
-        text = getString(R.string.pair_with_device)
-        setIconResource(R.drawable.ic_handshake_24)
-      } else {
-        text = getString(R.string.unpair)
-        setIconResource(R.drawable.ic_unpair_24)
+  private fun ActivityMainBinding.setupDevicePairingFab() {
+    fabPair.apply {
+      text = getString(R.string.pair_with_device)
+      setIconResource(R.drawable.ic_handshake)
+      setOnClickListener { buildPairingDialog().show() }
+
+      if (paired) hide()
+    }
+
+    nestedScrollView.setOnScrollChangeListener(
+      NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
+        if (scrollY > oldScrollY) fabPair.shrink()
+        else fabPair.extend()
       }
+    )
+
+    // Hide the FAB when keyboard shows up, otherwise it can overlap with the input field on smaller device.
+    ViewCompat.setOnApplyWindowInsetsListener(root) { _: View, insets: WindowInsetsCompat ->
+      if (!paired) {
+        val isKeyboardVisible = insets.isVisible(WindowInsetsCompat.Type.ime())
+        if (isKeyboardVisible) fabPair.hide() else fabPair.show()
+      }
+
+      insets
     }
   }
 
@@ -425,7 +440,8 @@ class MainActivity : AppCompatActivity() {
 
   private val qrScannerConfig = ScannerConfig.build {
     setBarcodeFormats(listOf(BarcodeFormat.FORMAT_QR_CODE))
-    setOverlayDrawableRes(R.drawable.ic_qr_code_48)
+    setOverlayDrawableRes(R.drawable.ic_qr_code)
+    setShowCloseButton(true)
     setOverlayStringRes(R.string.quickie_overlay_string)
     setHapticSuccessFeedback(true)
   }
@@ -433,18 +449,20 @@ class MainActivity : AppCompatActivity() {
   private fun buildPairingDialog(): MaterialAlertDialogBuilder {
     val dialogContentView = DialogPairBinding.inflate(layoutInflater)
 
+    dialogContentView.receiverLink.setOnLongClickListener { dialog -> dialog.performClick() }
+
     dialogContentView.receiverLink.setOnClickListener {
       val shareIntent = Intent().apply {
         action = Intent.ACTION_SEND
         type = "text/plain"
-        putExtra(Intent.EXTRA_TEXT, "https://${getString(R.string.receiver_domain)}")
+        putExtra(Intent.EXTRA_TEXT, "https://${getString(R.string.RECEIVER_SHORT_DOMAIN)}")
       }
 
       startActivity(Intent.createChooser(shareIntent, null))
     }
 
-    return MaterialAlertDialogBuilder(this, R.style.M3AlertDialog_Centered_FullWidthButtons)
-      .setIcon(R.drawable.ic_handshake_24)
+    return MaterialAlertDialogBuilder(this, R.style.PairingDialog)
+      .setIcon(R.drawable.ic_external_link)
       .setTitle(getString(R.string.pair_dialog_title))
       .setView(dialogContentView.root)
       .setNeutralButton(getString(R.string.pair_dialog_paste_button)) { _, _ ->
@@ -455,7 +473,15 @@ class MainActivity : AppCompatActivity() {
         saveToken(clipboardText.toString())
       }
       .setPositiveButton(getString(R.string.pair_dialog_scan_button)) { _, _ ->
-        qrCodeScanner.launch(qrScannerConfig)
+        try {
+          qrCodeScanner.launch(qrScannerConfig)
+        } catch (e: Exception) {
+          Snackbar.make(
+            mainActivityBinding.root,
+            "Can't open Camera, use \"Paste instead\"",
+            Snackbar.LENGTH_LONG,
+          ).setAnchorView(mainActivityBinding.fabPair).show()
+        }
       }
   }
 
@@ -482,50 +508,67 @@ class MainActivity : AppCompatActivity() {
   }
 
   private fun buildUnpairingDialog(): MaterialAlertDialogBuilder {
-    return MaterialAlertDialogBuilder(this)
-      .setMessage(getString(R.string.unpair_dialog_content))
+    return MaterialAlertDialogBuilder(this, R.style.UnpairDialog)
+      .setTitle(getString(R.string.unpair_dialog_content))
       .setPositiveButton(getString(R.string.unpair_dialog_button_unpair)) { _, _ ->
         userPreferences.notifierGcmToken = ""
       }
-      .setNegativeButton(getString(R.string.unpair_dialog_button_send)) { _, _ ->
-        pushServerClient.postNotification(
-          userPreferences.notifierGcmToken,
-          "Successfully Paired",
-          "It is working correctly!"
-        )
+      .setNegativeButton(getString(R.string.unpair_dialog_button_cancel)) { dialog: DialogInterface, _ -> dialog.dismiss() }
+  }
+
+  private fun refreshAfterPairingUnpairing() {
+    refreshMonitoringServiceState()
+
+    mainActivityBinding.apply {
+      when {
+        !paired -> {
+          Snackbar.make(root, R.string.unpaired, Snackbar.LENGTH_SHORT)
+            .setAnchorView(mainActivityBinding.fabPair)
+            .show()
+
+          cardBatteryExemption.visibility = View.GONE
+          unpairButton.visibility = View.GONE
+          testButton.visibility = View.GONE
+          fabPair.show()
+        }
+
+        else -> {
+          Snackbar.make(
+            mainActivityBinding.root,
+            R.string.successful_pairing,
+            Snackbar.LENGTH_SHORT,
+          )
+            .setAnchorView(mainActivityBinding.fabPair)
+            .show()
+
+          cardBatteryExemption.visibility = View.VISIBLE
+          unpairButton.visibility = View.VISIBLE
+          testButton.visibility = View.VISIBLE
+          fabPair.hide()
+        }
       }
+    }
   }
 
   private fun refreshMonitoringServiceState() {
+    val cardNotificationService: MaterialCardView =
+      mainActivityBinding.cardNotificationService
+
     val switchNotificationService: MaterialSwitch = mainActivityBinding.switchNotificationService
 
     userPreferences.run {
       // At least one of the "NOTIFY WHEN" option needs to be checked for the switch to be enabled.
       val isNotifyWhenEnabled = isMaxLevelNotificationEnabled || isLowBatteryNotificationEnabled
+      val shouldServiceBeEnabled = isNotifyWhenEnabled && paired
 
-      // Enable / Disable means Activation (Clickable) / Deactivation (Gray out) in Views.
-      switchNotificationService.isEnabled = isNotifyWhenEnabled && notifierGcmToken.isNotBlank()
+      cardNotificationService.alpha = if (shouldServiceBeEnabled) 1f else 0.6f
+      cardNotificationService.isEnabled = isNotifyWhenEnabled
 
-      switchNotificationService.isChecked =
-        switchNotificationService.isEnabled && isMonitoringServiceEnabled
+      switchNotificationService.isEnabled = shouldServiceBeEnabled
+      switchNotificationService.isChecked = shouldServiceBeEnabled && isMonitoringServiceEnabled
 
       if (switchNotificationService.isChecked) BroadcastReceiverRegistererService.start(this@MainActivity)
       else BroadcastReceiverRegistererService.stop(this@MainActivity)
-    }
-  }
-
-  private fun refreshAfterPairingUnpairing() {
-    refreshMonitoringServiceState()
-    refreshFabUi()
-
-    if (userPreferences.notifierGcmToken.isBlank()) {
-      Snackbar.make(mainActivityBinding.root, R.string.unpaired, Snackbar.LENGTH_SHORT)
-        .setAnchorView(mainActivityBinding.fabPair)
-        .show()
-    } else {
-      Snackbar.make(mainActivityBinding.root, R.string.successful_pairing, Snackbar.LENGTH_SHORT)
-        .setAnchorView(mainActivityBinding.fabPair)
-        .show()
     }
   }
 }

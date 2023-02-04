@@ -1,35 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.core.widget.NestedScrollView
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:orientation="vertical"
-  android:padding="16dp"
+  android:scrollbars="vertical"
   tools:context=".MainActivity"
   >
 
-  <com.google.android.material.button.MaterialButton
-    android:id="@+id/receiver_link"
+  <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:backgroundTint="?attr/colorSurfaceVariant"
-    android:paddingVertical="16dp"
-    android:text="@string/receiver_domain"
-    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-    android:textColor="?attr/colorOnSurfaceVariant"
-    app:icon="@drawable/ic_share_24"
-    app:iconGravity="textEnd"
-    app:iconTint="?attr/colorOnSurfaceVariant"
-    />
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    >
 
-  <com.google.android.material.textview.MaterialTextView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginHorizontal="8dp"
-    android:layout_marginTop="16dp"
-    android:text="@string/pair_dialog_content"
-    android:textAlignment="center"
-    />
-</LinearLayout>
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/receiver_link"
+      style="@style/Widget.Material3.Button.OutlinedButton"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:letterSpacing="0.03"
+      android:paddingVertical="16dp"
+      android:text="@string/RECEIVER_SHORT_DOMAIN"
+      android:textAppearance="?textAppearanceTitleMedium"
+      android:textColor="?colorPrimary"
+      app:backgroundTint="?colorSecondaryContainer"
+      app:icon="@drawable/ic_copy"
+      app:iconGravity="textEnd"
+      app:iconPadding="8dp"
+      app:shapeAppearance="?shapeAppearanceCornerMedium"
+      app:strokeColor="?colorPrimary"
+      />
+
+    <com.google.android.material.textview.MaterialTextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginHorizontal="8dp"
+      android:layout_marginTop="16dp"
+      android:text="@string/pair_dialog_content"
+      android:textAlignment="center"
+      />
+  </LinearLayout>
+</androidx.core.widget.NestedScrollView>
