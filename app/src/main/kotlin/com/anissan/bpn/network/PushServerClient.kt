@@ -1,12 +1,19 @@
 package com.anissan.bpn.network
 
+import android.os.Handler
+import android.os.Looper
 import android.os.PowerManager
 import com.anissan.bpn.BuildConfig
 import com.anissan.bpn.utils.logE
 import com.anissan.bpn.utils.logV
-import okhttp3.*
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.Response
 import java.io.IOException
 
 class PushServerClient(
@@ -45,7 +52,8 @@ class PushServerClient(
         }
 
         logV { "Successful API response: $response" }
-        onSuccessfulPost()
+
+        Handler(Looper.getMainLooper()).post { onSuccessfulPost() }
       }
     }
   }
