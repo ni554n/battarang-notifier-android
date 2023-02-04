@@ -23,11 +23,11 @@
   <string name="label_device_name">Device Name</string>
 
   <string name="notify_when">Notify When</string>
-  <string name="battery_level_reaches">Battery level reaches <![CDATA[ <b>~%1$d%%</b> ]]></string>
+  <string name="battery_level_reaches_template">Battery level reaches ~%</string>
   <string name="battery_level_slider">Slider for adjusting the battery level</string>
-  <string name="battery_is_low">Battery is <b>LOW</b></string>
-  <string name="label_but">But …</string>
-  <string name="skip_if_display_on">Skip while display is <b>ON</b></string>
+  <string name="battery_is_low_template">Battery is low</string>
+  <string name="label_but">But do</string>
+  <string name="skip_if_display_on_template">Skip while display is on</string>
 
   <string name="pair_with_device">Pair Receiver</string>
   <string name="unpair">Unpair / Test</string>

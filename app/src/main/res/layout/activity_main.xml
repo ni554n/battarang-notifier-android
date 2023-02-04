@@ -252,20 +252,23 @@
 
       <com.google.android.material.card.MaterialCardView
         android:id="@+id/card_config"
-        style="?attr/materialCardViewFilledStyle"
-        android:layout_width="match_parent"
+        style="?materialCardViewFilledStyle"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="16dp"
+        app:cardBackgroundColor="@color/primary_opacity_5_percent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/card_device_name_input"
+        app:layout_constraintWidth_max="@dimen/card_max_width"
         app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Small"
         >
 
         <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
+          android:baselineAligned="false"
           android:orientation="vertical"
           android:paddingTop="16dp"
           android:paddingBottom="8dp"
@@ -276,12 +279,13 @@
             android:id="@+id/texView_notify_when"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
             android:layout_marginStart="54dp"
+            android:layout_marginEnd="8dp"
             android:letterSpacing="0.2"
             android:text="@string/notify_when"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
-            android:textColor="?attr/colorOnSecondaryContainer"
+            android:textColor="?colorSecondary"
+            android:textSize="12sp"
             android:textStyle="bold"
             />
 
@@ -304,11 +308,14 @@
               android:layout_marginStart="12dp"
               android:background="@null"
               android:clickable="false"
-              android:drawablePadding="0dp"
+              android:drawablePadding="60dp"
               android:focusable="false"
               android:paddingHorizontal="10dp"
-              android:text="@string/battery_level_reaches"
+              android:text="@string/battery_level_reaches_template"
+              android:textAppearance="?textAppearanceBodyLarge"
+              app:lastBaselineToBottomHeight="7sp"
               tools:checked="true"
+              tools:ignore="VisualLintButtonSize"
               tools:text="Battery level reaches ~80%"
               />
           </com.google.android.material.card.MaterialCardView>
@@ -349,8 +356,11 @@
               android:drawablePadding="0dp"
               android:focusable="false"
               android:paddingHorizontal="10dp"
-              android:text="@string/battery_is_low"
+              android:text="@string/battery_is_low_template"
+              android:textAppearance="?textAppearanceBodyLarge"
+              app:lastBaselineToBottomHeight="7sp"
               tools:checked="true"
+              tools:ignore="VisualLintButtonSize"
               />
           </com.google.android.material.card.MaterialCardView>
 
@@ -358,13 +368,14 @@
             android:id="@+id/texView_but"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
             android:layout_marginStart="54dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
             android:letterSpacing="0.2"
             android:text="@string/label_but"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
-            android:textColor="?attr/colorOnSecondaryContainer"
+            android:textColor="?colorSecondary"
+            android:textSize="12sp"
             android:textStyle="bold"
             />
 
@@ -390,8 +401,11 @@
               android:drawablePadding="0dp"
               android:focusable="false"
               android:paddingHorizontal="10dp"
-              android:text="@string/skip_if_display_on"
+              android:text="@string/skip_if_display_on_template"
+              android:textAppearance="?textAppearanceBodyLarge"
+              app:lastBaselineToBottomHeight="7sp"
               tools:checked="false"
+              tools:ignore="VisualLintButtonSize"
               />
           </com.google.android.material.card.MaterialCardView>
         </LinearLayout>

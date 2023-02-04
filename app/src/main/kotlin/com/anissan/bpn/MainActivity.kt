@@ -3,7 +3,13 @@ package com.anissan.bpn
 import android.content.ClipboardManager
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Typeface
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.SpannableStringBuilder
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import android.view.View
 import android.widget.CompoundButton
 import androidx.activity.result.ActivityResultLauncher
@@ -21,11 +27,10 @@ import com.anissan.bpn.ui.about.AboutSheet
 import com.anissan.bpn.ui.optimizationremover.OptimizationRemoverSheet
 import com.anissan.bpn.utils.logE
 import com.anissan.bpn.utils.logV
-import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.checkbox.MaterialCheckBox
+import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.elevation.SurfaceColors
 import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.slider.Slider
 import com.google.android.material.snackbar.Snackbar
@@ -200,6 +205,45 @@ class MainActivity : AppCompatActivity() {
     checkBoxMaxBatteryLevel.run {
       isChecked = userPreferences.isMaxLevelNotificationEnabled
 
+      /**
+       * Setting up a bold and text color Span on the "~%" portion of the checkbox text, so that,
+       * during the slider value update any number inserted in the middle is going to retain the formatting.
+       */
+
+      val maxLevelSpannableStringBuilder =
+        SpannableStringBuilder(getString(R.string.battery_level_reaches_template))
+
+      // These span positions are like text input cursors => |
+      // Insert at 1 means inserting before b => "a|bc", at 2 means inserting after b => "ab|c"
+      val percentEnd = maxLevelSpannableStringBuilder.length // ... ~%|
+      val tildeStart = percentEnd - 2 // ... |~%
+
+      val colorSecondary =
+        MaterialColors.getColor(this, com.google.android.material.R.attr.colorSecondary)
+
+      maxLevelSpannableStringBuilder.setSpan(
+        StyleSpan(Typeface.BOLD),
+        tildeStart,
+        percentEnd,
+        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE,
+      )
+
+      maxLevelSpannableStringBuilder.setSpan(
+        ForegroundColorSpan(colorSecondary),
+        tildeStart,
+        percentEnd,
+        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE,
+      )
+
+      val tildeEnd = tildeStart + 1 // ~|%
+
+      checkBoxMaxBatteryLevel.text = maxLevelSpannableStringBuilder.insert(
+        tildeEnd,
+        userPreferences.maxChargingLevelPercentage.toString(),
+      )
+
+      bindMaxLevelSlider(maxLevelSpannableStringBuilder, tildeEnd)
+
       bindClicksFrom(cardBatteryLevelReached)
 
       setOnCheckedChangeListener { _: CompoundButton, isChecked: Boolean ->
@@ -208,41 +252,31 @@ class MainActivity : AppCompatActivity() {
     }
   }
 
-  /**
-   * Checkbox have a ripple animation set only on its checkmark icon, not the text beside it.
-   * Setting a custom ripple on the whole checkbox doesn't work if margin is required. The ripple will fall short.
-   * The only workaround I found is to use a full bleed wrapper card (which already has a nice ripple effect built-in)
-   * and disabling the checkbox so that the card behind gets the click. But then I have to programmatically
-   * pass the card clicks to the checkbox.
-   */
-  private fun MaterialCheckBox.bindClicksFrom(card: MaterialCardView) {
-    card.setOnClickListener { performClick() }
-  }
-
-  private fun ActivityMainBinding.setupMaxBatteryLevelSlider() {
+  private fun ActivityMainBinding.bindMaxLevelSlider(
+    maxLevelSpannableStringBuilder: SpannableStringBuilder,
+    tildeEnd: Int,
+  ) {
     batteryLevelSlider.run {
-      val batteryLevel: Int = userPreferences.maxChargingLevelPercentage
-      value = batteryLevel.toFloat()
+      val savedMaxLevel: Int = userPreferences.maxChargingLevelPercentage
+      value = savedMaxLevel.toFloat()
 
-      // String template for formatting battery percentage ("~85%") portion bold.
-      val batteryLevelReachesStringTemplate = getString(R.string.battery_level_reaches)
+      // Keeping this length in memory so that it can be determined how many digits
+      // should be replaced on slider value update.
+      var currentMaxLevel: Int = "$savedMaxLevel".length
 
-      checkBoxMaxBatteryLevel.text =
-        HtmlCompat.fromHtml(
-          batteryLevelReachesStringTemplate.format(batteryLevel),
-          HtmlCompat.FROM_HTML_MODE_COMPACT,
+      addOnChangeListener { _: Slider, updatedValue: Float, _: Boolean ->
+        val updatedLevelValue: Int = updatedValue.toInt()
+        userPreferences.maxChargingLevelPercentage = updatedLevelValue
+
+        val updatedLevelValueString = "$updatedLevelValue"
+
+        checkBoxMaxBatteryLevel.text = maxLevelSpannableStringBuilder.replace(
+          tildeEnd, // ~|85%
+          tildeEnd + currentMaxLevel, // ~85|%
+          updatedLevelValueString,
         )
 
-      addOnChangeListener { _: Slider, value: Float, _: Boolean ->
-        val levelValue: Int = value.toInt()
-
-        userPreferences.maxChargingLevelPercentage = levelValue
-
-        checkBoxMaxBatteryLevel.text =
-          HtmlCompat.fromHtml(
-            batteryLevelReachesStringTemplate.format(levelValue),
-            HtmlCompat.FROM_HTML_MODE_COMPACT,
-          )
+        currentMaxLevel = updatedLevelValueString.length
       }
     }
   }
@@ -250,6 +284,31 @@ class MainActivity : AppCompatActivity() {
   private fun ActivityMainBinding.setupLowBatteryToggleCheckbox() {
     checkBoxBatteryLevelLow.run {
       isChecked = userPreferences.isLowBatteryNotificationEnabled
+
+      // Formatting the "LOW" portion bold with color.
+      text = SpannableString(getString(R.string.battery_is_low_template)).apply {
+        val wEnd = length // Battery is LOW|
+        val lStart = wEnd - 3 // Battery is |LOW
+
+        setSpan(
+          StyleSpan(Typeface.BOLD),
+          lStart,
+          wEnd,
+          Spannable.SPAN_EXCLUSIVE_EXCLUSIVE,
+        )
+
+        val colorSecondary = MaterialColors.getColor(
+          this@run,
+          com.google.android.material.R.attr.colorSecondary,
+        )
+
+        setSpan(
+          ForegroundColorSpan(colorSecondary),
+          lStart,
+          wEnd,
+          Spannable.SPAN_EXCLUSIVE_EXCLUSIVE,
+        )
+      }
 
       bindClicksFrom(cardBatteryLevelLow)
 
@@ -262,6 +321,31 @@ class MainActivity : AppCompatActivity() {
   private fun ActivityMainBinding.setupSkipIfDisplayOnToggleCheckbox() {
     checkBoxSkipWhileDisplayOn.run {
       isChecked = userPreferences.isSkipWhileDisplayOnEnabled
+
+      // Formatting the "ON" portion bold with color.
+      text = SpannableString(getString(R.string.skip_if_display_on_template)).apply {
+        val nEnd = length // Skip while display is ON|
+        val oStart = nEnd - 2 // Skip while display is |ON
+
+        setSpan(
+          StyleSpan(Typeface.BOLD),
+          oStart,
+          nEnd,
+          Spannable.SPAN_EXCLUSIVE_EXCLUSIVE,
+        )
+
+        val colorSecondary = MaterialColors.getColor(
+          this@run,
+          com.google.android.material.R.attr.colorSecondary,
+        )
+
+        setSpan(
+          ForegroundColorSpan(colorSecondary),
+          oStart,
+          nEnd,
+          Spannable.SPAN_EXCLUSIVE_EXCLUSIVE,
+        )
+      }
 
       bindClicksFrom(cardSkipWhileDisplayOn)
 
