@@ -1,5 +1,7 @@
 /*
  * ulog: simple, fast, and efficient logging facade for Kotlin
+ * Source: https://github.com/kdrag0n/ulog
+ * Compatibility Date: Aug 2, 2022
  *
  * - Fast: lazy message evaluation, no stack traces used for automatic tags (like square/logcat)
  * - Extensible with backends like Timber, but with a simpler API
@@ -34,7 +36,6 @@
 
 package com.anissan.bpn.utils
 
-import android.app.Application
 import android.util.Log
 import com.anissan.bpn.BuildConfig
 import org.jetbrains.annotations.ApiStatus.Internal
@@ -77,7 +78,7 @@ object Ulog {
   // Change this if you have more stringent min API requirements
   @JvmStatic
   @Internal
-  fun _getDefaultTag(): String = Application.getProcessName()
+  fun _getDefaultTag(): String = BuildConfig.APPLICATION_ID
 }
 
 interface LogBackend {
