@@ -1,4 +1,4 @@
-package com.anissan.bpn.event.receivers.handlers
+package com.anissan.bpn.background.receivers.handlers
 
 import android.app.AlarmManager
 import android.app.PendingIntent
@@ -7,8 +7,8 @@ import android.content.Intent
 import android.os.BatteryManager
 import android.os.Build
 import android.os.SystemClock
-import com.anissan.bpn.event.receivers.BatteryLevelPollingAlarmReceiver
-import com.anissan.bpn.event.receivers.BatteryStatusReceiver
+import com.anissan.bpn.background.receivers.BatteryLevelPollingAlarmReceiver
+import com.anissan.bpn.background.receivers.BatteryStatusReceiver
 import com.anissan.bpn.network.PushServerClient
 import com.anissan.bpn.storage.UserPreferences
 import com.anissan.bpn.utils.logV

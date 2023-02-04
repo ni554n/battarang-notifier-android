@@ -20,9 +20,9 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.NestedScrollView
+import com.anissan.bpn.background.services.BroadcastReceiverRegistererService
 import com.anissan.bpn.databinding.ActivityMainBinding
 import com.anissan.bpn.databinding.DialogPairBinding
-import com.anissan.bpn.event.BroadcastReceiverRegistererService
 import com.anissan.bpn.network.PushServerClient
 import com.anissan.bpn.storage.UserPreferences
 import com.anissan.bpn.ui.about.AboutSheet

@@ -1,11 +1,11 @@
-package com.anissan.bpn
+package com.anissan.bpn.background
 
 import android.content.BroadcastReceiver
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import com.anissan.bpn.event.BroadcastReceiverRegistererService
+import com.anissan.bpn.background.services.BroadcastReceiverRegistererService
 import com.anissan.bpn.utils.logE
 import com.anissan.bpn.utils.logV
 import com.anissan.bpn.utils.logW

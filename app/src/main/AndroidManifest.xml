@@ -49,7 +49,7 @@
 
     <!--  This receiver is initially disabled because it is controlled programmatically based on Service status.  -->
     <receiver
-      android:name=".BootEventReceiver"
+      android:name=".background.BootEventReceiver"
       android:enabled="false"
       android:exported="true"
       >
@@ -63,12 +63,12 @@
 
     <!--  To receive the event triggered by the alarm, Manifest entry is required.  -->
     <receiver
-      android:name=".event.receivers.BatteryLevelPollingAlarmReceiver"
+      android:name=".background.receivers.BatteryLevelPollingAlarmReceiver"
       android:exported="false"
       />
 
     <service
-      android:name=".event.BroadcastReceiverRegistererService"
+      android:name=".background.services.BroadcastReceiverRegistererService"
       android:exported="false"
       />
   </application>
