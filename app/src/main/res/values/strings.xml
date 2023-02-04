@@ -9,11 +9,16 @@
   <string name="service_notification_content_title">Waiting for battery events</string>
   <string name="service_notification_content_text">This service doesn\'t use any resources but required for keeping the push notifier service alive. It is safe to minimize or turn off this notification channel from the "Notification Settings".</string>
 
-  <string name="service_notification_channel_settings">Notification Settings</string>
+  <string name="service_notification_channel_settings">Hide this notification</string>
+
+  <!-- Battery Exemption Card  -->
+  <string name="optimization_exemption_1">Automation apps like this are subject to battery optimization rules imposed by the device makers and the Android itself.</string>
+  <string name="optimization_exemption_2">Your system will most probably interrupt this notifier service, even though, it just waits for battery events without using any resources.</string>
+  <string name="optimization_exemption_3">Tap here to remove these restrictions</string>
 
   <!-- Configs -->
 
-  <string name="notification_service">Notification Service</string>
+  <string name="notification_service">Push Notifier Service</string>
 
   <string name="label_device_name">Device Name</string>
 

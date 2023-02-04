@@ -55,29 +55,6 @@
         />
 
     </com.google.android.material.appbar.CollapsingToolbarLayout>
-
-    <FrameLayout
-      android:id="@+id/switch_notification_service_container"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_margin="16dp"
-      >
-
-      <com.google.android.material.materialswitch.MaterialSwitch
-        android:id="@+id/switch_notification_service"
-        style="@style/M3SwitchFullWidth"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/shape_rounded"
-        android:padding="24dp"
-        android:text="@string/notification_service"
-        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
-        android:textColor="@color/switch_state_aware_text_colors"
-        app:thumbIcon="@drawable/ic_switch_checked"
-        tools:checked="true"
-        tools:enabled="true"
-        />
-    </FrameLayout>
   </com.google.android.material.appbar.AppBarLayout>
 
   <!-- Preferences -->
@@ -89,16 +66,150 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     >
 
-    <!--  On some Android version, during activity start, first EditText gets focused automatically.
-     And clearing the EditText focus won't work if the focus can't move to anywhere else.
-     So enabling focusing on this layout can solve those issues. -->
     <androidx.constraintlayout.widget.ConstraintLayout
+      android:id="@+id/content_layout"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:focusable="true"
-      android:focusableInTouchMode="true"
+      android:animateLayoutChanges="true"
       >
 
+      <!--   Notification Service Toggle   -->
+      <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_notification_service"
+        style="@style/PrimarySwitchButtonLight"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:cardElevation="1dp"
+        app:layout_constraintBottom_toTopOf="@+id/barrier_dynamic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintWidth_max="@dimen/card_max_width"
+        app:shapeAppearance="?shapeAppearanceCornerExtraLarge"
+        >
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:baselineAligned="false"
+          android:gravity="center_vertical"
+          android:orientation="horizontal"
+          android:paddingHorizontal="32dp"
+          android:paddingVertical="16dp"
+          >
+
+          <com.google.android.material.textview.MaterialTextView
+            style="@style/TextViewOnLightCard"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/notification_service"
+            android:textSize="18sp"
+            />
+
+          <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/switch_notification_service"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="8dp"
+            app:thumbIcon="@drawable/switch_thumb_icon"
+            app:thumbIconTint="@color/switch_thumb_icon_tint"
+            app:thumbTint="?colorPrimaryInverse"
+            app:trackDecorationTint="?colorPrimary"
+            app:trackTint="?colorPrimary"
+            tools:checked="false"
+            tools:enabled="false"
+            tools:ignore="RtlSymmetry"
+            />
+        </LinearLayout>
+      </com.google.android.material.card.MaterialCardView>
+
+      <!--  Guide to "Remove Battery Optimization" card. Only visible after pairing.    -->
+      <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_battery_exemption"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="-48dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone"
+        app:cardBackgroundColor="@color/primary_opacity_5_percent"
+        app:layout_constraintBottom_toTopOf="@+id/barrier_dynamic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/card_notification_service"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintWidth_max="@dimen/card_max_width"
+        app:strokeColor="?colorPrimary"
+        app:strokeWidth="0dp"
+        >
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:orientation="vertical"
+          android:paddingHorizontal="16dp"
+          android:paddingVertical="16dp"
+          >
+
+          <!--          <ImageView-->
+          <!--            android:layout_width="56dp"-->
+          <!--            android:layout_height="56dp"-->
+          <!--            android:layout_gravity="center_horizontal"-->
+          <!--            android:layout_marginBottom="8dp"-->
+          <!--            android:src="@drawable/ic_optimization_exemption"-->
+          <!--            app:tint="?colorPrimary"-->
+          <!--            />-->
+
+          <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:gravity="center_horizontal"
+            android:text="@string/optimization_exemption_1"
+            android:textColor="?colorSecondary"
+            />
+
+          <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center_horizontal"
+            android:text="@string/optimization_exemption_2"
+            android:textColor="?colorSecondary"
+            />
+
+          <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center_horizontal"
+            android:text="@string/optimization_exemption_3"
+            android:textColor="?colorPrimary"
+            />
+        </LinearLayout>
+      </com.google.android.material.card.MaterialCardView>
+
+      <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier_dynamic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="card_notification_service,card_battery_exemption"
+        />
+
+      <!-- Device Name Input -->
+      <!--  On some Android version, during activity start, first EditText gets focused automatically.
+            And clearing the EditText focus won't work if the focus can't move to anywhere else.
+            So enabling focusing on the parent can solve those issues. -->
       <com.google.android.material.card.MaterialCardView
         android:id="@+id/card_device_name_input"
         android:layout_width="match_parent"

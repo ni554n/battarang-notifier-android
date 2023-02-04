@@ -26,7 +26,15 @@
     <item name="buttonBarPositiveButtonStyle">@style/DialogButton.Right</item>
   </style>
 
-  <style name="TextAppearance.Material3.TitleMediumLarge" parent="TextAppearance.Material3.TitleMedium">
-    <item name="android:textSize">24sp</item>
+  <style name="CustomOutlineBox" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+    <item name="boxStrokeColor">@color/text_field_stroke_color</item>
+  </style>
+
+  <style name="PrimarySwitchButtonLight" parent="Widget.Material3.CardView.Filled">
+    <item name="cardBackgroundColor">?colorPrimaryContainer</item>
+  </style>
+
+  <style name="TextViewOnLightCard" parent="Widget.AppCompat.TextView">
+    <item name="android:textColor">?colorOnSecondaryContainer</item>
   </style>
 </resources>

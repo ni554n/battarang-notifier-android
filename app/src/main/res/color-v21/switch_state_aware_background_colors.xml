@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-  <!-- There's a bug in Lollipop where theme color attributes (?attr/*) doesn't work. It will show as Red instead. -->
-  <item android:alpha="0.4" android:color="@color/md_theme_light_surfaceVariant" android:state_enabled="false" />
-  <item android:color="@color/md_theme_light_surfaceVariant" />
-</selector>

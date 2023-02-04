@@ -109,7 +109,7 @@ class MainActivity : AppCompatActivity() {
       }
     }
 
-    switchNotificationServiceContainer.applyInsetter {
+    cardNotificationService.applyInsetter {
       type(navigationBars = true) {
         padding(horizontal = true)
       }
@@ -118,6 +118,12 @@ class MainActivity : AppCompatActivity() {
     nestedScrollView.applyInsetter {
       type(navigationBars = true) {
         margin(horizontal = true)
+      }
+    }
+
+    contentLayout.applyInsetter {
+      type(navigationBars = true) {
+        margin(vertical = true)
       }
     }
 
