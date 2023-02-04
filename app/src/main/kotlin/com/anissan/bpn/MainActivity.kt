@@ -377,19 +377,27 @@ class MainActivity : AppCompatActivity() {
   }
 
   private fun ActivityMainBinding.setupAbout() {
-    licenses.setOnClickListener {
-      startActivity(Intent(this@MainActivity, OssLicensesMenuActivity::class.java))
+    if (!paired) {
+      unpairButton.visibility = View.GONE
+      testButton.visibility = View.GONE
+    } else {
+      unpairButton.visibility = View.VISIBLE
+      testButton.visibility = View.VISIBLE
     }
-  }
 
-  private fun ActivityMainBinding.setupDevicePairingFab() {
-    refreshFabUi()
+    unpairButton.setOnClickListener { buildUnpairingDialog().show() }
 
-    fabPair.setOnClickListener {
-      if (userPreferences.notifierGcmToken.isBlank()) {
-        buildPairingDialog().show()
-      } else {
-        buildUnpairingDialog().show()
+    testButton.setOnClickListener {
+      pushServerClient.postNotification(
+        userPreferences.notifierGcmToken,
+        "Successfully Paired",
+        "It is working correctly!",
+      ) {
+        Toast.makeText(
+          this@MainActivity,
+          "Test notification sent. Check the receiver device.",
+          Toast.LENGTH_SHORT,
+        ).show()
       }
     }
 
