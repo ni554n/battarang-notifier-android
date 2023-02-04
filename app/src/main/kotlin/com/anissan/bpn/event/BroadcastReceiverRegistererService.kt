@@ -134,12 +134,12 @@ private fun Context.buildServiceNotification(): Notification {
   return NotificationCompat.Builder(this, batteryStateChannelId)
     .setContentTitle(getString(R.string.service_notification_content_title))
     .setContentText(getString(R.string.service_notification_content_text))
-    .setSmallIcon(android.R.drawable.ic_lock_idle_low_battery)
+    .setSmallIcon(R.drawable.ic_notification_service)
     .setTicker(getString(R.string.service_notification_ticker))
     .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
     .setContentIntent(notificationTapActionPendingIntent)
     .addAction(
-      android.R.drawable.ic_lock_idle_low_battery,
+      R.drawable.ic_visibility_off,
       getString(R.string.service_notification_channel_settings),
       channelSettingsIntent,
     ).build()
