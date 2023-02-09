@@ -9,11 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import com.anissan.bpn.BuildConfig
+import com.anissan.bpn.R
 import com.anissan.bpn.databinding.SheetAboutBinding
 import com.anissan.bpn.utils.logW
-import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.mikepenz.aboutlibraries.LibsBuilder
 import dev.chrisbanes.insetter.applyInsetter
 
 
@@ -69,7 +70,10 @@ class AboutSheet : BottomSheetDialogFragment() {
     linkedin.setOnClickListener { openLinkInBrowser(BuildConfig.AUTHOR_LINKEDIN) }
 
     license.setOnClickListener {
-      startActivity(Intent(context, OssLicensesMenuActivity::class.java))
+      LibsBuilder()
+        .withActivityTitle(getString(R.string.licenses))
+        .withSearchEnabled(true)
+        .start(requireContext())
     }
 
     policy.setOnClickListener { openLinkInBrowser(BuildConfig.PRIVACY_POLICY_URL) }
