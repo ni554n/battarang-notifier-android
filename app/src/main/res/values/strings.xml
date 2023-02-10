@@ -61,17 +61,17 @@
   <string name="review">Review</string>
   <string name="battarang_notifier">Battarang Notifier</string>
   <string name="description">Sends battery notifications to the</string>
-  <string name="receiver">Receiver</string>
-  <string name="or">||</string>
-  <string name="telegram">Telegram</string>
+  <string name="receiver">receiver</string>
+  <string name="or">or</string>
+  <string name="telegram">telegram</string>
   <string name="source">Source</string>
   <string name="issues">Issues</string>
   <string name="by">Designed &amp; Developed by</string>
   <string name="author_country">🇧🇩</string>
   <string name="follow_on_twitter">Follow me on Twitter</string>
-  <string name="connect_on_linkedin">Connect professionally on LinkedIn</string>
+  <string name="connect_on_linkedin">Connect on LinkedIn</string>
   <string name="how_its_made">How It\'s Made</string>
   <string name="licenses">Licenses</string>
   <string name="privacy_policy">Privacy Policy</string>
-  <string name="toc"><![CDATA[T&C]]></string>
+  <string name="tos">Terms of Service</string>
 </resources>

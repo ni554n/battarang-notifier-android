@@ -21,6 +21,7 @@
 
   <style name="ModalBottomSheet" parent="Widget.Material3.BottomSheet.Modal">
     <item name="enableEdgeToEdge">true</item>
+    <item name="android:maxWidth">512dp</item>
     <item name="behavior_fitToContents">false</item>
     <item name="paddingBottomSystemWindowInsets">false</item>
   </style>
