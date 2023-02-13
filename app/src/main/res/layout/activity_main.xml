@@ -11,14 +11,12 @@
 
   <!-- "fitsSystemWindows" padding behavior: https://medium.com/androiddevelopers/why-would-i-want-to-fitssystemwindows-4e26d9ce1eec -->
   <!-- If dragging behavior isn't disabled in this layout, AppBarLayout over-scrolls and goes underneath the status bar. -->
-  <!--   Studio Preview UI is broken after 1.8.0-alpha01. Nulling out "layout_behavior" at least render something. -->
   <com.google.android.material.appbar.AppBarLayout
     android:id="@+id/app_bar_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:fitsSystemWindows="true"
     app:layout_behavior="com.anissan.bpn.ui.main.DragDisabledAppBarLayoutBehavior"
-    tools:layout_behavior="@null"
     >
 
     <com.google.android.material.appbar.CollapsingToolbarLayout
