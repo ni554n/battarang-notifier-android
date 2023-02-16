@@ -24,6 +24,7 @@ import com.anissan.bpn.background.services.BroadcastReceiverRegistererService
 import com.anissan.bpn.databinding.ActivityMainBinding
 import com.anissan.bpn.databinding.DialogPairBinding
 import com.anissan.bpn.network.PushServerClient
+import com.anissan.bpn.storage.PrefKey
 import com.anissan.bpn.storage.UserPreferences
 import com.anissan.bpn.ui.about.AboutSheet
 import com.anissan.bpn.ui.optimizationremover.OptimizationRemoverSheet
@@ -50,7 +51,7 @@ class MainActivity : AppCompatActivity() {
   private lateinit var mainActivityBinding: ActivityMainBinding
 
   private val paired: Boolean
-    get() = userPreferences.notifierGcmToken.isNotBlank()
+    get() = userPreferences.receiverToken.isNullOrBlank().not()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -94,12 +95,12 @@ class MainActivity : AppCompatActivity() {
       logV { "$key has been updated by user" }
 
       when (key) {
-        UserPreferences.MONITORING_SERVICE_TOGGLE_KEY,
-        UserPreferences.MAX_LEVEL_NOTIFICATION_TOGGLE_KEY,
-        UserPreferences.LOW_BATTERY_NOTIFICATION_TOGGLE_KEY,
+        PrefKey.NOTIFICATION_SERVICE_TOGGLE.name,
+        PrefKey.MAX_LEVEL_NOTIFICATION_TOGGLE.name,
+        PrefKey.LOW_BATTERY_NOTIFICATION_TOGGLE.name,
         -> refreshMonitoringServiceState()
 
-        UserPreferences.NOTIFIER_GCM_TOKEN_KEY -> refreshAfterPairingUnpairing()
+        PrefKey.RECEIVER_TOKEN.name -> refreshAfterPairingUnpairing()
       }
     }
 
@@ -504,7 +505,7 @@ class MainActivity : AppCompatActivity() {
       return
     }
 
-    userPreferences.notifierGcmToken = token
+    userPreferences.receiverToken = token
     userPreferences.isMonitoringServiceEnabled = true
 
     // This function is called before onResume has a chance to start observing the sharedPref changes.
@@ -519,7 +520,7 @@ class MainActivity : AppCompatActivity() {
     return MaterialAlertDialogBuilder(this, R.style.UnpairDialog)
       .setTitle(getString(R.string.unpair_dialog_content))
       .setPositiveButton(getString(R.string.unpair_dialog_button_unpair)) { _, _ ->
-        userPreferences.notifierGcmToken = ""
+        userPreferences.receiverToken = null
       }
       .setNegativeButton(getString(R.string.unpair_dialog_button_cancel)) { dialog: DialogInterface, _ -> dialog.dismiss() }
   }

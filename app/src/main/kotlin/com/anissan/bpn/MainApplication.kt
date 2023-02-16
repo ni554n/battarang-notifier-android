@@ -33,12 +33,7 @@ class MainApplication : Application() {
       androidContext(this@MainApplication)
 
       modules(module {
-        single {
-          UserPreferences(
-            androidContext().getSharedPreferences("common", MODE_PRIVATE),
-            androidContext().getSharedPreferences("user", MODE_PRIVATE),
-          )
-        }
+        single { UserPreferences(androidContext()) }
 
         single {
           PushServerClient(

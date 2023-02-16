@@ -5,83 +5,48 @@ import android.content.SharedPreferences
 import android.hardware.display.DisplayManager
 import android.os.Build
 import android.view.Display
-import androidx.core.content.edit
+import hu.autsoft.krate.SimpleKrate
+import hu.autsoft.krate.booleanPref
+import hu.autsoft.krate.default.withDefault
+import hu.autsoft.krate.intPref
+import hu.autsoft.krate.stringPref
 
-/**
- * "Common" prefs are going to be backed up to the cloud and restored upon re-installation.
- * "User" prefs won't be synced.
- */
-class UserPreferences(
-  private val commonSharedPreferences: SharedPreferences,
-  private val userSharedPreferences: SharedPreferences,
-) {
-  private val commonKVs: Map<String, *> = commonSharedPreferences.all
-  private val userKVs: Map<String, *> = userSharedPreferences.all
+// Renaming any of these can become a breaking change and stored value will be lost
+// as they are used as Preference key.
+enum class PrefKey {
+  THIS_DEVICE_NAME,
+  NOTIFICATION_SERVICE_TOGGLE,
+  MAX_LEVEL_NOTIFICATION_TOGGLE,
+  MAX_CHARGING_LEVEL_PERCENTAGE,
+  LOW_BATTERY_NOTIFICATION_TOGGLE,
+  SKIP_WHILE_SCREEN_ON_TOGGLE,
+  RECEIVER_TOKEN,
+}
 
+class UserPreferences(context: Context) : SimpleKrate(context) {
   companion object {
-    const val MONITORING_SERVICE_TOGGLE_KEY = "monitoring_service_toggle"
-    const val MAX_LEVEL_NOTIFICATION_TOGGLE_KEY = "max_charging_level_notification_toggle"
-    const val CHARGING_LEVEL_PERCENTAGE_KEY = "charging_level_percentage"
-    const val LOW_BATTERY_NOTIFICATION_TOGGLE_KEY = "low_battery_notification_toggle"
-    const val SKIP_WHILE_SCREEN_ON_TOGGLE_KEY = "skip_while_screen_on_toggle"
-    const val NOTIFIER_GCM_TOKEN_KEY = "notifier_gcm_token"
-    const val USER_DEVICE_NAME_KEY = "user_device_name"
-
     val DEFAULT_DEVICE_NAME = "${Build.MANUFACTURER} ${Build.MODEL}".trim().ifBlank { "Unknown" }
   }
 
-  var isMonitoringServiceEnabled: Boolean =
-    userKVs[MONITORING_SERVICE_TOGGLE_KEY] as? Boolean ?: true
-    set(value) {
-      field = value
+  var deviceName: String
+    by stringPref(PrefKey.THIS_DEVICE_NAME.name).withDefault(DEFAULT_DEVICE_NAME)
 
-      userSharedPreferences.edit { putBoolean(MONITORING_SERVICE_TOGGLE_KEY, value) }
-    }
+  var isMonitoringServiceEnabled: Boolean
+    by booleanPref(PrefKey.NOTIFICATION_SERVICE_TOGGLE.name).withDefault(true)
 
-  var deviceName: String = userKVs[USER_DEVICE_NAME_KEY] as? String ?: DEFAULT_DEVICE_NAME
-    set(value) {
-      field = value
+  var isMaxLevelNotificationEnabled: Boolean
+    by booleanPref(PrefKey.MAX_LEVEL_NOTIFICATION_TOGGLE.name).withDefault(true)
 
-      userSharedPreferences.edit { putString(USER_DEVICE_NAME_KEY, value) }
-    }
+  var maxChargingLevelPercentage: Int
+    by intPref(PrefKey.MAX_CHARGING_LEVEL_PERCENTAGE.name).withDefault(85)
 
-  var isMaxLevelNotificationEnabled: Boolean =
-    commonKVs[MAX_LEVEL_NOTIFICATION_TOGGLE_KEY] as? Boolean ?: true
-    set(value) {
-      field = value
+  var isLowBatteryNotificationEnabled: Boolean
+    by booleanPref(PrefKey.LOW_BATTERY_NOTIFICATION_TOGGLE.name).withDefault(true)
 
-      commonSharedPreferences.edit { putBoolean(MAX_LEVEL_NOTIFICATION_TOGGLE_KEY, value) }
-    }
+  var isSkipWhileDisplayOnEnabled: Boolean
+    by booleanPref(PrefKey.SKIP_WHILE_SCREEN_ON_TOGGLE.name).withDefault(true)
 
-  var maxChargingLevelPercentage: Int = commonKVs[CHARGING_LEVEL_PERCENTAGE_KEY] as? Int ?: 85
-    set(value) {
-      field = value
-
-      commonSharedPreferences.edit { putInt(CHARGING_LEVEL_PERCENTAGE_KEY, value) }
-    }
-
-  var isLowBatteryNotificationEnabled: Boolean =
-    commonKVs[LOW_BATTERY_NOTIFICATION_TOGGLE_KEY] as? Boolean ?: true
-    set(value) {
-      field = value
-
-      commonSharedPreferences.edit { putBoolean(LOW_BATTERY_NOTIFICATION_TOGGLE_KEY, value) }
-    }
-
-  var isSkipWhileDisplayOnEnabled: Boolean =
-    commonKVs[SKIP_WHILE_SCREEN_ON_TOGGLE_KEY] as? Boolean ?: true
-    set(value) {
-      field = value
-
-      commonSharedPreferences.edit { putBoolean(SKIP_WHILE_SCREEN_ON_TOGGLE_KEY, value) }
-    }
-
-  var notifierGcmToken: String = commonKVs[NOTIFIER_GCM_TOKEN_KEY] as? String ?: ""
-    set(value) {
-      field = value
-
-      commonSharedPreferences.edit { putString(NOTIFIER_GCM_TOKEN_KEY, value) }
-    }
+  var receiverToken: String? by stringPref(PrefKey.RECEIVER_TOKEN.name)
 
   /**
    * Determines if notifications should be sent based on user preference and current display state.
@@ -102,12 +67,10 @@ class UserPreferences(
   fun startObservingChanges(changeListener: SharedPreferences.OnSharedPreferenceChangeListener) {
     _changeListener = changeListener
 
-    commonSharedPreferences.registerOnSharedPreferenceChangeListener(_changeListener)
-    userSharedPreferences.registerOnSharedPreferenceChangeListener(_changeListener)
+    sharedPreferences.registerOnSharedPreferenceChangeListener(_changeListener)
   }
 
   fun stopObservingChanges() {
-    commonSharedPreferences.unregisterOnSharedPreferenceChangeListener(_changeListener)
-    userSharedPreferences.unregisterOnSharedPreferenceChangeListener(_changeListener)
+    sharedPreferences.unregisterOnSharedPreferenceChangeListener(_changeListener)
   }
 }

@@ -3,8 +3,8 @@
 <!-- Back up user data with Auto Backup for Android 11 or below -->
 <!-- https://developer.android.com/guide/topics/data/autobackup -->
 <full-backup-content>
-  <include
+  <exclude
     domain="sharedpref"
-    path="common.xml"
+    path="."
     />
 </full-backup-content>

@@ -4,15 +4,15 @@
 <!-- https://developer.android.com/guide/topics/data/autobackup -->
 <data-extraction-rules>
   <cloud-backup>
-    <include
+    <exclude
       domain="sharedpref"
-      path="common.xml"
-    />
+      path="."
+      />
   </cloud-backup>
-  <!--
   <device-transfer>
-      <include .../>
-      <exclude .../>
+    <exclude
+      domain="sharedpref"
+      path="."
+      />
   </device-transfer>
-  -->
 </data-extraction-rules>
