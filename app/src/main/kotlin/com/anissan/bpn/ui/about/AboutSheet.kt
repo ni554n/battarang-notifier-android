@@ -16,6 +16,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.mikepenz.aboutlibraries.LibsBuilder
 import dev.chrisbanes.insetter.applyInsetter
+import java.net.URI
 
 
 class AboutSheet : BottomSheetDialogFragment() {
@@ -42,7 +43,7 @@ class AboutSheet : BottomSheetDialogFragment() {
       }
     }
 
-    setupExternalLinks()
+    setupViews()
 
     root
   }
@@ -56,8 +57,8 @@ class AboutSheet : BottomSheetDialogFragment() {
       ViewGroup.LayoutParams.MATCH_PARENT
   }
 
-  private fun SheetAboutBinding.setupExternalLinks() {
-    receiver.setOnClickListener { openLinkInBrowser(BuildConfig.RECEIVER_DOMAIN) }
+  private fun SheetAboutBinding.setupViews() {
+    receiver.setOnClickListener { openLinkInBrowser(BuildConfig.RECEIVER_WEBSITE) }
     telegram.setOnClickListener { openLinkInBrowser(BuildConfig.TELEGRAM_BOT_URL) }
 
     source.setOnClickListener { openLinkInBrowser(BuildConfig.GITHUB_URL) }
@@ -65,6 +66,7 @@ class AboutSheet : BottomSheetDialogFragment() {
     review.setOnClickListener { openLinkInBrowser(BuildConfig.PLAY_STORE_LINK) }
 
     authorName.setOnClickListener { openLinkInBrowser(BuildConfig.AUTHOR_WEBSITE) }
+    authorWebsite.text = URI(BuildConfig.AUTHOR_WEBSITE).host
     authorWebsite.setOnClickListener { openLinkInBrowser(BuildConfig.AUTHOR_WEBSITE) }
     twitter.setOnClickListener { openLinkInBrowser(BuildConfig.AUTHOR_TWITTER) }
     linkedin.setOnClickListener { openLinkInBrowser(BuildConfig.AUTHOR_LINKEDIN) }
@@ -77,7 +79,7 @@ class AboutSheet : BottomSheetDialogFragment() {
     }
 
     policy.setOnClickListener { openLinkInBrowser(BuildConfig.PRIVACY_POLICY_URL) }
-    tos.setOnClickListener { openLinkInBrowser(BuildConfig.TOC_URL) }
+    tos.setOnClickListener { openLinkInBrowser(BuildConfig.TOS_URL) }
   }
 
   private fun openLinkInBrowser(url: String) {

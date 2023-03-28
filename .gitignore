@@ -12,5 +12,3 @@ release/
 
 # Local configuration file (sdk path, secrets, etc)
 local.properties
-build-config.properties
-res-value.properties

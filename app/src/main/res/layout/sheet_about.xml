@@ -258,7 +258,7 @@
           android:layout_height="wrap_content"
           android:layout_marginHorizontal="16dp"
           android:layout_marginTop="4dp"
-          android:text="@string/AUTHOR_NAME"
+          android:text="@string/author_name"
           android:textAppearance="?textAppearanceHeadlineSmall"
           android:textColor="?colorPrimary"
           app:layout_constraintStart_toStartOf="parent"
@@ -277,7 +277,6 @@
           android:minWidth="0dp"
           android:minHeight="0dp"
           android:padding="4dp"
-          android:text="@string/AUTHOR_WEBSITE"
           android:textAppearance="?textAppearanceBodyLarge"
           android:textColor="?colorSecondary"
           app:icon="@drawable/ic_external_link"
@@ -287,6 +286,7 @@
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintTop_toBottomOf="@+id/flag"
           tools:ignore="TouchTargetSizeCheck"
+          tools:text="anissan.com"
           />
 
         <com.google.android.material.divider.MaterialDivider

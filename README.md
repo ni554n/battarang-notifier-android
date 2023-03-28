@@ -4,9 +4,9 @@ Android Client for sending notification to the Receiver devices.
 
 ## Setup
 
-1. Rename [build-config.sample.properties](build-config.sample.properties)
-   to `build-config.properties` and populate the values
-2. Same goes to [res-config.sample.properties](res-config.sample.properties)
+1. Copy the properties from [local.example.properties](local.example.properties)
+   to `local.properties` and configure it
+2. `🔨 Make Project`
 
 
 ## Information

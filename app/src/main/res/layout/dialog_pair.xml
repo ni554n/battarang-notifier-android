@@ -23,7 +23,6 @@
       android:layout_height="wrap_content"
       android:letterSpacing="0.03"
       android:paddingVertical="16dp"
-      android:text="@string/RECEIVER_SHORT_DOMAIN"
       android:textAppearance="?textAppearanceTitleMedium"
       android:textColor="?colorPrimary"
       app:backgroundTint="?colorSecondaryContainer"
@@ -32,6 +31,7 @@
       app:iconPadding="8dp"
       app:shapeAppearance="?shapeAppearanceCornerMedium"
       app:strokeColor="?colorPrimary"
+      tools:text="b.anissan.com"
       />
 
     <com.google.android.material.textview.MaterialTextView

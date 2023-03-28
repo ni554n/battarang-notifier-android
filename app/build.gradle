@@ -15,16 +15,15 @@ android {
     versionCode 1
     versionName '0.1.0'
 
-    // Generating "BuildConfig.*" properties
+    // Generate "BuildConfig.*" properties
     Properties buildConfigProperties = new Properties()
-    buildConfigProperties.load(new FileInputStream(rootProject.file('build-config.properties')))
-    buildConfigProperties.each { key, value -> { buildConfigField('String', key, "\"$value\"") } }
-    // Values read as is; they need to be "quoted" to become strings
+    buildConfigProperties.load(new FileInputStream(rootProject.file('local.properties')))
 
-    // Generating "@string/*" resource values
-    Properties resourceConfig = new Properties()
-    resourceConfig.load(new FileInputStream(rootProject.file('res-value.properties')))
-    resourceConfig.each { key, value -> { resValue('string', key, value) } }
+    // Skip auto generated Gradle value
+    buildConfigProperties.remove('sdk.dir')
+
+    // Values loaded as characters; adding quotes to make them strings
+    buildConfigProperties.each { key, value -> { buildConfigField('String', key, "\"$value\"") } }
   }
 
   buildTypes {

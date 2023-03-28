@@ -21,11 +21,13 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.NestedScrollView
 import com.anissan.bpn.background.services.BroadcastReceiverRegistererService
+import com.anissan.bpn.data.LocalKvStore
+import com.anissan.bpn.data.MessageType
+import com.anissan.bpn.data.PrefKey
+import com.anissan.bpn.data.ReceiverApiClient
+import com.anissan.bpn.data.SupportedService
 import com.anissan.bpn.databinding.ActivityMainBinding
 import com.anissan.bpn.databinding.DialogPairBinding
-import com.anissan.bpn.network.PushServerClient
-import com.anissan.bpn.storage.PrefKey
-import com.anissan.bpn.storage.UserPreferences
 import com.anissan.bpn.ui.about.AboutSheet
 import com.anissan.bpn.ui.optimizationremover.OptimizationRemoverSheet
 import com.anissan.bpn.utils.logE
@@ -43,6 +45,7 @@ import io.github.g00fy2.quickie.ScanCustomCode
 import io.github.g00fy2.quickie.config.BarcodeFormat
 import io.github.g00fy2.quickie.config.ScannerConfig
 import org.koin.android.ext.android.inject
+import java.net.URI
 
 class MainActivity : AppCompatActivity() {
   private val userPreferences: UserPreferences by inject()
@@ -458,13 +461,15 @@ class MainActivity : AppCompatActivity() {
   private fun buildPairingDialog(): MaterialAlertDialogBuilder {
     val dialogContentView = DialogPairBinding.inflate(layoutInflater)
 
+    dialogContentView.receiverLink.text = URI(BuildConfig.RECEIVER_WEBSITE_SHORT_LINK).host
+
     dialogContentView.receiverLink.setOnLongClickListener { dialog -> dialog.performClick() }
 
     dialogContentView.receiverLink.setOnClickListener {
       val shareIntent = Intent().apply {
         action = Intent.ACTION_SEND
         type = "text/plain"
-        putExtra(Intent.EXTRA_TEXT, "https://${getString(R.string.RECEIVER_SHORT_DOMAIN)}")
+        putExtra(Intent.EXTRA_TEXT, BuildConfig.RECEIVER_WEBSITE_SHORT_LINK)
       }
 
       startActivity(Intent.createChooser(shareIntent, null))
