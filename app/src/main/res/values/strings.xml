@@ -2,7 +2,7 @@
   <string name="app_name">Battarang</string>
 
   <!-- Notification -->
-  <string name="notifier_service_channel">Push Notifier Service</string>
+  <string name="notifier_service_channel">Notifier Service</string>
   <string name="notifier_service_channel_description">It is safe to turn off or minimize this channel</string>
 
   <string name="service_notification_ticker">Started Battery Push Notifier service</string>
@@ -18,7 +18,7 @@
 
   <!-- Configs -->
 
-  <string name="notification_service">Push Notifier Service</string>
+  <string name="notification_service">Notifier Service</string>
 
   <string name="label_device_name">Device Name</string>
 
@@ -26,21 +26,27 @@
   <string name="battery_level_reaches_template">Battery level reaches ~%</string>
   <string name="battery_level_slider">Slider for adjusting the battery level</string>
   <string name="battery_is_low_template">Battery is low</string>
-  <string name="label_but">But do</string>
+  <string name="label_but">But Must</string>
   <string name="skip_if_display_on_template">Skip while display is on</string>
 
   <string name="pair_with_device">Pair Receiver</string>
   <string name="unpair">Unpair</string>
   <string name="pair_dialog_title">Visit this link from the other device</string>
-  <string name="pair_dialog_content">On the Receiver “Enable Notification” and scan or paste the token into this device.\n\nIf pairing is successful, you’ll receive a confirmation notification on that device.</string>
+  <string name="pair_dialog_content">On the Receiver “Enable Notification” and scan or paste the Code into this device.\n\nIf pairing is successful, you’ll receive a confirmation notification on that device.</string>
   <string name="pair_dialog_paste_button">Paste instead</string>
   <string name="pair_dialog_scan_button">Scan QR</string>
   <string name="unpair_dialog_content">Are you sure?</string>
   <string name="unpair_dialog_button_unpair">Unpair</string>
   <string name="unpair_dialog_button_cancel">Cancel</string>
 
-  <string name="token_invalid">Token is invalid. Make sure to Scan or Paste correct token from Receiver app.</string>
+  <string name="invalid_token">Pairing Code is invalid. Make sure it is correctly scanned or pasted.</string>
+  <string name="camera_unavailable">Can\'t open Camera. Copy the Code and "Paste instead".</string>
+  <string name="camera_permission_missing">You need to provide the camera permission from Settings</string>
   <string name="quickie_overlay_string">Point to the Receiver app</string>
+
+  <string name="test_notification_sending">Send a test notification to ~%</string>
+  <string name="test_notification_success">Successfully sent. Check the receiver.</string>
+  <string name="network_error">Failed to connect to the receiver.\nCheck if your internet is working.\nThen check if the Pairing Code is scanned or pasted correctly.</string>
 
   <string name="about">About</string>
 

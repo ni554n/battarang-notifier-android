@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import com.anissan.bpn.background.receivers.handlers.BroadcastedEventHandlers
-import com.anissan.bpn.storage.UserPreferences
+import com.anissan.bpn.data.LocalKvStore
 import com.anissan.bpn.utils.logE
 import com.anissan.bpn.utils.logV
 import com.anissan.bpn.utils.logW
@@ -16,12 +16,12 @@ import org.koin.core.component.inject
  * Receives charger connection events and battery low event broadcasted by the System.
  */
 class BatteryStatusReceiver : BroadcastReceiver(), KoinComponent {
-  private val userPreferences: UserPreferences by inject()
+  private val localKvStore: LocalKvStore by inject()
   private val broadcastedEventHandlers: BroadcastedEventHandlers by inject()
 
   val intentFiltersBasedOnPreference: IntentFilter
     get() = IntentFilter().apply {
-      userPreferences.run {
+      localKvStore.run {
         if (isMaxLevelNotificationEnabled) {
           addAction(Intent.ACTION_POWER_CONNECTED)
           addAction(Intent.ACTION_POWER_DISCONNECTED)

@@ -48,13 +48,13 @@ import org.koin.android.ext.android.inject
 import java.net.URI
 
 class MainActivity : AppCompatActivity() {
-  private val userPreferences: UserPreferences by inject()
-  private val pushServerClient: PushServerClient by inject()
+  private val localKvStore: LocalKvStore by inject()
+  private val receiverApiClient: ReceiverApiClient by inject()
 
   private lateinit var mainActivityBinding: ActivityMainBinding
 
   private val paired: Boolean
-    get() = userPreferences.receiverToken.isNullOrBlank().not()
+    get() = localKvStore.receiverToken.isNullOrBlank().not()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -70,8 +70,7 @@ class MainActivity : AppCompatActivity() {
       // Manually adjusting the padding and margins as the Window is now edge-to-edge.
       insetViewPositions()
 
-      // Each `setup*` function initializes the Views with its saved data from UserPref, as well as
-      // registers the event listeners.
+      /* Each `setup` function initializes the Views with its saved states and registers the event listeners. */
 
       setupNotificationServiceToggleSwitch()
       setupBatteryExemptionGuide()
@@ -92,7 +91,7 @@ class MainActivity : AppCompatActivity() {
   override fun onResume() {
     super.onResume()
 
-    userPreferences.startObservingChanges { _: SharedPreferences, key: String? ->
+    localKvStore.startObservingChanges { _: SharedPreferences, key: String? ->
       if (key == null) return@startObservingChanges
 
       logV { "$key has been updated by user" }
@@ -113,9 +112,11 @@ class MainActivity : AppCompatActivity() {
   override fun onPause() {
     super.onPause()
 
-    userPreferences.stopObservingChanges()
+    localKvStore.stopObservingChanges()
     logV { "onPause: Stopped observing for sharedPreferences changes." }
   }
+
+  //region View setup and initializers
 
   /**
    * Provide proper margin and padding to prevent views from overlapping with the system elements
@@ -167,7 +168,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     switchNotificationService.setOnCheckedChangeListener { _: CompoundButton, isChecked: Boolean ->
-      userPreferences.isMonitoringServiceEnabled = isChecked
+      localKvStore.isMonitoringServiceEnabled = isChecked
     }
   }
 
@@ -185,8 +186,8 @@ class MainActivity : AppCompatActivity() {
       isEndIconVisible = false
 
       setEndIconOnClickListener { endIconView: View ->
-        userPreferences.deviceName =
-          editTextDeviceName.text.toString().ifBlank { UserPreferences.DEFAULT_DEVICE_NAME }
+        localKvStore.deviceName =
+          editTextDeviceName.text.toString().ifBlank { LocalKvStore.DEFAULT_DEVICE_NAME }
 
         // Let the ripple animation finish before hiding the save icon.
         handler.postDelayed({ isEndIconVisible = false }, 450)
@@ -200,18 +201,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     editTextDeviceName.run {
-      setText(userPreferences.deviceName)
+      setText(localKvStore.deviceName)
 
       setOnFocusChangeListener { _: View?, hasFocus: Boolean ->
         if (hasFocus) textInputLayoutDeviceName.isEndIconVisible = true
-        else if (text.toString().isBlank()) setText(userPreferences.deviceName)
+        else if (text.toString().isBlank()) setText(localKvStore.deviceName)
       }
     }
   }
 
   private fun ActivityMainBinding.setupMaxBatteryLevelToggleCheckbox() {
     checkBoxMaxBatteryLevel.run {
-      isChecked = userPreferences.isMaxLevelNotificationEnabled
+      isChecked = localKvStore.isMaxLevelNotificationEnabled
 
       /**
        * Setting up a bold and text color Span on the "~%" portion of the checkbox text, so that,
@@ -247,7 +248,7 @@ class MainActivity : AppCompatActivity() {
 
       checkBoxMaxBatteryLevel.text = maxLevelSpannableStringBuilder.insert(
         tildeEnd,
-        userPreferences.maxChargingLevelPercentage.toString(),
+        localKvStore.maxChargingLevelPercentage.toString(),
       )
 
       bindMaxLevelSlider(maxLevelSpannableStringBuilder, tildeEnd)
@@ -255,7 +256,7 @@ class MainActivity : AppCompatActivity() {
       bindClicksFrom(cardBatteryLevelReached)
 
       setOnCheckedChangeListener { _: CompoundButton, isChecked: Boolean ->
-        userPreferences.isMaxLevelNotificationEnabled = isChecked
+        localKvStore.isMaxLevelNotificationEnabled = isChecked
       }
     }
   }
@@ -265,7 +266,7 @@ class MainActivity : AppCompatActivity() {
     tildeEnd: Int,
   ) {
     batteryLevelSlider.run {
-      val savedMaxLevel: Int = userPreferences.maxChargingLevelPercentage
+      val savedMaxLevel: Int = localKvStore.maxChargingLevelPercentage
       value = savedMaxLevel.toFloat()
 
       // Keeping this length in memory so that it can be determined how many digits
@@ -274,7 +275,7 @@ class MainActivity : AppCompatActivity() {
 
       addOnChangeListener { _: Slider, updatedValue: Float, _: Boolean ->
         val updatedLevelValue: Int = updatedValue.toInt()
-        userPreferences.maxChargingLevelPercentage = updatedLevelValue
+        localKvStore.maxChargingLevelPercentage = updatedLevelValue
 
         val updatedLevelValueString = "$updatedLevelValue"
 
@@ -291,7 +292,7 @@ class MainActivity : AppCompatActivity() {
 
   private fun ActivityMainBinding.setupLowBatteryToggleCheckbox() {
     checkBoxBatteryLevelLow.run {
-      isChecked = userPreferences.isLowBatteryNotificationEnabled
+      isChecked = localKvStore.isLowBatteryNotificationEnabled
 
       // Formatting the "LOW" portion bold with color.
       text = SpannableString(getString(R.string.battery_is_low_template)).apply {
@@ -321,14 +322,14 @@ class MainActivity : AppCompatActivity() {
       bindClicksFrom(cardBatteryLevelLow)
 
       setOnCheckedChangeListener { _: CompoundButton, isChecked: Boolean ->
-        userPreferences.isLowBatteryNotificationEnabled = isChecked
+        localKvStore.isLowBatteryNotificationEnabled = isChecked
       }
     }
   }
 
   private fun ActivityMainBinding.setupSkipIfDisplayOnToggleCheckbox() {
     checkBoxSkipWhileDisplayOn.run {
-      isChecked = userPreferences.isSkipWhileDisplayOnEnabled
+      isChecked = localKvStore.isSkipWhileDisplayOnEnabled
 
       // Formatting the "ON" portion bold with color.
       text = SpannableString(getString(R.string.skip_if_display_on_template)).apply {
@@ -358,7 +359,7 @@ class MainActivity : AppCompatActivity() {
       bindClicksFrom(cardSkipWhileDisplayOn)
 
       setOnCheckedChangeListener { _: CompoundButton, isChecked: Boolean ->
-        userPreferences.isSkipWhileDisplayOnEnabled = isChecked
+        localKvStore.isSkipWhileDisplayOnEnabled = isChecked
       }
     }
   }
@@ -436,19 +437,9 @@ class MainActivity : AppCompatActivity() {
       insets
     }
   }
+  //endregion
 
-  private val qrCodeScanner: ActivityResultLauncher<ScannerConfig> =
-    registerForActivityResult(ScanCustomCode()) { scanResult: QRResult ->
-      when (scanResult) {
-        QRResult.QRMissingPermission -> logV { "Missing permission" }
-
-        QRResult.QRUserCanceled -> logV { "User canceled" }
-
-        is QRResult.QRError -> logE { scanResult.exception.localizedMessage ?: "Error" }
-
-        is QRResult.QRSuccess -> saveToken(scanResult.content.rawValue)
-      }
-    }
+  //region Handle scanned or pasted token by the user
 
   private val qrScannerConfig = ScannerConfig.build {
     setBarcodeFormats(listOf(BarcodeFormat.FORMAT_QR_CODE))
@@ -457,6 +448,52 @@ class MainActivity : AppCompatActivity() {
     setOverlayStringRes(R.string.quickie_overlay_string)
     setHapticSuccessFeedback(true)
   }
+
+  private val qrCodeScanner: ActivityResultLauncher<ScannerConfig> =
+    registerForActivityResult(ScanCustomCode()) { scanResult: QRResult ->
+      when (scanResult) {
+        QRResult.QRUserCanceled -> logV { "User went back without scanning a QR code" }
+
+        QRResult.QRMissingPermission -> showSnackbar(
+          R.string.camera_permission_missing,
+          Snackbar.LENGTH_SHORT,
+        )
+
+        is QRResult.QRError -> {
+          logE(scanResult.exception)
+          showSnackbar(R.string.camera_unavailable)
+        }
+
+        is QRResult.QRSuccess -> connectToReceiver(scanResult.content.rawValue)
+      }
+    }
+
+  private fun connectToReceiver(providedText: String) {
+    logV { "Scanned QR / pasted text: $providedText" }
+
+    try {
+      val (service, token) = providedText.split(":", limit = 2)
+      localKvStore.pairedService = SupportedService.valueOf(service).name
+      localKvStore.receiverToken = token.ifBlank { throw Exception("Token can not be blank.") }
+    } catch (e: Exception) {
+      logE(e)
+      showSnackbar(R.string.invalid_token)
+      return
+    }
+
+    localKvStore.isMonitoringServiceEnabled = true
+
+    // This function is called before onResume has a chance to start observing the sharedPref changes.
+    // Manual refresh is required here to update the screen state.
+    refreshAfterPairingUnpairing()
+
+    receiverApiClient.sendNotification(
+      MessageType.PAIRED,
+      onFail = { showSnackbar(R.string.network_error) },
+    )
+  }
+
+  //endregion
 
   private fun buildPairingDialog(): MaterialAlertDialogBuilder {
     val dialogContentView = DialogPairBinding.inflate(layoutInflater)
@@ -484,48 +521,23 @@ class MainActivity : AppCompatActivity() {
         val clipboardText: CharSequence =
           clipboard?.primaryClip?.getItemAt(0)?.text ?: ""
 
-        saveToken(clipboardText.toString())
+        connectToReceiver(clipboardText.toString())
       }
       .setPositiveButton(getString(R.string.pair_dialog_scan_button)) { _, _ ->
         try {
           qrCodeScanner.launch(qrScannerConfig)
         } catch (e: Exception) {
-          Snackbar.make(
-            mainActivityBinding.root,
-            "Can't open Camera, use \"Paste instead\"",
-            Snackbar.LENGTH_LONG,
-          ).setAnchorView(mainActivityBinding.fabPair).show()
+          showSnackbar(R.string.camera_unavailable, Snackbar.LENGTH_SHORT)
         }
       }
   }
 
-  private fun saveToken(token: String) {
-    logV { "GCM TOKEN: $token" }
-
-    if (token.isBlank()) {
-      Snackbar.make(mainActivityBinding.root, R.string.token_invalid, Snackbar.LENGTH_LONG)
-        .setAnchorView(mainActivityBinding.fabPair)
-        .show()
-
-      return
-    }
-
-    userPreferences.receiverToken = token
-    userPreferences.isMonitoringServiceEnabled = true
-
-    // This function is called before onResume has a chance to start observing the sharedPref changes.
-    // Manual refresh is required here to update the screen state.
-    refreshAfterPairingUnpairing()
-
-    // Send a test push notification
-    pushServerClient.postNotification(token, "Successfully Paired", "It is working correctly!")
-  }
-
   private fun buildUnpairingDialog(): MaterialAlertDialogBuilder {
     return MaterialAlertDialogBuilder(this, R.style.UnpairDialog)
-      .setTitle(getString(R.string.unpair_dialog_content))
+      .setTitle(SupportedService.valueOf(localKvStore.pairedService ?: "").serviceName)
+      .setMessage(getString(R.string.unpair_dialog_content))
       .setPositiveButton(getString(R.string.unpair_dialog_button_unpair)) { _, _ ->
-        userPreferences.receiverToken = null
+        localKvStore.receiverToken = null
       }
       .setNegativeButton(getString(R.string.unpair_dialog_button_cancel)) { dialog: DialogInterface, _ -> dialog.dismiss() }
   }
@@ -536,9 +548,7 @@ class MainActivity : AppCompatActivity() {
     mainActivityBinding.apply {
       when {
         !paired -> {
-          Snackbar.make(root, R.string.unpaired, Snackbar.LENGTH_SHORT)
-            .setAnchorView(mainActivityBinding.fabPair)
-            .show()
+          showSnackbar(R.string.unpaired, Snackbar.LENGTH_SHORT)
 
           cardBatteryExemption.visibility = View.GONE
           unpairButton.visibility = View.GONE
@@ -547,13 +557,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         else -> {
-          Snackbar.make(
-            mainActivityBinding.root,
-            R.string.successful_pairing,
-            Snackbar.LENGTH_SHORT,
-          )
-            .setAnchorView(mainActivityBinding.fabPair)
-            .show()
+          showSnackbar(R.string.successful_pairing, Snackbar.LENGTH_SHORT)
 
           cardBatteryExemption.visibility = View.VISIBLE
           unpairButton.visibility = View.VISIBLE
@@ -570,7 +574,7 @@ class MainActivity : AppCompatActivity() {
 
     val switchNotificationService: MaterialSwitch = mainActivityBinding.switchNotificationService
 
-    userPreferences.run {
+    localKvStore.run {
       // At least one of the "NOTIFY WHEN" option needs to be checked for the switch to be enabled.
       val isNotifyWhenEnabled = isMaxLevelNotificationEnabled || isLowBatteryNotificationEnabled
       val shouldServiceBeEnabled = isNotifyWhenEnabled && paired
@@ -584,5 +588,15 @@ class MainActivity : AppCompatActivity() {
       if (switchNotificationService.isChecked) BroadcastReceiverRegistererService.start(this@MainActivity)
       else BroadcastReceiverRegistererService.stop(this@MainActivity)
     }
+  }
+
+  private fun showSnackbar(stringResId: Int, length: Int = Snackbar.LENGTH_LONG) {
+    Snackbar.make(mainActivityBinding.root, stringResId, length)
+      .setAnchorView(mainActivityBinding.fabPair)
+      .show()
+  }
+
+  private fun showToast(stringResId: Int, toastLength: Int = Toast.LENGTH_SHORT) {
+    Toast.makeText(this, getString(stringResId), toastLength).show()
   }
 }

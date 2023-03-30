@@ -5,8 +5,8 @@ import android.os.PowerManager
 import com.anissan.bpn.background.receivers.BatteryLevelPollingAlarmReceiver
 import com.anissan.bpn.background.receivers.BatteryStatusReceiver
 import com.anissan.bpn.background.receivers.handlers.BroadcastedEventHandlers
-import com.anissan.bpn.network.PushServerClient
-import com.anissan.bpn.storage.UserPreferences
+import com.anissan.bpn.data.LocalKvStore
+import com.anissan.bpn.data.ReceiverApiClient
 import com.anissan.bpn.utils.SystemLogBackend
 import com.anissan.bpn.utils.Ulog
 import com.google.android.material.color.DynamicColors
@@ -33,12 +33,13 @@ class MainApplication : Application() {
       androidContext(this@MainApplication)
 
       modules(module {
-        single { UserPreferences(androidContext()) }
+        single { LocalKvStore(androidContext()) }
 
         single {
-          PushServerClient(
-            androidContext().getSystemService(POWER_SERVICE) as PowerManager,
-            OkHttpClient(),
+          ReceiverApiClient(
+            powerManager = androidContext().getSystemService(POWER_SERVICE) as PowerManager,
+            okHttpClient = OkHttpClient(),
+            localKvStore = get(),
           )
         }
 

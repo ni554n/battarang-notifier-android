@@ -11,6 +11,7 @@
       <w>poweron</w>
       <w>quickboot</w>
       <w>sharedpref</w>
+      <w>snackbar</w>
       <w>ulog</w>
     </words>
   </dictionary>

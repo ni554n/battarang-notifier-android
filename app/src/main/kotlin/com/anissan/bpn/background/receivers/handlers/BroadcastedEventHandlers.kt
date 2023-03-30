@@ -4,13 +4,16 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.hardware.display.DisplayManager
 import android.os.BatteryManager
 import android.os.Build
 import android.os.SystemClock
+import android.view.Display
 import com.anissan.bpn.background.receivers.BatteryLevelPollingAlarmReceiver
 import com.anissan.bpn.background.receivers.BatteryStatusReceiver
-import com.anissan.bpn.network.PushServerClient
-import com.anissan.bpn.storage.UserPreferences
+import com.anissan.bpn.data.LocalKvStore
+import com.anissan.bpn.data.MessageType
+import com.anissan.bpn.data.ReceiverApiClient
 import com.anissan.bpn.utils.logV
 
 /**
@@ -19,15 +22,15 @@ import com.anissan.bpn.utils.logV
  */
 class BroadcastedEventHandlers(
   private val context: Context,
-  private val userPreferences: UserPreferences,
-  private val pushServerClient: PushServerClient,
+  private val localKvStore: LocalKvStore,
+  private val receiverApiClient: ReceiverApiClient,
 ) {
-  private val alarmManager: AlarmManager =
+  private val batteryLevelPollingAlarm: AlarmManager =
     context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
   private val alarmId: Int = 64
 
-  private val pollingAlarmIntent: Intent =
+  private val levelCheckerIntent: Intent =
     Intent(context, BatteryLevelPollingAlarmReceiver::class.java)
       .setAction(BatteryLevelPollingAlarmReceiver.ACTION_CHECK_BATTERY_LEVEL)
 
@@ -40,18 +43,21 @@ class BroadcastedEventHandlers(
       PendingIntent.FLAG_CANCEL_CURRENT
     }
 
+  private val currentBatteryLevel: Int
+    get() = (context.getSystemService(Context.BATTERY_SERVICE) as BatteryManager)
+      .getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
+
   fun startBatteryLevelPollingAlarm() {
-    // Maybe the user wants to fully charge the battery this time.
-    if (checkCurrentBatteryLevel() > userPreferences.maxChargingLevelPercentage) {
+    if (currentBatteryLevel > localKvStore.maxChargingLevelPercentage) {
       logV { "Charger Connected: But not setting the alarm because battery level is already ahead of the preferred level." }
       return
     }
 
-    alarmManager.setRepeating(
+    batteryLevelPollingAlarm.setRepeating(
       AlarmManager.ELAPSED_REALTIME_WAKEUP,
       SystemClock.elapsedRealtime(),
       60 * 1_000L, // 1 minute
-      PendingIntent.getBroadcast(context, alarmId, pollingAlarmIntent, pendingIntentFlag),
+      PendingIntent.getBroadcast(context, alarmId, levelCheckerIntent, pendingIntentFlag),
     )
 
     logV { "Charger Connected: Starting an Alarm to check the battery level at a minute interval..." }
@@ -60,59 +66,45 @@ class BroadcastedEventHandlers(
   fun stopBatteryLevelPollingAlarm() {
     logV { "Requested to stop the periodic alarm" }
 
-    alarmManager.cancel(
+    batteryLevelPollingAlarm.cancel(
       PendingIntent.getBroadcast(
         context,
         alarmId,
-        pollingAlarmIntent,
-        pendingIntentFlag
+        levelCheckerIntent,
+        pendingIntentFlag,
       )
     )
     logV { "Stopped the periodic battery level checker alarm" }
   }
 
   fun notifyBatteryIsLow() {
-    if (userPreferences.shouldNotify(context)) {
-      pushServerClient.postNotification(
-        userPreferences.notifierGcmToken,
-        title = "🔋⚠ Low!",
-        body = "🔌 Connect to a power source!",
-      )
+    if (shouldSkipNotification()) return
 
-      logV { "Battery low event has been notified successfully" }
-    } else {
-      logV { "Skipped battery low push notification due to user preference" }
-    }
+    receiverApiClient.sendNotification(MessageType.LOW)
   }
 
   fun notifyAfterLevelReached() {
-    logV { "Triggered alarm event for battery level check" }
+    if (shouldSkipNotification()) return
 
-    if (userPreferences.shouldNotify(context).not()) {
-      logV { "Skipped alarm event due to user preference" }
-      return
-    }
+    val batteryLevel: Int = currentBatteryLevel
 
-    val currentBatteryLevel: Int = checkCurrentBatteryLevel()
+    if (batteryLevel < localKvStore.maxChargingLevelPercentage) return
 
-    if (currentBatteryLevel < userPreferences.maxChargingLevelPercentage) return
-
-    pushServerClient.postNotification(
-      token = userPreferences.notifierGcmToken,
-      title = "🔋 $currentBatteryLevel%",
-      body = "⚡ Disconnect.",
-    ) {
-      logV { "Notification has been sent successfully." }
-
-      stopBatteryLevelPollingAlarm()
-    }
+    stopBatteryLevelPollingAlarm()
+    receiverApiClient.sendNotification(MessageType.FULL, batteryLevel)
   }
 
-  private fun checkCurrentBatteryLevel(): Int {
-    val currentLevel: Int = (context.getSystemService(Context.BATTERY_SERVICE) as BatteryManager)
-      .getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
+  /**
+   * Determines if notifications should be sent based on user preference and the current display state.
+   * */
+  private fun shouldSkipNotification(): Boolean {
+    if (localKvStore.isSkipWhileDisplayOnEnabled) {
+      // Make sure every display is OFF before notifying.
+      return (context.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager)
+        .displays
+        .all { display: Display -> display.state == Display.STATE_OFF }
+    }
 
-    logV { "Battery level = $currentLevel%" }
-    return currentLevel
+    return false
   }
 }
