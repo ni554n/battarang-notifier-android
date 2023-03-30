@@ -33,15 +33,18 @@ class ReceiverApiClient(
 ) : Callback {
   private lateinit var _onFail: () -> Unit
   private lateinit var _onSuccess: () -> Unit
+  private lateinit var _finally: () -> Unit
 
   fun sendNotification(
     messageType: MessageType,
     batteryLevel: Int? = null,
     onFail: () -> Unit = {},
     onSuccess: () -> Unit = {},
+    finally: () -> Unit = {},
   ) {
     _onFail = onFail
     _onSuccess = onSuccess
+    _finally = finally
 
     val url: String = BuildConfig.RECEIVER_API_URL.toHttpUrl().newBuilder().apply {
       mapOf(
@@ -77,7 +80,10 @@ class ReceiverApiClient(
 
   override fun onFailure(call: Call, e: IOException) {
     logE(e)
-    Handler(Looper.getMainLooper()).post(_onFail)
+    Handler(Looper.getMainLooper()).post {
+      _onFail()
+      _finally()
+    }
   }
 
   override fun onResponse(call: Call, response: Response) {
@@ -88,7 +94,10 @@ class ReceiverApiClient(
 
       localKvStore.lastTelegramMessageId = response.headers["X-Tg-Message-Id"]
 
-      Handler(Looper.getMainLooper()).post(_onSuccess)
+      Handler(Looper.getMainLooper()).post {
+        _onSuccess()
+        _finally()
+      }
     }
   }
 }

@@ -5,6 +5,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Typeface
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
@@ -16,6 +17,7 @@ import android.widget.CompoundButton
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.TooltipCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -37,6 +39,8 @@ import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.materialswitch.MaterialSwitch
+import com.google.android.material.progressindicator.CircularProgressIndicatorSpec
+import com.google.android.material.progressindicator.IndeterminateDrawable
 import com.google.android.material.slider.Slider
 import com.google.android.material.snackbar.Snackbar
 import dev.chrisbanes.insetter.applyInsetter
@@ -392,18 +396,29 @@ class MainActivity : AppCompatActivity() {
 
     unpairButton.setOnClickListener { buildUnpairingDialog().show() }
 
+    TooltipCompat.setTooltipText(testButton, testButton.contentDescription)
+
+    val sendIcon: Drawable = testButton.icon
+
+    val loadingIcon = IndeterminateDrawable.createCircularDrawable(
+      this@MainActivity,
+      CircularProgressIndicatorSpec(
+        this@MainActivity,
+        null,
+        0,
+        com.google.android.material.R.style.Widget_Material3_CircularProgressIndicator_ExtraSmall,
+      )
+    )
+
     testButton.setOnClickListener {
-      pushServerClient.postNotification(
-        userPreferences.notifierGcmToken,
-        "Successfully Paired",
-        "It is working correctly!",
-      ) {
-        Toast.makeText(
-          this@MainActivity,
-          "Test notification sent. Check the receiver device.",
-          Toast.LENGTH_SHORT,
-        ).show()
-      }
+      testButton.icon = loadingIcon
+
+      receiverApiClient.sendNotification(
+        MessageType.TEST,
+        onFail = { showSnackbar(R.string.network_error) },
+        onSuccess = { showToast(R.string.test_notification_success) },
+        finally = { testButton.icon = sendIcon }
+      )
     }
 
     aboutButton.setOnClickListener {
@@ -591,9 +606,13 @@ class MainActivity : AppCompatActivity() {
   }
 
   private fun showSnackbar(stringResId: Int, length: Int = Snackbar.LENGTH_LONG) {
-    Snackbar.make(mainActivityBinding.root, stringResId, length)
-      .setAnchorView(mainActivityBinding.fabPair)
-      .show()
+    mainActivityBinding.apply {
+      Snackbar.make(root, stringResId, length).apply {
+        if (fabPair.visibility == View.VISIBLE) anchorView = fabPair
+
+        show()
+      }
+    }
   }
 
   private fun showToast(stringResId: Int, toastLength: Int = Toast.LENGTH_SHORT) {
