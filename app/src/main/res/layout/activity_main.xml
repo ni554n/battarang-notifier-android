@@ -251,6 +251,7 @@
             android:drawablePadding="2dp"
             android:imeOptions="actionDone"
             android:singleLine="true"
+            android:textColor="?colorSecondary"
             tools:text="Xiaomi Mi 6"
             />
 
@@ -320,6 +321,7 @@
               android:paddingHorizontal="10dp"
               android:text="@string/battery_level_reaches_template"
               android:textAppearance="?textAppearanceBodyLarge"
+              android:textColor="?colorSecondary"
               app:lastBaselineToBottomHeight="7sp"
               tools:checked="true"
               tools:ignore="VisualLintButtonSize"
@@ -365,6 +367,7 @@
               android:paddingHorizontal="10dp"
               android:text="@string/battery_is_low_template"
               android:textAppearance="?textAppearanceBodyLarge"
+              android:textColor="?colorSecondary"
               app:lastBaselineToBottomHeight="7sp"
               tools:checked="true"
               tools:ignore="VisualLintButtonSize"
@@ -410,6 +413,7 @@
               android:paddingHorizontal="10dp"
               android:text="@string/skip_if_display_on_template"
               android:textAppearance="?textAppearanceBodyLarge"
+              android:textColor="?colorSecondary"
               app:lastBaselineToBottomHeight="7sp"
               tools:checked="false"
               tools:ignore="VisualLintButtonSize"
