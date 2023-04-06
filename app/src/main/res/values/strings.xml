@@ -11,10 +11,10 @@
 
   <string name="service_notification_channel_settings">Hide this notification</string>
 
-  <!-- Battery Exemption Card  -->
-  <string name="optimization_exemption_1">Automation apps like this are subject to battery optimization rules imposed by the device makers and the Android itself.</string>
-  <string name="optimization_exemption_2">Your system will most probably interrupt this notifier service, even though, it just waits for battery events without using any resources.</string>
-  <string name="optimization_exemption_3">Tap here to remove these restrictions</string>
+  <!-- Battery Exemption Dialog  -->
+  <string name="optimization_exemption_title">Battery Optimization</string>
+  <string name="optimization_exemption_dialog">Automation apps like this are subject to battery optimization rules imposed by the device makers and the Android itself.\n\nYour system will most probably interrupt this notifier service, even though, it just waits for battery events without using any resources.</string>
+  <string name="optimization_exemption_button">Remove these Restrictions</string>
 
   <!-- Configs -->
 

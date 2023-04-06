@@ -87,8 +87,6 @@
         android:layout_marginBottom="16dp"
         android:clickable="true"
         android:focusable="true"
-        app:cardElevation="1dp"
-        app:layout_constraintBottom_toTopOf="@+id/barrier_dynamic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -133,82 +131,6 @@
         </LinearLayout>
       </com.google.android.material.card.MaterialCardView>
 
-      <!--  Guide to "Remove Battery Optimization" card. Only visible after pairing.    -->
-      <com.google.android.material.card.MaterialCardView
-        android:id="@+id/card_battery_exemption"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="-48dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:visibility="gone"
-        app:cardBackgroundColor="@color/primary_opacity_5_percent"
-        app:layout_constraintBottom_toTopOf="@+id/barrier_dynamic"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/card_notification_service"
-        app:layout_constraintVertical_bias="0.0"
-        app:layout_constraintWidth_max="@dimen/card_max_width"
-        app:strokeColor="?colorPrimary"
-        app:strokeWidth="0dp"
-        >
-
-        <LinearLayout
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:orientation="vertical"
-          android:paddingHorizontal="16dp"
-          android:paddingVertical="16dp"
-          >
-
-          <!--          <ImageView-->
-          <!--            android:layout_width="56dp"-->
-          <!--            android:layout_height="56dp"-->
-          <!--            android:layout_gravity="center_horizontal"-->
-          <!--            android:layout_marginBottom="8dp"-->
-          <!--            android:src="@drawable/ic_optimization_exemption"-->
-          <!--            app:tint="?colorPrimary"-->
-          <!--            />-->
-
-          <com.google.android.material.textview.MaterialTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="48dp"
-            android:gravity="center_horizontal"
-            android:text="@string/optimization_exemption_1"
-            android:textColor="?colorSecondary"
-            />
-
-          <com.google.android.material.textview.MaterialTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:gravity="center_horizontal"
-            android:text="@string/optimization_exemption_2"
-            android:textColor="?colorSecondary"
-            />
-
-          <com.google.android.material.textview.MaterialTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp"
-            android:gravity="center_horizontal"
-            android:text="@string/optimization_exemption_3"
-            android:textColor="?colorPrimary"
-            />
-        </LinearLayout>
-      </com.google.android.material.card.MaterialCardView>
-
-      <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/barrier_dynamic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:barrierDirection="bottom"
-        app:constraint_referenced_ids="card_notification_service,card_battery_exemption"
-        />
-
       <!-- Device Name Input -->
       <!--  On some Android version, during activity start, first EditText gets focused automatically.
             And clearing the EditText focus won't work if the focus can't move to anywhere else.
@@ -218,14 +140,14 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="36dp"
         android:descendantFocusability="beforeDescendants"
         android:focusable="true"
         android:focusableInTouchMode="true"
         app:cardBackgroundColor="?colorSecondaryContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/barrier_dynamic"
+        app:layout_constraintTop_toBottomOf="@+id/card_notification_service"
         app:layout_constraintWidth_max="@dimen/card_max_width"
         app:shapeAppearance="?shapeAppearanceCornerSmall"
         app:strokeWidth="0dp"

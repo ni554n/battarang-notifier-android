@@ -1,7 +1,6 @@
 package com.anissan.bpn
 
 import android.content.ClipboardManager
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Typeface
@@ -79,7 +78,6 @@ class MainActivity : AppCompatActivity() {
       setupToolbarMenu()
 
       setupNotificationServiceToggleSwitch()
-      setupBatteryExemptionGuide()
 
       setupDeviceNameInputField()
 
@@ -188,14 +186,6 @@ class MainActivity : AppCompatActivity() {
 
     switchNotificationService.setOnCheckedChangeListener { _: CompoundButton, isChecked: Boolean ->
       localKvStore.isMonitoringServiceEnabled = isChecked
-    }
-  }
-
-  private fun ActivityMainBinding.setupBatteryExemptionGuide() {
-    cardBatteryExemption.setOnClickListener {
-      OptimizationRemoverSheet.show(supportFragmentManager)
-
-      it.visibility = View.GONE
     }
   }
 
@@ -574,19 +564,17 @@ class MainActivity : AppCompatActivity() {
         !paired -> {
           showSnackbar(R.string.unpaired, Snackbar.LENGTH_SHORT)
 
-          cardBatteryExemption.visibility = View.GONE
           unpairButton.visibility = View.GONE
           testButton.visibility = View.GONE
           fabPair.show()
         }
 
         else -> {
-          showSnackbar(R.string.successful_pairing, Snackbar.LENGTH_SHORT)
-
-          cardBatteryExemption.visibility = View.VISIBLE
           unpairButton.visibility = View.VISIBLE
           testButton.visibility = View.VISIBLE
           fabPair.hide()
+
+          buildOptimizationExemptionRequestDialog().show()
         }
       }
     }
@@ -612,6 +600,16 @@ class MainActivity : AppCompatActivity() {
       if (switchNotificationService.isChecked) BroadcastReceiverRegistererService.start(this@MainActivity)
       else BroadcastReceiverRegistererService.stop(this@MainActivity)
     }
+  }
+
+  private fun buildOptimizationExemptionRequestDialog(): MaterialAlertDialogBuilder {
+    return MaterialAlertDialogBuilder(this, R.style.CenteredDialog)
+      .setIcon(R.drawable.ic_heart)
+      .setTitle(getString(R.string.optimization_exemption_title))
+      .setMessage(R.string.optimization_exemption_dialog)
+      .setPositiveButton(R.string.optimization_exemption_button) { _, _ ->
+        OptimizationRemoverSheet.show(supportFragmentManager)
+      }
   }
 
   private fun showSnackbar(stringResId: Int, length: Int = Snackbar.LENGTH_LONG) {
