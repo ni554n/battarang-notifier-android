@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  >
+
+  <item
+    android:id="@+id/remove_battery_restriction"
+    android:icon="@drawable/ic_heart"
+    android:title="@string/remove_battery_restrictions"
+    app:showAsAction="ifRoom"
+    />
+</menu>

@@ -46,11 +46,15 @@
       <!--        />-->
 
       <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/material_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
+        android:paddingEnd="12dp"
         app:layout_collapseMode="pin"
+        app:menu="@menu/toolbar"
         app:title="@string/app_name"
         app:titleTextColor="?colorOnSecondaryContainer"
+        tools:ignore="RtlSymmetry"
         />
 
     </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -486,25 +490,6 @@
             />
         </LinearLayout>
       </com.google.android.material.card.MaterialCardView>
-
-      <com.google.android.material.button.MaterialButton
-        android:id="@+id/remove_restrictions_button"
-        style="?materialButtonOutlinedStyle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="8dp"
-        android:insetLeft="0dp"
-        android:insetTop="0dp"
-        android:insetRight="0dp"
-        android:insetBottom="0dp"
-        android:text="@string/remove_battery_restrictions"
-        android:textAllCaps="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/card_button_bar"
-        app:strokeWidth="0dp"
-        />
     </androidx.constraintlayout.widget.ConstraintLayout>
   </androidx.core.widget.NestedScrollView>
 

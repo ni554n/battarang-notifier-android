@@ -76,6 +76,8 @@ class MainActivity : AppCompatActivity() {
 
       /* Each `setup` function initializes the Views with its saved states and registers the event listeners. */
 
+      setupToolbarMenu()
+
       setupNotificationServiceToggleSwitch()
       setupBatteryExemptionGuide()
 
@@ -85,7 +87,6 @@ class MainActivity : AppCompatActivity() {
       setupLowBatteryToggleCheckbox()
       setupSkipIfDisplayOnToggleCheckbox()
 
-      setupRemoveRestrictionsButton()
       setupAbout()
 
       setupDevicePairingFab()
@@ -128,8 +129,9 @@ class MainActivity : AppCompatActivity() {
    * */
   private fun ActivityMainBinding.insetViewPositions() {
     collapsingToolbarLayout.applyInsetter {
-      type(navigationBars = true) {
+      type(navigationBars = true, statusBars = true) {
         margin(horizontal = true)
+        padding(vertical = true)
       }
     }
 
@@ -154,6 +156,19 @@ class MainActivity : AppCompatActivity() {
     fabPair.applyInsetter {
       type(navigationBars = true) {
         margin(horizontal = true, vertical = true)
+      }
+    }
+  }
+
+  private fun ActivityMainBinding.setupToolbarMenu() {
+    materialToolbar.setOnMenuItemClickListener { menuItem ->
+      when (menuItem.itemId) {
+        R.id.remove_battery_restriction -> {
+          OptimizationRemoverSheet.show(supportFragmentManager)
+          true
+        }
+
+        else -> false
       }
     }
   }
@@ -377,12 +392,6 @@ class MainActivity : AppCompatActivity() {
    */
   private fun MaterialCheckBox.bindClicksFrom(card: MaterialCardView) {
     card.setOnClickListener { performClick() }
-  }
-
-  private fun ActivityMainBinding.setupRemoveRestrictionsButton() {
-    removeRestrictionsButton.setOnClickListener {
-      OptimizationRemoverSheet.show(supportFragmentManager)
-    }
   }
 
   private fun ActivityMainBinding.setupAbout() {
