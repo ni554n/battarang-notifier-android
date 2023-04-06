@@ -30,16 +30,15 @@
   <string name="skip_if_display_on_template">Skip while display is on</string>
 
   <string name="pair_with_device">Pair Receiver</string>
-  <string name="unpair">Unpair</string>
   <string name="pair_dialog_title">Visit this link from the other device</string>
   <string name="pair_dialog_content">On the Receiver “Enable Notification” and scan or paste the Code into this device.\n\nIf pairing is successful, you’ll receive a confirmation notification on that device.</string>
   <string name="pair_dialog_paste_button">Paste instead</string>
   <string name="pair_dialog_scan_button">Scan QR</string>
-  <string name="unpair_dialog_content">Are you sure?</string>
-  <string name="unpair_dialog_button_unpair">Unpair</string>
-  <string name="unpair_dialog_button_cancel">Cancel</string>
 
-  <string name="invalid_token">Pairing Code is invalid. Make sure it is correctly scanned or pasted.</string>
+  <string name="unpair">Unpair</string>
+  <string name="unpair_instruction">Tap &amp; Hold for a moment to Unpair</string>
+
+  <string name="invalid_token">Pairing Code is invalid. Make sure it is correctly scanned or copied.</string>
   <string name="camera_unavailable">Can\'t open Camera. Copy the Code and "Paste instead".</string>
   <string name="camera_permission_missing">You need to provide the camera permission from Settings</string>
   <string name="quickie_overlay_string">Point to the Receiver app</string>

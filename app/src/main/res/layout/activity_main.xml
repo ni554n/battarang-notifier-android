@@ -353,8 +353,7 @@
         style="?materialCardViewFilledStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_margin="16dp"
         app:cardBackgroundColor="@color/primary_opacity_5_percent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -394,7 +393,7 @@
             app:icon="@drawable/ic_send"
             app:iconGravity="textStart"
             app:iconSize="28dp"
-            app:iconTint="?colorOnSecondaryContainer"
+            app:iconTint="?colorPrimary"
             app:rippleColor="?colorPrimaryInverse"
             app:shapeAppearance="?shapeAppearanceCornerExtraLarge"
             />

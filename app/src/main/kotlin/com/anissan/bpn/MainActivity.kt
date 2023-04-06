@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity() {
       setupLowBatteryToggleCheckbox()
       setupSkipIfDisplayOnToggleCheckbox()
 
-      setupAbout()
+      setupButtonBar()
 
       setupDevicePairingFab()
     }
@@ -384,7 +384,7 @@ class MainActivity : AppCompatActivity() {
     card.setOnClickListener { performClick() }
   }
 
-  private fun ActivityMainBinding.setupAbout() {
+  private fun ActivityMainBinding.setupButtonBar() {
     if (!paired) {
       unpairButton.visibility = View.GONE
       testButton.visibility = View.GONE
@@ -393,7 +393,14 @@ class MainActivity : AppCompatActivity() {
       testButton.visibility = View.VISIBLE
     }
 
-    unpairButton.setOnClickListener { buildUnpairingDialog().show() }
+    unpairButton.setOnClickListener {
+      showSnackbar(R.string.unpair_instruction, Snackbar.LENGTH_SHORT)
+    }
+
+    unpairButton.setOnLongClickListener {
+      localKvStore.receiverToken = null
+      true
+    }
 
     TooltipCompat.setTooltipText(testButton, testButton.contentDescription)
 
@@ -546,24 +553,12 @@ class MainActivity : AppCompatActivity() {
       }
   }
 
-  private fun buildUnpairingDialog(): MaterialAlertDialogBuilder {
-    return MaterialAlertDialogBuilder(this, R.style.UnpairDialog)
-      .setTitle(SupportedService.valueOf(localKvStore.pairedService ?: "").serviceName)
-      .setMessage(getString(R.string.unpair_dialog_content))
-      .setPositiveButton(getString(R.string.unpair_dialog_button_unpair)) { _, _ ->
-        localKvStore.receiverToken = null
-      }
-      .setNegativeButton(getString(R.string.unpair_dialog_button_cancel)) { dialog: DialogInterface, _ -> dialog.dismiss() }
-  }
-
   private fun refreshAfterPairingUnpairing() {
     refreshMonitoringServiceState()
 
     mainActivityBinding.apply {
       when {
         !paired -> {
-          showSnackbar(R.string.unpaired, Snackbar.LENGTH_SHORT)
-
           unpairButton.visibility = View.GONE
           testButton.visibility = View.GONE
           fabPair.show()
@@ -615,7 +610,7 @@ class MainActivity : AppCompatActivity() {
   private fun showSnackbar(stringResId: Int, length: Int = Snackbar.LENGTH_LONG) {
     mainActivityBinding.apply {
       Snackbar.make(root, stringResId, length).apply {
-        if (fabPair.visibility == View.VISIBLE) anchorView = fabPair
+        anchorView = if (fabPair.visibility == View.VISIBLE) fabPair else cardButtonBar
 
         show()
       }
