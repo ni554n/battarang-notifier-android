@@ -32,6 +32,7 @@
       app:shapeAppearance="?shapeAppearanceCornerMedium"
       app:strokeColor="?colorPrimary"
       tools:text="b.anissan.com"
+      tools:ignore="VisualLintButtonSize"
       />
 
     <com.google.android.material.textview.MaterialTextView
@@ -41,6 +42,7 @@
       android:layout_marginTop="16dp"
       android:text="@string/pair_dialog_content"
       android:textAlignment="center"
+      android:textColor="?colorOnSecondaryContainer"
       />
   </LinearLayout>
 </androidx.core.widget.NestedScrollView>
