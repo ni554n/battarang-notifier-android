@@ -33,17 +33,6 @@
       app:titleCollapseMode="scale"
       >
 
-      <!-- Illustration -->
-      <!--      <ImageView-->
-      <!--        android:layout_width="180dp"-->
-      <!--        android:layout_height="150dp"-->
-      <!--        android:layout_gravity="top|end"-->
-      <!--        android:src="@drawable/star_3"-->
-      <!--        app:layout_collapseMode="pin"-->
-      <!--        app:tint="@color/primary_opacity_5_percent"-->
-      <!--        tools:ignore="ContentDescription"-->
-      <!--        />-->
-
       <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/material_toolbar"
         android:layout_width="match_parent"
@@ -387,7 +376,7 @@
             style="?materialIconButtonFilledStyle"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/test_notification_sending"
+            android:contentDescription="@string/send_test_notification"
             app:backgroundTint="?colorSecondaryContainer"
             app:icon="@drawable/ic_send"
             app:iconGravity="textStart"
@@ -419,8 +408,8 @@
     android:layout_height="wrap_content"
     android:layout_gravity="bottom|end"
     android:layout_margin="16dp"
-    tools:icon="@drawable/ic_handshake"
-    tools:text="@string/pair_with_device"
+    android:text="@string/pair_with_device"
+    app:icon="@drawable/ic_handshake"
     />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

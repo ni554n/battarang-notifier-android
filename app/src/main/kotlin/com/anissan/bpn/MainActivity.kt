@@ -433,8 +433,6 @@ class MainActivity : AppCompatActivity() {
 
   private fun ActivityMainBinding.setupDevicePairingFab() {
     fabPair.apply {
-      text = getString(R.string.pair_with_device)
-      setIconResource(R.drawable.ic_handshake)
       setOnClickListener { buildPairingDialog().show() }
 
       if (paired) hide()

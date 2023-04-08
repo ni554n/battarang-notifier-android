@@ -29,26 +29,30 @@
   <string name="label_but">But Must</string>
   <string name="skip_if_display_on_template">Skip while display is on</string>
 
+  <!-- Pairing Dialog -->
+
   <string name="pair_with_device">Pair Receiver</string>
   <string name="pair_dialog_title">Visit this link from the other device</string>
-  <string name="pair_dialog_content">On the Receiver “Enable Notification” and scan or paste the Code into this device.\n\nIf pairing is successful, you’ll receive a confirmation notification on that device.</string>
+  <string name="pair_dialog_content">Choose a receiver service to generate a pairing code and scan / paste here.\n\nIf pairing is successful, you’ll receive a confirmation notification there.</string>
   <string name="pair_dialog_paste_button">Paste instead</string>
   <string name="pair_dialog_scan_button">Scan QR</string>
-
-  <string name="unpair">Unpair</string>
-  <string name="unpair_instruction">Tap &amp; Hold for a moment to Unpair</string>
 
   <string name="invalid_token">Pairing Code is invalid. Make sure it is correctly scanned or copied.</string>
   <string name="camera_unavailable">Can\'t open Camera. Copy the Code and "Paste instead".</string>
   <string name="camera_permission_missing">You need to provide the camera permission from Settings</string>
   <string name="quickie_overlay_string">Point to the Receiver app</string>
 
+  <!-- Button Bar -->
+
+  <string name="unpair">Unpair</string>
+  <string name="unpair_instruction">Tap &amp; Hold for a moment to Unpair</string>
+
   <string name="send_test_notification">Send a test notification</string>
   <string name="network_error">Network Failed!\nCheck if your internet is working.</string>
 
   <string name="about">About</string>
 
-  <!-- Battery Optimization Restrictions -->
+  <!-- Battery Restrictions Remover Sheet -->
   <string name="remove_battery_restrictions">Remove Battery Restrictions</string>
   <string name="ignore_battery_optimization">Ignore Battery Optimization</string>
   <string name="ignore_battery_optimization_text">System will pause this service whenever your device is unused for some time. You won\'t get any push notifications during that time without this permission.</string>

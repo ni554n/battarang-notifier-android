@@ -32,7 +32,7 @@
  * SOFTWARE.
  */
 
-@file:Suppress("FunctionName") // _ indicates internal
+@file:Suppress("FunctionName", "Unused")
 
 package com.anissan.bpn.utils
 
