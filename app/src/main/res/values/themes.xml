@@ -38,6 +38,8 @@
     <item name="android:navigationBarColor">@android:color/transparent</item>
 
     <item name="bottomSheetDialogTheme">@style/ModalBottomSheetDialog</item>
+    <item name="snackbarStyle">@style/CustomSnackbar</item>
+    <item name="snackbarTextViewStyle">@style/CustomSnackbarTextView</item>
   </style>
 
   <style name="ModalBottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">

@@ -13,7 +13,6 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.view.View
 import android.widget.CompoundButton
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.TooltipCompat
@@ -419,12 +418,12 @@ class MainActivity : AppCompatActivity() {
     testButton.setOnClickListener {
       testButton.icon = loadingIcon
 
-      receiverApiClient.sendNotification(
-        MessageType.TEST,
-        onFail = { showSnackbar(R.string.network_error) },
-        onSuccess = { showToast(R.string.test_notification_success) },
-        finally = { testButton.icon = sendIcon }
-      )
+      receiverApiClient.sendNotification(MessageType.TEST) { response: String? ->
+        testButton.icon = sendIcon
+
+        if (response == null) showSnackbar(R.string.network_error)
+        else showSnackbar(response)
+      }
     }
 
     aboutButton.setOnClickListener {
@@ -508,10 +507,9 @@ class MainActivity : AppCompatActivity() {
     // Manual refresh is required here to update the screen state.
     refreshAfterPairingUnpairing()
 
-    receiverApiClient.sendNotification(
-      MessageType.PAIRED,
-      onFail = { showSnackbar(R.string.network_error) },
-    )
+    receiverApiClient.sendNotification(MessageType.PAIRED) { response: String? ->
+      if (response == null) showSnackbar(R.string.network_error)
+    }
   }
 
   //endregion
@@ -608,16 +606,14 @@ class MainActivity : AppCompatActivity() {
   }
 
   private fun showSnackbar(stringResId: Int, length: Int = Snackbar.LENGTH_LONG) {
-    mainActivityBinding.apply {
-      Snackbar.make(root, stringResId, length).apply {
-        anchorView = if (fabPair.visibility == View.VISIBLE) fabPair else cardButtonBar
-
-        show()
-      }
-    }
+    showSnackbar(getString(stringResId), length)
   }
 
-  private fun showToast(stringResId: Int, toastLength: Int = Toast.LENGTH_SHORT) {
-    Toast.makeText(this, getString(stringResId), toastLength).show()
+  private fun showSnackbar(text: String, length: Int = Snackbar.LENGTH_LONG) {
+    mainActivityBinding.apply {
+      Snackbar.make(root, text, length).apply {
+        anchorView = if (fabPair.visibility == View.VISIBLE) fabPair else cardButtonBar
+      }.show()
+    }
   }
 }

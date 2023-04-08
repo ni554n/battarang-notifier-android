@@ -31,20 +31,14 @@ class ReceiverApiClient(
   private val okHttpClient: OkHttpClient,
   private val localKvStore: LocalKvStore,
 ) : Callback {
-  private lateinit var _onFail: () -> Unit
-  private lateinit var _onSuccess: () -> Unit
-  private lateinit var _finally: () -> Unit
+  private var _onResponseResult: ((String?) -> Unit)? = null
 
   fun sendNotification(
     messageType: MessageType,
     batteryLevel: Int? = null,
-    onFail: () -> Unit = {},
-    onSuccess: () -> Unit = {},
-    finally: () -> Unit = {},
+    onResponseResult: ((responseBody: String?) -> Unit)? = null,
   ) {
-    _onFail = onFail
-    _onSuccess = onSuccess
-    _finally = finally
+    _onResponseResult = onResponseResult
 
     val url: String = BuildConfig.RECEIVER_API_URL.toHttpUrl().newBuilder().apply {
       mapOf(
@@ -60,12 +54,10 @@ class ReceiverApiClient(
       }
     }.build().toString()
 
-    logV { "Constructed receiver API URL: $url" }
-
     val wakeLock: PowerManager.WakeLock = powerManager.run {
       newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "${javaClass.name}::notify").apply {
         acquire(10 * 1000L)
-        logI { "Secured a partial wakelock of up to 10 seconds." }
+        logI { "Secured a partial wakelock for up to 10 seconds." }
       }
     }
 
@@ -80,9 +72,11 @@ class ReceiverApiClient(
 
   override fun onFailure(call: Call, e: IOException) {
     logE(e)
+
+    if (_onResponseResult == null) return
+
     Handler(Looper.getMainLooper()).post {
-      _onFail()
-      _finally()
+      _onResponseResult?.invoke(null)
     }
   }
 
@@ -90,13 +84,21 @@ class ReceiverApiClient(
     response.use {
       logV { "/api response: $response" }
 
-      if (response.isSuccessful.not()) onFailure(call, IOException("Request failed with $response"))
-
       localKvStore.lastTelegramMessageId = response.headers["X-Tg-Message-Id"]
 
+      if (_onResponseResult == null) return@use
+
+      // Success or Error message should be sent from the server as a response body text.
+      val bodyText = try {
+        response.body.string()
+      } catch (e: Exception) {
+        logE(e)
+
+        "Server sent an invalid response body."
+      }
+
       Handler(Looper.getMainLooper()).post {
-        _onSuccess()
-        _finally()
+        _onResponseResult?.invoke(bodyText)
       }
     }
   }

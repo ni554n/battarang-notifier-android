@@ -43,9 +43,8 @@
   <string name="camera_permission_missing">You need to provide the camera permission from Settings</string>
   <string name="quickie_overlay_string">Point to the Receiver app</string>
 
-  <string name="test_notification_sending">Send a test notification to ~%</string>
-  <string name="test_notification_success">Successfully sent. Check the receiver.</string>
-  <string name="network_error">Failed to connect to the receiver.\nCheck if your internet is working.\nThen check if the Pairing Code is scanned or pasted correctly.</string>
+  <string name="send_test_notification">Send a test notification</string>
+  <string name="network_error">Network Failed!\nCheck if your internet is working.</string>
 
   <string name="about">About</string>
 

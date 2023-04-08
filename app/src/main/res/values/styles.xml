@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+  <style name="CustomSnackbar" parent="@style/Widget.Material3.Snackbar">
+    <item name="backgroundTint">?colorOnSecondaryContainer</item>
+  </style>
+
+  <style name="CustomSnackbarTextView" parent="@style/Widget.Material3.Snackbar.TextView">
+    <item name="android:gravity">center_horizontal</item>
+    <item name="android:textAlignment">center</item>
+    <item name="android:textColor">?colorSecondaryContainer</item>
+  </style>
+
   <style name="CenteredDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog.Centered">
     <!--  Title icon color  -->
     <item name="tint">?colorPrimary</item>
