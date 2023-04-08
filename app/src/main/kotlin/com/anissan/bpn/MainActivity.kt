@@ -132,6 +132,17 @@ class MainActivity : AppCompatActivity() {
       }
     }
 
+    /* Calculating a marginStart value for the Expanded Title to match the max width of the main column */
+
+    val screenWidth = resources.displayMetrics.widthPixels
+    val cardMaxWidth = resources.getDimension(R.dimen.card_max_width).toInt()
+    val expandedTitleMargin = collapsingToolbarLayout.expandedTitleMarginStart
+
+    if (screenWidth > cardMaxWidth) {
+      collapsingToolbarLayout.expandedTitleMarginStart =
+        (screenWidth - cardMaxWidth + expandedTitleMargin) / 2
+    }
+
     cardNotificationService.applyInsetter {
       type(navigationBars = true) {
         padding(horizontal = true)
