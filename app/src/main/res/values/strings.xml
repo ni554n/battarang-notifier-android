@@ -61,13 +61,13 @@
   <string name="successful_pairing">Check the other device for confirmation notification</string>
   <string name="unpaired">Receiver unpaired successfully</string>
 
-  <!-- About -->
+  <!-- About Sheet -->
   <string name="review">Review</string>
   <string name="battarang_notifier">Battarang Notifier</string>
   <string name="description">Sends battery notifications to the</string>
-  <string name="receiver">receiver</string>
+  <string name="receiver">Receiver</string>
   <string name="or">or</string>
-  <string name="telegram">telegram</string>
+  <string name="telegram">Telegram</string>
   <string name="source">Source</string>
   <string name="issues">Issues</string>
   <string name="by">Designed &amp; Developed by</string>
