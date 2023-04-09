@@ -42,13 +42,13 @@ class ReceiverApiClient(
 
     val url: String = BuildConfig.RECEIVER_API_URL.toHttpUrl().newBuilder().apply {
       mapOf(
-        "pairedService" to localKvStore.pairedService,
+        "pairedService" to localKvStore.pairedServiceTag,
         "messageType" to messageType.name,
         "receiverToken" to localKvStore.receiverToken,
         "deviceName" to localKvStore.deviceName,
         "triggeredAt" to SimpleDateFormat("hh:mm a (EEEE)", Locale.getDefault()).format(Date()),
         "batteryLevel" to "$batteryLevel",
-        "lastTgMessageId" to localKvStore.lastTelegramMessageId
+        "lastTgMessageId" to localKvStore.lastTelegramMessageId,
       ).forEach { (parameter: String, value: String?) ->
         if (value.isNullOrBlank().not()) addQueryParameter(parameter, value)
       }

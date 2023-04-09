@@ -19,7 +19,7 @@ enum class PrefKey {
   MAX_LEVEL_PERCENTAGE,
   LOW_BATTERY_NOTIFICATION_TOGGLE,
   SKIP_WHILE_SCREEN_ON_TOGGLE,
-  PAIRED_SERVICE_NAME,
+  PAIRED_SERVICE_TAG,
   RECEIVER_TOKEN,
   LAST_MESSAGE_ID,
 }
@@ -56,9 +56,6 @@ class LocalKvStore(context: Context) : SimpleKrate(context) {
 
   //region Data Fetching States
 
-  /** Must be one of the [SupportedService]. */
-  var pairedService: String? by stringPref(PrefKey.PAIRED_SERVICE_NAME.name)
-
   /**
    * It's going to be either the FCM token generated on the receiver device
    * or the current Chat ID from the Telegram Bot.
@@ -67,6 +64,15 @@ class LocalKvStore(context: Context) : SimpleKrate(context) {
 
   /** This ID is going to be used to delete the last sent message to keep the message history at minimum. */
   var lastTelegramMessageId: String? by stringPref(PrefKey.LAST_MESSAGE_ID.name)
+
+  /** Must be one of the [SupportedService]. */
+  var pairedServiceTag: String? by stringPref(PrefKey.PAIRED_SERVICE_TAG.name)
+
+  val pairedServiceName: String
+    get() {
+      val currentTag = pairedServiceTag
+      return if (currentTag === null) "" else SupportedService.valueOf(currentTag).serviceName
+    }
 
   //endregion
 

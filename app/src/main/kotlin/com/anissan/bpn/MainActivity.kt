@@ -90,8 +90,8 @@ class MainActivity : AppCompatActivity() {
     }
   }
 
-  override fun onResume() {
-    super.onResume()
+  override fun onStart() {
+    super.onStart()
 
     localKvStore.startObservingChanges { _: SharedPreferences, key: String? ->
       if (key == null) return@startObservingChanges
@@ -102,20 +102,62 @@ class MainActivity : AppCompatActivity() {
         PrefKey.NOTIFICATION_SERVICE_TOGGLE.name,
         PrefKey.MAX_LEVEL_NOTIFICATION_TOGGLE.name,
         PrefKey.LOW_BATTERY_NOTIFICATION_TOGGLE.name,
-        -> refreshMonitoringServiceState()
-
-        PrefKey.RECEIVER_TOKEN.name -> refreshAfterPairingUnpairing()
+        PrefKey.RECEIVER_TOKEN.name,
+        -> refreshAfterPairingUnpairing()
       }
     }
 
-    logV { "onResume: Started listening for sharedPreferences changes ..." }
+    logV { "onResume: Started observing sharedPreferences changes ..." }
   }
 
-  override fun onPause() {
-    super.onPause()
+  private fun refreshAfterPairingUnpairing() {
+    val switchNotificationService: MaterialSwitch = mainActivityBinding.switchNotificationService
+
+    localKvStore.run {
+      // At least one of the "NOTIFY WHEN" option needs to be checked for the switch to be enabled.
+      val isNotifyWhenEnabled = isMaxLevelNotificationEnabled || isLowBatteryNotificationEnabled
+      val shouldServiceBeEnabled = isNotifyWhenEnabled && paired
+
+      mainActivityBinding.cardNotificationService.apply {
+        alpha = if (shouldServiceBeEnabled) 1f else 0.6f
+        isEnabled = isNotifyWhenEnabled
+      }
+
+      switchNotificationService.isEnabled = shouldServiceBeEnabled
+      switchNotificationService.isChecked = shouldServiceBeEnabled && isMonitoringServiceEnabled
+
+      if (switchNotificationService.isChecked) BroadcastReceiverRegistererService.start(this@MainActivity)
+      else BroadcastReceiverRegistererService.stop(this@MainActivity)
+    }
+
+    mainActivityBinding.apply {
+      when {
+        !paired -> {
+          unpairButton.visibility = View.GONE
+          testButton.visibility = View.GONE
+          serviceNameTextView.text = ""
+
+          fabPair.show()
+        }
+
+        else -> {
+          unpairButton.visibility = View.VISIBLE
+          testButton.visibility = View.VISIBLE
+          serviceNameTextView.text = localKvStore.pairedServiceName
+
+          fabPair.hide()
+
+          buildOptimizationExemptionRequestDialog().show()
+        }
+      }
+    }
+  }
+
+  override fun onStop() {
+    super.onStop()
 
     localKvStore.stopObservingChanges()
-    logV { "onPause: Stopped observing for sharedPreferences changes." }
+    logV { "onStop: Stopped observing for sharedPreferences changes." }
   }
 
   //region View setup and initializers
@@ -182,8 +224,6 @@ class MainActivity : AppCompatActivity() {
   }
 
   private fun ActivityMainBinding.setupNotificationServiceToggleSwitch() {
-    refreshMonitoringServiceState()
-
     cardNotificationService.setOnClickListener {
       if (paired) {
         switchNotificationService.performClick()
@@ -437,6 +477,8 @@ class MainActivity : AppCompatActivity() {
       }
     }
 
+    serviceNameTextView.text = localKvStore.pairedServiceName
+
     aboutButton.setOnClickListener {
       AboutSheet.show(supportFragmentManager)
     }
@@ -502,7 +544,7 @@ class MainActivity : AppCompatActivity() {
 
     try {
       val (service, token) = providedText.split(":", limit = 2)
-      localKvStore.pairedService = SupportedService.valueOf(service).name
+      localKvStore.pairedServiceTag = SupportedService.valueOf(service).name
       localKvStore.receiverToken = token.ifBlank { throw Exception("Token can not be blank.") }
     } catch (e: Exception) {
       logE(e)
@@ -511,10 +553,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     localKvStore.isMonitoringServiceEnabled = true
-
-    // This function is called before onResume has a chance to start observing the sharedPref changes.
-    // Manual refresh is required here to update the screen state.
-    refreshAfterPairingUnpairing()
 
     receiverApiClient.sendNotification(MessageType.PAIRED) { response: String? ->
       if (response == null) showSnackbar(R.string.network_error)
@@ -558,50 +596,6 @@ class MainActivity : AppCompatActivity() {
           showSnackbar(R.string.camera_unavailable, Snackbar.LENGTH_SHORT)
         }
       }
-  }
-
-  private fun refreshAfterPairingUnpairing() {
-    refreshMonitoringServiceState()
-
-    mainActivityBinding.apply {
-      when {
-        !paired -> {
-          unpairButton.visibility = View.GONE
-          testButton.visibility = View.GONE
-          fabPair.show()
-        }
-
-        else -> {
-          unpairButton.visibility = View.VISIBLE
-          testButton.visibility = View.VISIBLE
-          fabPair.hide()
-
-          buildOptimizationExemptionRequestDialog().show()
-        }
-      }
-    }
-  }
-
-  private fun refreshMonitoringServiceState() {
-    val cardNotificationService: MaterialCardView =
-      mainActivityBinding.cardNotificationService
-
-    val switchNotificationService: MaterialSwitch = mainActivityBinding.switchNotificationService
-
-    localKvStore.run {
-      // At least one of the "NOTIFY WHEN" option needs to be checked for the switch to be enabled.
-      val isNotifyWhenEnabled = isMaxLevelNotificationEnabled || isLowBatteryNotificationEnabled
-      val shouldServiceBeEnabled = isNotifyWhenEnabled && paired
-
-      cardNotificationService.alpha = if (shouldServiceBeEnabled) 1f else 0.6f
-      cardNotificationService.isEnabled = isNotifyWhenEnabled
-
-      switchNotificationService.isEnabled = shouldServiceBeEnabled
-      switchNotificationService.isChecked = shouldServiceBeEnabled && isMonitoringServiceEnabled
-
-      if (switchNotificationService.isChecked) BroadcastReceiverRegistererService.start(this@MainActivity)
-      else BroadcastReceiverRegistererService.stop(this@MainActivity)
-    }
   }
 
   private fun buildOptimizationExemptionRequestDialog(): MaterialAlertDialogBuilder {
