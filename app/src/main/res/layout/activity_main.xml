@@ -144,6 +144,11 @@
         app:strokeWidth="0dp"
         >
 
+        <!-- Ideally, the `boxBackgroundColor` should match the other card container color.
+             But unfortunately the color doesn't match when applied; probably due to some bug.
+             It also cannot be fully transparent, so color the card behind is not an option.
+             As a workaround I'm setting the Dynamic surface color programmatically;
+             which is close enough. -->
         <com.google.android.material.textfield.TextInputLayout
           android:id="@+id/textInputLayout_device_name"
           style="?textInputFilledStyle"
@@ -151,7 +156,6 @@
           android:layout_height="wrap_content"
           android:hint="@string/label_device_name"
           android:textColorHint="?colorSecondary"
-          app:boxBackgroundColor="?colorSurfaceContainerHigh"
           app:boxStrokeColor="@color/custom_text_field_stroke_color"
           app:boxStrokeWidth="2dp"
           app:endIconContentDescription="Save"
@@ -183,7 +187,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="16dp"
-        app:cardBackgroundColor="?colorSurfaceContainerHigh"
+        app:cardBackgroundColor="@color/primary_opacity_5_percent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/card_device_name_input"
@@ -346,7 +350,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        app:cardBackgroundColor="?colorSurfaceContainerHigh"
+        app:cardBackgroundColor="@color/primary_opacity_5_percent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/card_config"

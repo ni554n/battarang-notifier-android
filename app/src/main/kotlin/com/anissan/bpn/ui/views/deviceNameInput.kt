@@ -5,9 +5,12 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import com.anissan.bpn.data.LocalKvStore
 import com.anissan.bpn.ui.MainActivity
+import com.google.android.material.elevation.SurfaceColors
 
 fun MainActivity.setupDeviceNameInput() {
   binding.textInputLayoutDeviceName.apply {
+    boxBackgroundColor = SurfaceColors.SURFACE_2.getColor(this@setupDeviceNameInput)
+
     // Hiding the Save icon initially. It'll be shown on EditText focus later.
     isEndIconVisible = false
 
