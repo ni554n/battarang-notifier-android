@@ -6,6 +6,7 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
+  android:background="?colorSurfaceContainerLow"
   tools:context=".MainActivity"
   >
 
@@ -15,6 +16,7 @@
     android:id="@+id/app_bar_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?colorSurfaceContainerLow"
     android:fitsSystemWindows="true"
     >
 
@@ -24,7 +26,7 @@
       android:layout_width="match_parent"
       android:layout_height="200dp"
       app:collapsedTitleTextAppearance="?textAppearanceTitleLarge"
-      app:contentScrim="?colorSurfaceVariant"
+      app:contentScrim="?colorSurfaceBright"
       app:expandedTitleMarginBottom="24dp"
       app:expandedTitleMarginStart="24dp"
       app:expandedTitleTextAppearance="?textAppearanceDisplaySmall"
@@ -81,6 +83,7 @@
         app:layout_constraintVertical_bias="0.0"
         app:layout_constraintWidth_max="@dimen/card_max_width"
         app:shapeAppearance="?shapeAppearanceCornerExtraLarge"
+        app:strokeWidth="0dp"
         >
 
         <LinearLayout
@@ -132,7 +135,7 @@
         android:descendantFocusability="beforeDescendants"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        app:cardBackgroundColor="?colorSecondaryContainer"
+        app:cardBackgroundColor="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/card_notification_service"
@@ -143,12 +146,13 @@
 
         <com.google.android.material.textfield.TextInputLayout
           android:id="@+id/textInputLayout_device_name"
-          style="@style/CustomOutlineBox"
+          style="?textInputFilledStyle"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:hint="@string/label_device_name"
           android:textColorHint="?colorSecondary"
-          app:boxBackgroundColor="@color/primary_opacity_5_percent"
+          app:boxBackgroundColor="?colorSurfaceContainerHigh"
+          app:boxStrokeColor="@color/custom_text_field_stroke_color"
           app:boxStrokeWidth="2dp"
           app:endIconContentDescription="Save"
           app:endIconDrawable="@drawable/ic_save"
@@ -179,7 +183,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="16dp"
-        app:cardBackgroundColor="@color/primary_opacity_5_percent"
+        app:cardBackgroundColor="?colorSurfaceContainerHigh"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/card_device_name_input"
@@ -342,7 +346,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        app:cardBackgroundColor="@color/primary_opacity_5_percent"
+        app:cardBackgroundColor="?colorSurfaceContainerHigh"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/card_config"
@@ -422,7 +426,8 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom|end"
-    android:layout_margin="16dp"
+    android:layout_marginHorizontal="24dp"
+    android:layout_marginVertical="16dp"
     android:text="@string/pair_with_device"
     app:icon="@drawable/ic_handshake"
     />
