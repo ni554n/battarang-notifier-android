@@ -1,4 +1,4 @@
-package com.anissan.bpn.ui.optimizationremover
+package com.anissan.bpn.ui.views.optimization
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -13,9 +13,9 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.anissan.bpn.databinding.SheetOptimizationRemoverBinding
-import com.anissan.bpn.ui.optimizationremover.tabs.PermissionTabViewHolder
-import com.anissan.bpn.ui.optimizationremover.tabs.TabAdapter
-import com.anissan.bpn.ui.optimizationremover.tabs.TutorialTabViewHolder
+import com.anissan.bpn.ui.views.optimization.tabs.PermissionTabViewHolder
+import com.anissan.bpn.ui.views.optimization.tabs.TabAdapter
+import com.anissan.bpn.ui.views.optimization.tabs.TutorialTabViewHolder
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment

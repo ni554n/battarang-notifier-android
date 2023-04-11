@@ -15,11 +15,11 @@ import android.provider.Settings
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.anissan.bpn.MainActivity
 import com.anissan.bpn.R
 import com.anissan.bpn.background.BootEventReceiver.Companion.resumeAfterBoot
-import com.anissan.bpn.background.receivers.BatteryLevelPollingAlarmReceiver
-import com.anissan.bpn.background.receivers.BatteryStatusReceiver
+import com.anissan.bpn.background.services.receivers.BatteryLevelPollingAlarmReceiver
+import com.anissan.bpn.background.services.receivers.BatteryStatusReceiver
+import com.anissan.bpn.ui.MainActivity
 import com.anissan.bpn.utils.logV
 import org.koin.android.ext.android.inject
 

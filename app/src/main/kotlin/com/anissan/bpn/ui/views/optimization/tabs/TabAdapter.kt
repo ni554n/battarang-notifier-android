@@ -1,4 +1,4 @@
-package com.anissan.bpn.ui.optimizationremover.tabs
+package com.anissan.bpn.ui.views.optimization.tabs
 
 import android.content.Intent
 import android.view.LayoutInflater

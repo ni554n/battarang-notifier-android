@@ -1,10 +1,10 @@
-package com.anissan.bpn.background.receivers
+package com.anissan.bpn.background.services.receivers
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import com.anissan.bpn.background.receivers.handlers.BroadcastedEventHandlers
+import com.anissan.bpn.background.services.receivers.handlers.BroadcastedEventHandlers
 import com.anissan.bpn.utils.logE
 import com.anissan.bpn.utils.logV
 import com.anissan.bpn.utils.logW

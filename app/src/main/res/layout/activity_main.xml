@@ -7,7 +7,7 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:background="?colorSurfaceContainerLow"
-  tools:context=".MainActivity"
+  tools:context=".ui.MainActivity"
   >
 
   <!-- "fitsSystemWindows" padding behavior: https://medium.com/androiddevelopers/why-would-i-want-to-fitssystemwindows-4e26d9ce1eec -->

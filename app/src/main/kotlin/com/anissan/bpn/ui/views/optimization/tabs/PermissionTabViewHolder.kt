@@ -1,4 +1,4 @@
-package com.anissan.bpn.ui.optimizationremover.tabs
+package com.anissan.bpn.ui.views.optimization.tabs
 
 import android.annotation.SuppressLint
 import android.content.Context

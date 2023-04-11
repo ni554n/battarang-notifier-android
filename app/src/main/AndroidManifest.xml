@@ -24,7 +24,7 @@
     tools:ignore="UnusedAttribute"
     >
     <activity
-      android:name=".MainActivity"
+      android:name=".ui.MainActivity"
       android:exported="true"
       android:launchMode="singleTop"
       android:windowSoftInputMode="adjustPan"
@@ -51,7 +51,7 @@
 
     <!--  To receive the event triggered by the alarm, Manifest entry is required.  -->
     <receiver
-      android:name=".background.receivers.BatteryLevelPollingAlarmReceiver"
+      android:name="com.anissan.bpn.background.services.receivers.BatteryLevelPollingAlarmReceiver"
       android:exported="false"
       />
 

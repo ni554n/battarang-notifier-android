@@ -1,9 +1,10 @@
-package com.anissan.bpn.data
+package com.anissan.bpn.network
 
 import android.os.Handler
 import android.os.Looper
 import android.os.PowerManager
 import com.anissan.bpn.BuildConfig
+import com.anissan.bpn.data.LocalKvStore
 import com.anissan.bpn.utils.logE
 import com.anissan.bpn.utils.logI
 import com.anissan.bpn.utils.logV

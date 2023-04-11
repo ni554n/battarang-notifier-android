@@ -3,6 +3,8 @@ package com.anissan.bpn.data
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
+import com.anissan.bpn.network.SupportedService
+import com.anissan.bpn.utils.logV
 import hu.autsoft.krate.SimpleKrate
 import hu.autsoft.krate.booleanPref
 import hu.autsoft.krate.default.withDefault
@@ -27,7 +29,8 @@ enum class PrefKey {
 /**
  * Local KV store for saving app states and user preferences into the default SharedPreferences.
  */
-class LocalKvStore(context: Context) : SimpleKrate(context) {
+class LocalKvStore(context: Context) : SimpleKrate(context),
+  SharedPreferences.OnSharedPreferenceChangeListener {
   //region UI States
 
   companion object {
@@ -70,21 +73,29 @@ class LocalKvStore(context: Context) : SimpleKrate(context) {
 
   val pairedServiceName: String
     get() {
-      val currentTag = pairedServiceTag
-      return if (currentTag === null) "" else SupportedService.valueOf(currentTag).serviceName
+      return if (receiverToken === null) "" else SupportedService.valueOf(pairedServiceTag!!).serviceName
     }
 
   //endregion
 
-  private lateinit var _changeListener: SharedPreferences.OnSharedPreferenceChangeListener
+  private lateinit var _changeListener: (key: String) -> Unit
 
-  fun startObservingChanges(changeListener: SharedPreferences.OnSharedPreferenceChangeListener) {
+  fun startObservingChanges(changeListener: (key: String) -> Unit) {
     _changeListener = changeListener
 
-    sharedPreferences.registerOnSharedPreferenceChangeListener(_changeListener)
+    sharedPreferences.registerOnSharedPreferenceChangeListener(this)
+    logV { "Started observing sharedPreferences changes…" }
   }
 
   fun stopObservingChanges() {
-    sharedPreferences.unregisterOnSharedPreferenceChangeListener(_changeListener)
+    sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
+    logV { "Stopped observing for sharedPreferences changes." }
+  }
+
+  override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+    logV { "$key has been updated by user" }
+    if (key == null) return
+
+    _changeListener(key)
   }
 }

@@ -1,4 +1,4 @@
-package com.anissan.bpn.ui.about
+package com.anissan.bpn.ui.views.about
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
