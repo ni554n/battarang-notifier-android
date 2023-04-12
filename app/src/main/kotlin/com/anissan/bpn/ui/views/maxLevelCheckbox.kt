@@ -12,6 +12,8 @@ import com.google.android.material.color.MaterialColors
 import com.google.android.material.slider.Slider
 
 fun MainActivity.setupMaxBatteryLevelCheckbox() {
+  binding.cardConfig.setCardBackgroundColor(dynamicSurfaceColor)
+
   binding.checkBoxMaxBatteryLevel.run {
     isChecked = localKvStore.isMaxLevelNotificationEnabled
 

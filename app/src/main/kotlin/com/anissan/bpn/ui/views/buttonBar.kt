@@ -12,6 +12,8 @@ import com.google.android.material.progressindicator.IndeterminateDrawable
 import com.google.android.material.snackbar.Snackbar
 
 fun MainActivity.setupButtonBar() {
+  binding.cardButtonBar.setCardBackgroundColor(dynamicSurfaceColor)
+
   unpairButton()
   testButton()
   aboutButton()

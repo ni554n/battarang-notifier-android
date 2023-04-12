@@ -21,9 +21,9 @@ class TutorialTabViewHolder(private val dokiView: DokiContentView) :
       setButtonsVisibility(false)
 
       val appbar = findViewById<AppBarLayout>(dev.doubledot.doki.R.id.appbar)
-      val collapsingToolbarLayout = appbar.getChildAt(0) as CollapsingToolbarLayout
-      collapsingToolbarLayout.setContentScrimColor(
-        ContextCompat.getColor(context, R.color.primary_opacity_5_percent)
+
+      (appbar.getChildAt(0) as CollapsingToolbarLayout).setContentScrimColor(
+        ContextCompat.getColor(context, android.R.color.transparent)
       )
 
       findViewById<View>(dev.doubledot.doki.R.id.divider3).visibility = View.GONE

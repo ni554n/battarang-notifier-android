@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Theme color attributes (?attr/*) only work on API 23+. If used, color will show as Red instead. -->
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:alpha="0.05" android:color="@color/md_theme_light_primary" />
-</selector>
