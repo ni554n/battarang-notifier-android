@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-  <style name="PrimarySwitchButtonLight" parent="Widget.Material3.CardView.Filled">
+  <style name="ServiceToggleCard" parent="Widget.Material3.CardView.Filled">
     <item name="theme">@style/ThemeOverlay.Material3.Light</item>
     <item name="cardBackgroundColor">?colorOnPrimaryContainer</item>
   </style>

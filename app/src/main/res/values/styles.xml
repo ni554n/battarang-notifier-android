@@ -44,7 +44,7 @@
     <item name="paddingBottomSystemWindowInsets">false</item>
   </style>
 
-  <style name="PrimarySwitchButtonLight" parent="Widget.Material3.CardView.Filled">
+  <style name="ServiceToggleCard" parent="Widget.Material3.CardView.Filled">
     <item name="cardBackgroundColor">?colorPrimaryContainer</item>
   </style>
 

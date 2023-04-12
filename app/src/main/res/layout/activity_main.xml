@@ -69,7 +69,7 @@
       <!--   Notification Service Toggle   -->
       <com.google.android.material.card.MaterialCardView
         android:id="@+id/card_notification_service"
-        style="@style/PrimarySwitchButtonLight"
+        style="@style/ServiceToggleCard"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
@@ -426,7 +426,10 @@
     android:layout_marginHorizontal="24dp"
     android:layout_marginVertical="16dp"
     android:text="@string/pair_with_device"
+    android:textColor="?colorOnPrimaryFixed"
+    app:backgroundTint="?colorPrimaryFixed"
     app:icon="@drawable/ic_handshake"
+    app:iconTint="?colorOnPrimaryFixed"
     />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
