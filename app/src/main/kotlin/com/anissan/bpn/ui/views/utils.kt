@@ -1,6 +1,9 @@
 package com.anissan.bpn.ui.views
 
+import android.content.Context
 import android.content.res.Configuration
+import android.os.Build
+import android.provider.Settings
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.checkbox.MaterialCheckBox
@@ -27,3 +30,14 @@ val AppCompatActivity.isDarkModeEnabled: Boolean
 
 val AppCompatActivity.dynamicSurfaceColor: Int
   get() = SurfaceColors.getColorForElevation(this, if (isDarkModeEnabled) 4f else 8f)
+
+val Context.defaultDeviceName: String
+  get() {
+    val deviceName: String? = if (Build.VERSION.SDK_INT >= 25) {
+      Settings.Global.getString(contentResolver, Settings.Global.DEVICE_NAME)
+    } else {
+      Settings.Secure.getString(contentResolver, "bluetooth_name")
+    }
+
+    return (deviceName ?: Build.MODEL).trim().ifBlank { "Unknown" }
+  }

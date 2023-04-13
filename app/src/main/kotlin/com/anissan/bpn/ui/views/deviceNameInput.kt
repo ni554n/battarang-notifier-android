@@ -1,41 +1,50 @@
 package com.anissan.bpn.ui.views
 
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import com.anissan.bpn.data.LocalKvStore
 import com.anissan.bpn.ui.MainActivity
+import com.google.android.material.textfield.TextInputEditText
 
 fun MainActivity.setupDeviceNameInput() {
   binding.textInputLayoutDeviceName.apply {
     boxBackgroundColor = dynamicSurfaceColor
 
-    // Hiding the Save icon initially. It'll be shown on EditText focus later.
     isEndIconVisible = false
 
-    setEndIconOnClickListener { endIconView: View ->
-      localKvStore.deviceName =
-        binding.editTextDeviceName.text.toString().ifBlank { LocalKvStore.DEFAULT_DEVICE_NAME }
-
-      // Let the ripple animation finish before hiding the save icon.
-      handler.postDelayed({ isEndIconVisible = false }, 450)
-
-      // Clear the EditText focus, otherwise blinking cursor won't hide.
+    setEndIconOnClickListener {
       binding.editTextDeviceName.clearFocus()
-
-      // Hide the keyboard.
-      WindowCompat.getInsetsController(window, endIconView).hide(WindowInsetsCompat.Type.ime())
     }
   }
 
   binding.editTextDeviceName.apply {
     setText(localKvStore.deviceName)
 
+    setOnEditorActionListener { _, actionId: Int, _ ->
+      if (actionId == EditorInfo.IME_ACTION_DONE) {
+        clearFocus()
+        true
+      } else {
+        false
+      }
+    }
+
     setOnFocusChangeListener { _: View?, hasFocus: Boolean ->
-      when {
-        hasFocus -> binding.textInputLayoutDeviceName.isEndIconVisible = true
-        text.toString().isBlank() -> setText(localKvStore.deviceName)
+      binding.textInputLayoutDeviceName.isEndIconVisible = hasFocus
+
+      if (!hasFocus) {
+        saveEditedText(localKvStore)
+
+        // Hiding the keyboard
+        WindowCompat.getInsetsController(window, this).hide(WindowInsetsCompat.Type.ime())
       }
     }
   }
+}
+
+fun TextInputEditText.saveEditedText(localKvStore: LocalKvStore) {
+  localKvStore.deviceName =
+    text.toString().ifBlank { context.defaultDeviceName }.apply { setText(this) }
 }

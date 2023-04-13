@@ -17,6 +17,7 @@ import com.anissan.bpn.ui.views.optimization.showOptimizationRequestDialog
 import com.anissan.bpn.ui.views.pairing.registerQrScanner
 import com.anissan.bpn.ui.views.pairing.restorePairingDialogState
 import com.anissan.bpn.ui.views.pairing.savePairingDialogState
+import com.anissan.bpn.ui.views.saveEditedText
 import com.anissan.bpn.ui.views.setupAppBar
 import com.anissan.bpn.ui.views.setupButtonBar
 import com.anissan.bpn.ui.views.setupDeviceNameInput
@@ -143,6 +144,10 @@ class MainActivity : AppCompatActivity() {
   }
 
   override fun onSaveInstanceState(outState: Bundle) {
+    binding.editTextDeviceName.run {
+      if (hasFocus()) saveEditedText(localKvStore)
+    }
+
     savePairingDialogState(outState)
     saveOptimizationRequestDialogState(outState)
 

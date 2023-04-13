@@ -2,8 +2,8 @@ package com.anissan.bpn.data
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.os.Build
 import com.anissan.bpn.network.SupportedService
+import com.anissan.bpn.ui.views.defaultDeviceName
 import com.anissan.bpn.utils.logV
 import hu.autsoft.krate.SimpleKrate
 import hu.autsoft.krate.booleanPref
@@ -33,12 +33,8 @@ class LocalKvStore(context: Context) : SimpleKrate(context),
   SharedPreferences.OnSharedPreferenceChangeListener {
   //region UI States
 
-  companion object {
-    val DEFAULT_DEVICE_NAME = "${Build.MANUFACTURER} ${Build.MODEL}".trim().ifBlank { "Unknown" }
-  }
-
   var deviceName: String
-    by stringPref(PrefKey.DEVICE_NAME.name).withDefault(DEFAULT_DEVICE_NAME)
+    by stringPref(PrefKey.DEVICE_NAME.name).withDefault(context.defaultDeviceName)
 
   var isMonitoringServiceEnabled: Boolean
     by booleanPref(PrefKey.NOTIFICATION_SERVICE_TOGGLE.name).withDefault(true)
