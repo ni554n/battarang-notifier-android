@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-  namespace 'com.anissan.bpn'
+  namespace 'com.anissan.battarang'
   buildToolsVersion '33.0.1'
   compileSdkVersion "android-UpsideDownCake"
 
