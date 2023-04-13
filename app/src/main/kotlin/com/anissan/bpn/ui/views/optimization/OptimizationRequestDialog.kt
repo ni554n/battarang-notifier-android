@@ -1,11 +1,15 @@
 package com.anissan.bpn.ui.views.optimization
 
+import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import com.anissan.bpn.R
 import com.anissan.bpn.ui.MainActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
+private lateinit var optimizationRequestDialog: AlertDialog
+
 fun MainActivity.showOptimizationRequestDialog() {
-  MaterialAlertDialogBuilder(this, R.style.CenteredDialog)
+  optimizationRequestDialog = MaterialAlertDialogBuilder(this, R.style.CenteredDialog)
     .setIcon(R.drawable.ic_heart)
     .setTitle(getString(R.string.optimization_exemption_title))
     .setMessage(R.string.optimization_exemption_dialog)
@@ -13,4 +17,17 @@ fun MainActivity.showOptimizationRequestDialog() {
       OptimizationRemoverSheet.show(supportFragmentManager)
     }
     .show()
+}
+
+private const val OPTIMIZATION_REQUEST_DIALOG = "optimization_request_dialog"
+
+fun saveOptimizationRequestDialogState(outState: Bundle) {
+  outState.putBoolean(
+    OPTIMIZATION_REQUEST_DIALOG,
+    if (::optimizationRequestDialog.isInitialized) optimizationRequestDialog.isShowing else false,
+  )
+}
+
+fun MainActivity.restoreOptimizationRequestDialogState(savedInstanceState: Bundle) {
+  if (savedInstanceState.getBoolean(OPTIMIZATION_REQUEST_DIALOG)) showOptimizationRequestDialog()
 }

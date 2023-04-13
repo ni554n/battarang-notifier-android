@@ -2,6 +2,8 @@ package com.anissan.bpn.ui.views.pairing
 
 import android.content.ClipboardManager
 import android.content.Intent
+import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.anissan.bpn.BuildConfig
 import com.anissan.bpn.R
@@ -13,6 +15,8 @@ import com.anissan.bpn.utils.logV
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import java.net.URI
+
+private lateinit var pairingDialog: AlertDialog
 
 fun MainActivity.showPairingDialog() {
   val dialogContentView = DialogPairBinding.inflate(layoutInflater)
@@ -33,7 +37,7 @@ fun MainActivity.showPairingDialog() {
     setOnLongClickListener { dialog -> dialog.performClick() }
   }
 
-  MaterialAlertDialogBuilder(this, R.style.PairingDialog)
+  pairingDialog = MaterialAlertDialogBuilder(this, R.style.PairingDialog)
     .setIcon(R.drawable.ic_external_link)
     .setTitle(getString(R.string.pair_dialog_title))
     .setView(dialogContentView.root)
@@ -67,4 +71,17 @@ fun MainActivity.saveToken(providedText: String) {
     showSnackbar(R.string.invalid_token)
     return
   }
+}
+
+private const val PAIRING_DIALOG = "pairing_dialog"
+
+fun savePairingDialogState(outState: Bundle) {
+  outState.putBoolean(
+    PAIRING_DIALOG,
+    if (::pairingDialog.isInitialized) pairingDialog.isShowing else false,
+  )
+}
+
+fun MainActivity.restorePairingDialogState(savedInstanceState: Bundle) {
+  if (savedInstanceState.getBoolean(PAIRING_DIALOG)) showPairingDialog()
 }

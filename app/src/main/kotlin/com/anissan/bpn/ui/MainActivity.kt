@@ -11,8 +11,12 @@ import com.anissan.bpn.data.PrefKey
 import com.anissan.bpn.databinding.ActivityMainBinding
 import com.anissan.bpn.network.MessageType
 import com.anissan.bpn.network.ReceiverApiClient
+import com.anissan.bpn.ui.views.optimization.restoreOptimizationRequestDialogState
+import com.anissan.bpn.ui.views.optimization.saveOptimizationRequestDialogState
 import com.anissan.bpn.ui.views.optimization.showOptimizationRequestDialog
 import com.anissan.bpn.ui.views.pairing.registerQrScanner
+import com.anissan.bpn.ui.views.pairing.restorePairingDialogState
+import com.anissan.bpn.ui.views.pairing.savePairingDialogState
 import com.anissan.bpn.ui.views.setupAppBar
 import com.anissan.bpn.ui.views.setupButtonBar
 import com.anissan.bpn.ui.views.setupDeviceNameInput
@@ -136,6 +140,20 @@ class MainActivity : AppCompatActivity() {
     super.onStop()
 
     localKvStore.stopObservingChanges()
+  }
+
+  override fun onSaveInstanceState(outState: Bundle) {
+    savePairingDialogState(outState)
+    saveOptimizationRequestDialogState(outState)
+
+    super.onSaveInstanceState(outState)
+  }
+
+  override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+    super.onRestoreInstanceState(savedInstanceState)
+
+    restorePairingDialogState(savedInstanceState)
+    restoreOptimizationRequestDialogState(savedInstanceState)
   }
 
   fun showSnackbar(stringResId: Int, length: Int = Snackbar.LENGTH_LONG) {
