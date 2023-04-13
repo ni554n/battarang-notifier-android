@@ -4,7 +4,7 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:background="?colorSurface"
+  android:background="?colorSurfaceContainerLow"
   android:clickable="false"
   android:focusable="false"
   android:scrollbars="vertical"
@@ -45,8 +45,8 @@
         <LinearLayout
           android:layout_width="0dp"
           android:layout_height="wrap_content"
+          android:layout_marginEnd="12dp"
           android:layout_weight="1"
-          android:layout_marginEnd="8dp"
           android:baselineAligned="false"
           android:orientation="vertical"
           >
@@ -57,12 +57,15 @@
             android:paddingBottom="4dp"
             android:text="@string/ignore_battery_optimization"
             android:textAppearance="?textAppearanceTitleLarge"
+            android:textColor="?colorOnPrimaryContainer"
+            android:textSize="20sp"
             />
 
           <com.google.android.material.textview.MaterialTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/ignore_battery_optimization_text"
+            tools:ignore="VisualLintLongText"
             />
         </LinearLayout>
 
@@ -73,6 +76,7 @@
           android:padding="8dp"
           app:thumbIcon="@drawable/switch_thumb_icon"
           tools:checked="true"
+          tools:ignore="DuplicateSpeakableTextCheck"
           />
       </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
@@ -103,7 +107,7 @@
         <LinearLayout
           android:layout_width="0dp"
           android:layout_height="wrap_content"
-          android:layout_marginEnd="8dp"
+          android:layout_marginEnd="12dp"
           android:layout_weight="1"
           android:baselineAligned="false"
           android:orientation="vertical"
@@ -115,12 +119,15 @@
             android:paddingBottom="4dp"
             android:text="@string/disable_app_hibernation"
             android:textAppearance="?textAppearanceTitleLarge"
+            android:textColor="?colorOnPrimaryContainer"
+            android:textSize="20sp"
             />
 
           <com.google.android.material.textview.MaterialTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/app_hibernation_text"
+            tools:ignore="VisualLintLongText"
             />
         </LinearLayout>
 
@@ -162,7 +169,7 @@
         <LinearLayout
           android:layout_width="0dp"
           android:layout_height="wrap_content"
-          android:layout_marginEnd="8dp"
+          android:layout_marginEnd="12dp"
           android:layout_weight="1"
           android:baselineAligned="false"
           android:orientation="vertical"
@@ -174,12 +181,15 @@
             android:paddingBottom="4dp"
             android:text="@string/allow_autostart"
             android:textAppearance="?textAppearanceTitleLarge"
+            android:textColor="?colorOnPrimaryContainer"
+            android:textSize="20sp"
             />
 
           <com.google.android.material.textview.MaterialTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/allow_autostart_text"
+            tools:ignore="VisualLintLongText"
             />
         </LinearLayout>
 
@@ -226,6 +236,7 @@
         android:layout_marginEnd="24dp"
         android:text="@string/instruction"
         android:textAppearance="?textAppearanceBodyMedium"
+        tools:ignore="VisualLintLongText"
         />
     </LinearLayout>
   </LinearLayout>
