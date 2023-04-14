@@ -1,4 +1,4 @@
-# Battery Push Notifier
+# Battarang
 
 Android Client for sending notification to the Receiver devices.
 

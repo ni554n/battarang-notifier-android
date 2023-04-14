@@ -1,22 +1,7 @@
 <resources>
   <string name="app_name">Battarang</string>
 
-  <!-- Notification -->
-  <string name="notifier_service_channel">Notifier Service</string>
-  <string name="notifier_service_channel_description">It is safe to turn off or minimize this channel</string>
-
-  <string name="service_notification_ticker">Started Battery Push Notifier service</string>
-  <string name="service_notification_content_title">Waiting for battery events</string>
-  <string name="service_notification_content_text">This service doesn\'t use any resources but required for keeping the push notifier service alive. It is safe to minimize or turn off this notification channel from the "Notification Settings".</string>
-
-  <string name="service_notification_channel_settings">Hide this notification</string>
-
-  <!-- Battery Exemption Dialog  -->
-  <string name="optimization_exemption_title">Battery Optimization</string>
-  <string name="optimization_exemption_dialog">Automation apps like this are subject to battery optimization rules imposed by the device makers and the Android itself.\n\nYour system will most probably interrupt this notifier service, even though, it just waits for battery events without using any resources.</string>
-  <string name="optimization_exemption_button">Remove these Restrictions</string>
-
-  <!-- Configs -->
+  <!-- Configurations -->
 
   <string name="notification_service">Notifier Service</string>
 
@@ -29,21 +14,6 @@
   <string name="label_but">But Must</string>
   <string name="skip_if_display_on_template">Skip while display is on</string>
 
-  <!-- Pairing Dialog -->
-
-  <string name="pair_with_device">Pair Receiver</string>
-  <string name="pair_dialog_title">Visit this link from the other device</string>
-  <string name="pair_dialog_content">Choose a receiver service to generate a pairing code and scan / paste here.\n\nIf pairing is successful, you’ll receive a confirmation notification there.</string>
-  <string name="pair_dialog_paste_button">Paste instead</string>
-  <string name="pair_dialog_scan_button">Scan QR</string>
-
-  <string name="invalid_token">Pairing Code is invalid. Make sure it is correctly scanned or copied.</string>
-  <string name="camera_unavailable">Can\'t open Camera. Copy the Code and "Paste instead".</string>
-  <string name="camera_permission_missing">You need to provide the camera permission from Settings</string>
-  <string name="quickie_overlay_string">Point to the Receiver app</string>
-
-  <!-- Button Bar -->
-
   <string name="unpair">Unpair</string>
   <string name="unpair_instruction">Tap &amp; Hold for a moment to Unpair</string>
 
@@ -52,18 +22,49 @@
 
   <string name="about">About</string>
 
-  <!-- Battery Restrictions Remover Sheet -->
-  <string name="remove_battery_restrictions">Remove Battery Restrictions</string>
-  <string name="ignore_battery_optimization">Ignore Battery Optimization</string>
-  <string name="ignore_battery_optimization_text">System will pause this service whenever your device is unused for some time. You won\'t get any push notifications during that time without this permission.</string>
-  <string name="disable_app_hibernation">Disable App Hibernation</string>
-  <string name="app_hibernation_text">If you don\'t actively interact with this app for a few days, system will pause this service until you open this app again. As this is an automation app that requires no interaction, this permission must be given.</string>
-  <string name="allow_autostart">Allow Auto-start</string>
-  <string name="allow_autostart_text">Some OEMs keep a whitelist of known apps that can resume their services after phone restart. Without that permission, this service won\'t be able to resume as expected.</string>
-  <string name="instruction">Allowing these should be sufficient for consistent service. If it\'s not, please visit the Tutorial tab for more comprehensive device specific instructions.</string>
+  <!-- Notification Channel -->
 
-  <string name="successful_pairing">Check the other device for confirmation notification</string>
-  <string name="unpaired">Receiver unpaired successfully</string>
+  <string name="notifier_service_channel">Notifier Service</string>
+  <string name="notifier_service_channel_description">It is safe to turn off or minimize this channel</string>
+
+  <string name="service_notification_ticker">Started Battarang Notifier service</string>
+  <string name="service_notification_content_title">Waiting for battery events</string>
+  <string name="service_notification_content_text">Although this service doesn\'t use much resources, it\'s necessary to keep the notifier service running. But it\'s safe to minimize or turn off this notification channel from notification settings".</string>
+
+  <string name="service_notification_channel_settings">Hide this notification</string>
+
+  <!-- Pairing Dialog -->
+
+  <string name="pair_with_device">Pair Receiver</string>
+  <string name="pair_dialog_title">Visit this link from the other device</string>
+  <string name="pair_dialog_content">Select a receiver service to generate a pairing code and then scan or paste the code here.\n\nIf pairing is successful, you\'ll receive a confirmation on the receiver device.</string>
+  <string name="pair_dialog_paste_button">Paste instead</string>
+  <string name="pair_dialog_scan_button">Scan QR</string>
+
+  <string name="invalid_token">Pairing code is invalid.\nMake sure it\'s correctly scanned or copied.</string>
+  <string name="camera_unavailable">Can\'t open Camera.\nCopy the code manually and "Paste instead".</string>
+  <string name="camera_permission_missing">You need to provide the camera permission from app settings.</string>
+  <string name="quickie_overlay_string">Scan pairing code</string>
+
+  <!-- Battery Optimization Request Dialog  -->
+  <string name="optimization_exemption_title">Battery Restrictions</string>
+  <string name="optimization_exemption_dialog">Automation apps like this are subject to battery optimization rules imposed by both device makers and Android itself.\n\nAs a result, your system may interrupt the notifier service from running indefinitely, even though it only waits for battery events without performing any actions.</string>
+  <string name="optimization_exemption_button">Remove these Restrictions</string>
+
+  <string name="remove_battery_restrictions_menu">Remove Battery Restrictions</string>
+
+  <!-- Battery Restrictions Remover Sheet -->
+
+  <string name="ignore_battery_optimization">Ignore Battery Optimization</string>
+  <string name="ignore_battery_optimization_text">If your device is unused for a long period of time, the system may pause this service until the device is active again. You won\'t receive any notifications during that time if this permission is not given.</string>
+
+  <string name="disable_app_hibernation">Disable App Hibernation</string>
+  <string name="app_hibernation_text">If you don\'t open an app regularly, the system may pause it until you open it again. Since this is an automation app that doesn\'t require user interaction, it’s important to disable hibernation for this app.</string>
+
+  <string name="allow_autostart">Allow Auto-start</string>
+  <string name="allow_autostart_text">Some OEMs keep a whitelist of known apps that can resume their services after a phone restart. This service won\'t be able to restart if it\'s not allowed explicitly.</string>
+
+  <string name="instruction">Allowing these should be sufficient for a consistent service. If it\'s not, please visit the Tutorial tab for more comprehensive step-by-step instructions.</string>
 
   <!-- About Sheet -->
   <string name="review">Review</string>
