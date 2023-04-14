@@ -48,15 +48,6 @@ class AboutSheet : BottomSheetDialogFragment() {
     root
   }
 
-  override fun onStart() {
-    super.onStart()
-
-    // The sheet dialog is initially set to WRAP_CONTENT. Works as expected when the bottom sheet has only one layout.
-    // But when there's ViewPager with different sized tabs, the dialog leaves a big gap at the bottom.
-    dialog?.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)?.layoutParams?.height =
-      ViewGroup.LayoutParams.MATCH_PARENT
-  }
-
   private fun SheetAboutBinding.setupViews() {
     receiver.setOnClickListener { openLinkInBrowser(BuildConfig.RECEIVER_WEBSITE) }
     telegram.setOnClickListener { openLinkInBrowser(BuildConfig.TELEGRAM_BOT_URL) }

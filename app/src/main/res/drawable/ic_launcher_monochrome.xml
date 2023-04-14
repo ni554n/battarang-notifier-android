@@ -7,7 +7,7 @@
   >
   <group>
     <path
-      android:fillAlpha="0.7"
+      android:fillAlpha="0.8"
       android:fillColor="#000"
       android:fillType="evenOdd"
       android:pathData="M32.67,62.05L37.43,107.34C37.83,111.21 41.3,114.02 45.17,113.61L74.01,110.58C77.88,110.17 80.69,106.7 80.28,102.83L75.3,55.44L74.92,55.93C71.1,60.84 64.51,62.65 58.71,60.4L51.85,57.74C48.17,56.31 44.05,56.49 40.5,58.24L33.91,61.51C33.5,61.71 33.09,61.89 32.67,62.05Z"
@@ -22,14 +22,14 @@
       android:pathData="M42.26,35.46C42.12,34.08 43.12,32.85 44.49,32.7L58.2,31.26C59.58,31.12 60.81,32.12 60.96,33.49L61.09,34.74L42.39,36.7L42.26,35.46Z"
       />
     <path
-      android:fillColor="#00000000"
+      android:fillColor="#000"
       android:pathData="M49.47,45.13L55.6,44.48"
       android:strokeWidth="0.881081"
       android:strokeColor="#000"
       android:strokeLineCap="round"
       />
     <path
-      android:fillColor="#00000000"
+      android:fillColor="#000"
       android:pathData="M52.82,48.14L52.18,42"
       android:strokeWidth="0.881081"
       android:strokeColor="#000"
