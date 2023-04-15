@@ -2,6 +2,7 @@ package com.anissan.battarang
 
 import android.app.Application
 import android.os.PowerManager
+import androidx.appcompat.app.AppCompatDelegate
 import com.anissan.battarang.background.services.receivers.BatteryLevelPollingAlarmReceiver
 import com.anissan.battarang.background.services.receivers.BatteryStatusReceiver
 import com.anissan.battarang.background.services.receivers.handlers.BroadcastedEventHandlers
@@ -20,6 +21,10 @@ import org.koin.dsl.module
 class MainApplication : Application() {
   override fun onCreate() {
     super.onCreate()
+
+    if (DynamicColors.isDynamicColorAvailable().not()) {
+      AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+    }
 
     // Enables app wide dynamic theme on Android 12+ using the Material library.
     DynamicColors.applyToActivitiesIfAvailable(this)
