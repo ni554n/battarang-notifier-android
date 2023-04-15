@@ -48,5 +48,4 @@
     <item name="colorSurfaceDim">@color/md_theme_dark_surfaceDim</item>
     <item name="colorSurfaceBright">@color/md_theme_dark_surfaceBright</item>
   </style>
-
 </resources>

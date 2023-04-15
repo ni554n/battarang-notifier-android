@@ -2,7 +2,7 @@
 
   <style name="ColoredTheme" parent="Theme.Material3.DayNight.NoActionBar" />
 
-  <!-- Great resources for configuring Window stuff -->
+  <!-- Great resources for configuring Window style: -->
   <!-- https://medium.com/androiddevelopers/animating-your-keyboard-fb776a8fb66d -->
   <!-- Implement Edge to Edge: https://developer.android.com/training/gestures/edge-to-edge -->
   <style name="BaseTheme" parent="ColoredTheme">
