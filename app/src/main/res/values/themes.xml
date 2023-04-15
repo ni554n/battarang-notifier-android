@@ -14,10 +14,5 @@
     <item name="snackbarTextViewStyle">@style/CustomSnackbarTextView</item>
   </style>
 
-  <style name="ModalBottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
-    <item name="bottomSheetStyle">@style/ModalBottomSheet</item>
-    <item name="android:navigationBarColor">@android:color/transparent</item>
-  </style>
-
   <style name="MainTheme" parent="BaseTheme" />
 </resources>

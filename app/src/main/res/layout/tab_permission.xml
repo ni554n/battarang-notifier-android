@@ -54,16 +54,16 @@
           <com.google.android.material.textview.MaterialTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="4dp"
             android:text="@string/ignore_battery_optimization"
             android:textAppearance="?textAppearanceTitleLarge"
-            android:textColor="?colorOnPrimaryContainer"
+            android:textColor="?colorOnSecondaryContainer"
             android:textSize="20sp"
             />
 
           <com.google.android.material.textview.MaterialTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="8dp"
             android:text="@string/ignore_battery_optimization_text"
             android:textAppearance="?textAppearanceBodyMedium"
             tools:ignore="VisualLintLongText"
@@ -117,16 +117,16 @@
           <com.google.android.material.textview.MaterialTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="4dp"
             android:text="@string/disable_app_hibernation"
             android:textAppearance="?textAppearanceTitleLarge"
-            android:textColor="?colorOnPrimaryContainer"
+            android:textColor="?colorOnSecondaryContainer"
             android:textSize="20sp"
             />
 
           <com.google.android.material.textview.MaterialTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="8dp"
             android:text="@string/app_hibernation_text"
             android:textAppearance="?textAppearanceBodyMedium"
             tools:ignore="VisualLintLongText"
@@ -180,16 +180,16 @@
           <com.google.android.material.textview.MaterialTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="4dp"
             android:text="@string/allow_autostart"
             android:textAppearance="?textAppearanceTitleLarge"
-            android:textColor="?colorOnPrimaryContainer"
+            android:textColor="?colorOnSecondaryContainer"
             android:textSize="20sp"
             />
 
           <com.google.android.material.textview.MaterialTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="8dp"
             android:text="@string/allow_autostart_text"
             android:textAppearance="?textAppearanceBodyMedium"
             tools:ignore="VisualLintLongText"

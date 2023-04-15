@@ -37,6 +37,11 @@
     <item name="icon">@drawable/ic_qr_code</item>
   </style>
 
+  <style name="ModalBottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
+    <item name="bottomSheetStyle">@style/ModalBottomSheet</item>
+    <item name="android:navigationBarColor">@android:color/transparent</item>
+  </style>
+
   <style name="ModalBottomSheet" parent="Widget.Material3.BottomSheet.Modal">
     <item name="enableEdgeToEdge">true</item>
     <item name="android:maxWidth">512dp</item>
