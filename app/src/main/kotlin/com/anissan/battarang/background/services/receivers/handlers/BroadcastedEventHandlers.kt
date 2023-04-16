@@ -102,7 +102,7 @@ class BroadcastedEventHandlers(
       // Make sure every display is OFF before notifying.
       return (context.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager)
         .displays
-        .all { display: Display -> display.state == Display.STATE_OFF }
+        .any { display: Display -> display.state == Display.STATE_ON }
     }
 
     return false
