@@ -356,15 +356,14 @@
           android:layout_height="match_parent"
           android:gravity="center_vertical"
           android:orientation="horizontal"
-          android:paddingHorizontal="8dp"
-          android:paddingVertical="2dp"
+          android:paddingHorizontal="4dp"
           >
 
           <com.google.android.material.button.MaterialButton
             android:id="@+id/unpair_button"
             style="?materialButtonOutlinedStyle"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="@string/unpair"
             android:textAllCaps="true"
@@ -391,7 +390,7 @@
             android:id="@+id/about_button"
             style="?materialButtonOutlinedStyle"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="@string/about"
             android:textAllCaps="true"
