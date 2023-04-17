@@ -3,6 +3,7 @@ package com.anissan.battarang.ui.views
 import com.anissan.battarang.R
 import com.anissan.battarang.ui.MainActivity
 import com.anissan.battarang.ui.views.optimization.OptimizationRemoverSheet
+import com.google.android.material.elevation.SurfaceColors
 import dev.chrisbanes.insetter.applyInsetter
 
 fun MainActivity.setupAppBar() {
@@ -23,6 +24,8 @@ fun MainActivity.setupAppBar() {
     binding.collapsingToolbarLayout.expandedTitleMarginStart =
       (screenWidth - cardMaxWidth + expandedTitleMargin) / 2
   }
+
+  binding.collapsingToolbarLayout.setContentScrimColor(SurfaceColors.SURFACE_3.getColor(this))
 
   binding.materialToolbar.setOnMenuItemClickListener { menuItem ->
     when (menuItem.itemId) {

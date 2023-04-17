@@ -9,10 +9,11 @@ import android.widget.CompoundButton
 import com.anissan.battarang.R
 import com.anissan.battarang.ui.MainActivity
 import com.google.android.material.color.MaterialColors
+import com.google.android.material.elevation.SurfaceColors
 import com.google.android.material.slider.Slider
 
 fun MainActivity.setupMaxBatteryLevelCheckbox() {
-  binding.cardConfig.setCardBackgroundColor(dynamicSurfaceColor)
+  binding.cardConfig.setCardBackgroundColor(SurfaceColors.SURFACE_2.getColor(this))
 
   binding.checkBoxMaxBatteryLevel.run {
     isChecked = localKvStore.isMaxLevelNotificationEnabled

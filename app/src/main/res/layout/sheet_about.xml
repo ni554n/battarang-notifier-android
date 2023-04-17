@@ -214,7 +214,7 @@
       />
 
     <com.google.android.material.card.MaterialCardView
-      android:id="@+id/materialCardView"
+      android:id="@+id/card_author_details"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginHorizontal="16dp"
@@ -299,10 +299,11 @@
           android:id="@+id/divider"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
+          android:layout_marginHorizontal="16dp"
           android:layout_marginTop="8dp"
-          android:alpha="0.5"
-          app:dividerColor="?colorSecondary"
-          app:dividerThickness="1.3dp"
+          android:alpha="0.7"
+          app:dividerColor="?colorPrimary"
+          app:dividerThickness="1.5dp"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toBottomOf="@+id/author_name"
@@ -399,7 +400,7 @@
       app:flow_wrapMode="chain"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/materialCardView"
+      app:layout_constraintTop_toBottomOf="@+id/card_author_details"
       />
 
     <com.google.android.material.chip.Chip

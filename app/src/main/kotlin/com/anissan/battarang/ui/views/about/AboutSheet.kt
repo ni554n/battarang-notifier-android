@@ -14,6 +14,7 @@ import com.anissan.battarang.databinding.SheetAboutBinding
 import com.anissan.battarang.utils.logW
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.elevation.SurfaceColors
 import com.mikepenz.aboutlibraries.LibsBuilder
 import dev.chrisbanes.insetter.applyInsetter
 import java.net.URI
@@ -49,6 +50,8 @@ class AboutSheet : BottomSheetDialogFragment() {
   }
 
   private fun SheetAboutBinding.setupViews() {
+    cardAuthorDetails.setCardBackgroundColor(SurfaceColors.SURFACE_3.getColor(requireContext()))
+
     receiver.setOnClickListener { openLinkInBrowser(BuildConfig.RECEIVER_WEBSITE) }
     telegram.setOnClickListener { openLinkInBrowser(BuildConfig.TELEGRAM_BOT_URL) }
 

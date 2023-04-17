@@ -6,11 +6,12 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import com.anissan.battarang.data.LocalKvStore
 import com.anissan.battarang.ui.MainActivity
+import com.google.android.material.elevation.SurfaceColors
 import com.google.android.material.textfield.TextInputEditText
 
 fun MainActivity.setupDeviceNameInput() {
   binding.textInputLayoutDeviceName.apply {
-    boxBackgroundColor = dynamicSurfaceColor
+    boxBackgroundColor = SurfaceColors.SURFACE_2.getColor(this@setupDeviceNameInput)
 
     isEndIconVisible = false
 
