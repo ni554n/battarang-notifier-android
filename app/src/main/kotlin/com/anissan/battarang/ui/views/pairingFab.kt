@@ -23,8 +23,11 @@ fun MainActivity.setupPairingFab() {
 
   binding.nestedScrollView.setOnScrollChangeListener(
     NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
-      if (scrollY > oldScrollY) binding.fabPair.shrink()
-      else binding.fabPair.extend()
+      binding.fabPair.run {
+        if (scrollY > oldScrollY) {
+          if (isExtended) shrink()
+        } else if (isExtended.not()) extend()
+      }
     }
   )
 

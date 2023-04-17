@@ -31,7 +31,6 @@ enum class PrefKey {
  */
 class LocalKvStore(context: Context) : SimpleKrate(context),
   SharedPreferences.OnSharedPreferenceChangeListener {
-  //region UI States
 
   var deviceName: String
     by stringPref(PrefKey.DEVICE_NAME.name).withDefault(context.defaultDeviceName)
@@ -50,10 +49,6 @@ class LocalKvStore(context: Context) : SimpleKrate(context),
 
   var isSkipWhileDisplayOnEnabled: Boolean
     by booleanPref(PrefKey.SKIP_WHILE_SCREEN_ON_TOGGLE.name).withDefault(true)
-
-  //endregion
-
-  //region Data Fetching States
 
   /**
    * It's going to be either the FCM token generated on the receiver device
