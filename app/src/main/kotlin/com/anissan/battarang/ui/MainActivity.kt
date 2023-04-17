@@ -2,6 +2,7 @@ package com.anissan.battarang.ui
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import com.anissan.battarang.R
@@ -98,7 +99,9 @@ class MainActivity : AppCompatActivity() {
         fabPair.hide()
 
         receiverApiClient.sendNotification(MessageType.PAIRED) { response: String? ->
-          if (response == null) showSnackbar(R.string.network_error)
+          if (response == null) {
+            Toast.makeText(this@MainActivity, R.string.network_error, Toast.LENGTH_LONG).show()
+          }
         }
 
         showOptimizationRequestDialog()
