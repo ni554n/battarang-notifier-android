@@ -29,7 +29,7 @@
 
   <string name="service_notification_ticker">Started Battarang Notifier service</string>
   <string name="service_notification_content_title">Waiting for battery events</string>
-  <string name="service_notification_content_text">Although this service doesn\'t use much resources, it\'s necessary to keep the notifier service running. But it\'s safe to minimize or turn off this notification channel from notification settings".</string>
+  <string name="service_notification_content_text">This idle service is necessary to keep the notifier service running indefinitely. It\'s safe to minimize or turn off this notification from settings.</string>
 
   <string name="service_notification_channel_settings">Hide this notification</string>
 

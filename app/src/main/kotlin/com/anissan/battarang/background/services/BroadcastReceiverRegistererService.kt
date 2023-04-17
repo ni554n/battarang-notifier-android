@@ -137,7 +137,10 @@ private fun Context.buildServiceNotification(): Notification {
 
   return NotificationCompat.Builder(this, batteryStateChannelId)
     .setContentTitle(getString(R.string.service_notification_content_title))
-    .setContentText(getString(R.string.service_notification_content_text))
+    .setStyle(
+      NotificationCompat.BigTextStyle()
+        .bigText(getString(R.string.service_notification_content_text))
+    )
     .setSmallIcon(R.drawable.ic_notification_service)
     .setTicker(getString(R.string.service_notification_ticker))
     .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
