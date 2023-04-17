@@ -28,7 +28,7 @@ fun MainActivity.setupLowBatteryLevelCheckbox() {
 
       val colorSecondary = MaterialColors.getColor(
         this@run,
-        com.google.android.material.R.attr.colorSecondary,
+        com.google.android.material.R.attr.colorPrimary,
       )
 
       setSpan(

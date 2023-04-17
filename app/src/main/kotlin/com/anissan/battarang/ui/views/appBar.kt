@@ -25,7 +25,7 @@ fun MainActivity.setupAppBar() {
       (screenWidth - cardMaxWidth + expandedTitleMargin) / 2
   }
 
-  binding.collapsingToolbarLayout.setContentScrimColor(SurfaceColors.SURFACE_3.getColor(this))
+  binding.collapsingToolbarLayout.setContentScrimColor(SurfaceColors.SURFACE_5.getColor(this))
 
   binding.materialToolbar.setOnMenuItemClickListener { menuItem ->
     when (menuItem.itemId) {

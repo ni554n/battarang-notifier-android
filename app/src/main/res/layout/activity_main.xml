@@ -237,7 +237,7 @@
               android:paddingHorizontal="10dp"
               android:text="@string/battery_level_reaches_template"
               android:textAppearance="?textAppearanceBodyLarge"
-              android:textColor="?colorOnSecondaryContainer"
+              android:textColor="?colorOnPrimaryContainer"
               app:lastBaselineToBottomHeight="7sp"
               tools:checked="true"
               tools:ignore="VisualLintButtonSize"
@@ -283,7 +283,7 @@
               android:paddingHorizontal="10dp"
               android:text="@string/battery_is_low_template"
               android:textAppearance="?textAppearanceBodyLarge"
-              android:textColor="?colorOnSecondaryContainer"
+              android:textColor="?colorOnPrimaryContainer"
               app:lastBaselineToBottomHeight="7sp"
               tools:checked="true"
               tools:ignore="VisualLintButtonSize"
@@ -329,7 +329,7 @@
               android:paddingHorizontal="10dp"
               android:text="@string/skip_if_display_on_template"
               android:textAppearance="?textAppearanceBodyLarge"
-              android:textColor="?colorOnSecondaryContainer"
+              android:textColor="?colorOnPrimaryContainer"
               app:lastBaselineToBottomHeight="7sp"
               tools:checked="false"
               tools:ignore="VisualLintButtonSize"
@@ -357,6 +357,7 @@
           android:gravity="center_vertical"
           android:orientation="horizontal"
           android:paddingHorizontal="4dp"
+          android:paddingVertical="2dp"
           >
 
           <com.google.android.material.button.MaterialButton

@@ -1,10 +1,13 @@
 package com.anissan.battarang.ui.views
 
 import android.content.Context
+import android.content.res.Configuration
 import android.os.Build
 import android.provider.Settings
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.checkbox.MaterialCheckBox
+import com.google.android.material.elevation.SurfaceColors
 
 /**
  * Checkboxes has a ripple animation set only on its checkmark icon area, not the text beside it.
@@ -18,6 +21,17 @@ import com.google.android.material.checkbox.MaterialCheckBox
 fun MaterialCheckBox.bindClicksFrom(card: MaterialCardView) {
   card.setOnClickListener { performClick() }
 }
+
+val AppCompatActivity.isDarkModeEnabled: Boolean
+  get() {
+    val darkModeFlag = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+    return darkModeFlag == Configuration.UI_MODE_NIGHT_YES
+  }
+
+val AppCompatActivity.dynamicSurfaceColor: Int
+  get() = if (isDarkModeEnabled) {
+    SurfaceColors.SURFACE_1.getColor(this)
+  } else SurfaceColors.SURFACE_2.getColor(this)
 
 val Context.defaultDeviceName: String
   get() {

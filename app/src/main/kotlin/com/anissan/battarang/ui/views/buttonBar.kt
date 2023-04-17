@@ -7,13 +7,12 @@ import com.anissan.battarang.R
 import com.anissan.battarang.network.MessageType
 import com.anissan.battarang.ui.MainActivity
 import com.anissan.battarang.ui.views.about.AboutSheet
-import com.google.android.material.elevation.SurfaceColors
 import com.google.android.material.progressindicator.CircularProgressIndicatorSpec
 import com.google.android.material.progressindicator.IndeterminateDrawable
 import com.google.android.material.snackbar.Snackbar
 
 fun MainActivity.setupButtonBar() {
-  binding.buttonBarCard.setCardBackgroundColor(SurfaceColors.SURFACE_2.getColor(this))
+  binding.buttonBarCard.setCardBackgroundColor(dynamicSurfaceColor)
 
   unpairButton()
   testButton()
