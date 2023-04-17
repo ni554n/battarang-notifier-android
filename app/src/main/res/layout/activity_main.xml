@@ -68,7 +68,7 @@
 
       <!--   Notification Service Toggle   -->
       <com.google.android.material.card.MaterialCardView
-        android:id="@+id/card_notification_service"
+        android:id="@+id/notifier_service_card"
         style="@style/ServiceToggleCard"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -106,7 +106,7 @@
             />
 
           <com.google.android.material.materialswitch.MaterialSwitch
-            android:id="@+id/switch_notification_service"
+            android:id="@+id/notifier_service_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingStart="8dp"
@@ -127,7 +127,7 @@
             And clearing the EditText focus won't work if the focus can't move to anywhere else.
             So enabling focusing on the parent can solve those issues. -->
       <com.google.android.material.card.MaterialCardView
-        android:id="@+id/card_device_name_input"
+        android:id="@+id/device_name_card"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
@@ -138,14 +138,14 @@
         app:cardBackgroundColor="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/card_notification_service"
+        app:layout_constraintTop_toBottomOf="@+id/notifier_service_card"
         app:layout_constraintWidth_max="@dimen/card_max_width"
         app:shapeAppearance="?shapeAppearanceCornerSmall"
         app:strokeWidth="0dp"
         >
 
         <com.google.android.material.textfield.TextInputLayout
-          android:id="@+id/textInputLayout_device_name"
+          android:id="@+id/device_name_layout"
           style="?textInputFilledStyle"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
@@ -162,13 +162,13 @@
           >
 
           <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editText_device_name"
+            android:id="@+id/device_name_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawablePadding="2dp"
             android:imeOptions="actionDone"
             android:singleLine="true"
-            android:textColor="?colorOnSecondaryContainer"
+            android:textColor="?colorOnPrimaryContainer"
             tools:text="Xiaomi Mi 6"
             />
 
@@ -176,7 +176,7 @@
       </com.google.android.material.card.MaterialCardView>
 
       <com.google.android.material.card.MaterialCardView
-        android:id="@+id/card_config"
+        android:id="@+id/config_options_card"
         style="?materialCardViewFilledStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -184,7 +184,7 @@
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/card_device_name_input"
+        app:layout_constraintTop_toBottomOf="@+id/device_name_card"
         app:layout_constraintWidth_max="@dimen/card_max_width"
         app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Small"
         >
@@ -200,7 +200,7 @@
 
           <!-- Notify When -->
           <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/texView_notify_when"
+            android:id="@+id/notify_when_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="54dp"
@@ -214,7 +214,7 @@
             />
 
           <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_battery_level_reached"
+            android:id="@+id/max_battery_level_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -226,7 +226,7 @@
             >
 
             <com.google.android.material.checkbox.MaterialCheckBox
-              android:id="@+id/check_box_max_battery_level"
+              android:id="@+id/max_battery_level_checkbox"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:layout_marginStart="12dp"
@@ -246,7 +246,7 @@
           </com.google.android.material.card.MaterialCardView>
 
           <com.google.android.material.slider.Slider
-            android:id="@+id/battery_level_slider"
+            android:id="@+id/max_battery_level_slider"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="42dp"
@@ -260,7 +260,7 @@
             />
 
           <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_battery_level_low"
+            android:id="@+id/low_battery_level_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -272,7 +272,7 @@
             >
 
             <com.google.android.material.checkbox.MaterialCheckBox
-              android:id="@+id/checkBox_battery_level_low"
+              android:id="@+id/low_battery_level_checkbox"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:layout_marginStart="12dp"
@@ -291,7 +291,7 @@
           </com.google.android.material.card.MaterialCardView>
 
           <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/texView_but"
+            android:id="@+id/but_must_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="54dp"
@@ -306,7 +306,7 @@
             />
 
           <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_skip_while_display_on"
+            android:id="@+id/skip_while_display_on_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -318,7 +318,7 @@
             >
 
             <com.google.android.material.checkbox.MaterialCheckBox
-              android:id="@+id/checkBox_skip_while_display_on"
+              android:id="@+id/skip_while_display_on_checkbox"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:layout_marginStart="12dp"
@@ -339,14 +339,14 @@
       </com.google.android.material.card.MaterialCardView>
 
       <com.google.android.material.card.MaterialCardView
-        android:id="@+id/card_button_bar"
+        android:id="@+id/button_bar_card"
         style="?materialCardViewFilledStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/card_config"
+        app:layout_constraintTop_toBottomOf="@+id/config_options_card"
         app:layout_constraintWidth_max="@dimen/card_max_width"
         app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Small"
         >
@@ -401,7 +401,7 @@
       </com.google.android.material.card.MaterialCardView>
 
       <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/service_name_text_view"
+        android:id="@+id/service_name_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
@@ -410,7 +410,7 @@
         android:textColor="?colorSecondary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/card_button_bar"
+        app:layout_constraintTop_toBottomOf="@id/button_bar_card"
         tools:text="Receiver"
         />
 
@@ -418,7 +418,7 @@
   </androidx.core.widget.NestedScrollView>
 
   <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-    android:id="@+id/fab_pair"
+    android:id="@+id/pair_receiver_fab"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom|end"

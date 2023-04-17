@@ -39,7 +39,7 @@
     <!--   Repurposing the monochrome app icon, so the margins are baked in.
            We are wrapping it in a CardView so that we can scale the icon inside the container. -->
     <com.google.android.material.card.MaterialCardView
-      android:id="@+id/app_icon_container"
+      android:id="@+id/app_icon_card"
       android:layout_width="72dp"
       android:layout_height="72dp"
       app:cardBackgroundColor="?colorSurface"
@@ -62,7 +62,7 @@
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.textview.MaterialTextView
-      android:id="@+id/app_name"
+      android:id="@+id/app_name_text"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginTop="32dp"
@@ -71,11 +71,11 @@
       android:textColor="?colorSecondary"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/app_icon_container"
+      app:layout_constraintTop_toBottomOf="@+id/app_icon_card"
       />
 
     <com.google.android.material.textview.MaterialTextView
-      android:id="@+id/subtitle"
+      android:id="@+id/description_text"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginTop="16dp"
@@ -84,11 +84,11 @@
       android:textColor="?colorSecondary"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/app_name"
+      app:layout_constraintTop_toBottomOf="@+id/app_name_text"
       />
 
     <com.google.android.material.button.MaterialButton
-      android:id="@+id/receiver"
+      android:id="@+id/receiver_link_button"
       style="@style/Widget.Material3.Button.TextButton"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
@@ -105,15 +105,15 @@
       app:iconGravity="textEnd"
       app:iconSize="16dp"
       app:iconTint="?colorSecondary"
-      app:layout_constraintEnd_toStartOf="@+id/or"
+      app:layout_constraintEnd_toStartOf="@+id/or_text"
       app:layout_constraintHorizontal_chainStyle="packed"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/subtitle"
+      app:layout_constraintTop_toBottomOf="@+id/description_text"
       tools:ignore="TouchTargetSizeCheck"
       />
 
     <com.google.android.material.textview.MaterialTextView
-      android:id="@+id/or"
+      android:id="@+id/or_text"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginHorizontal="4dp"
@@ -122,13 +122,13 @@
       android:text="@string/or"
       android:textAppearance="?textAppearanceBodyLarge"
       android:textColor="?colorSecondary"
-      app:layout_constraintEnd_toStartOf="@+id/telegram"
-      app:layout_constraintStart_toEndOf="@+id/receiver"
-      app:layout_constraintTop_toBottomOf="@+id/subtitle"
+      app:layout_constraintEnd_toStartOf="@+id/telegram_link_button"
+      app:layout_constraintStart_toEndOf="@+id/receiver_link_button"
+      app:layout_constraintTop_toBottomOf="@+id/description_text"
       />
 
     <com.google.android.material.button.MaterialButton
-      android:id="@+id/telegram"
+      android:id="@+id/telegram_link_button"
       style="@style/Widget.Material3.Button.TextButton"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
@@ -146,13 +146,13 @@
       app:iconSize="16dp"
       app:iconTint="?colorSecondary"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toEndOf="@+id/or"
-      app:layout_constraintTop_toBottomOf="@+id/subtitle"
+      app:layout_constraintStart_toEndOf="@+id/or_text"
+      app:layout_constraintTop_toBottomOf="@+id/description_text"
       tools:ignore="TouchTargetSizeCheck"
       />
 
     <com.google.android.material.button.MaterialButton
-      android:id="@+id/source"
+      android:id="@+id/source_link_button"
       style="@style/Widget.Material3.Button.TextButton"
       android:layout_width="80dp"
       android:layout_height="wrap_content"
@@ -164,16 +164,16 @@
       app:iconGravity="top"
       app:iconSize="36dp"
       app:iconTint="?colorSecondary"
-      app:layout_constraintEnd_toStartOf="@+id/issues"
+      app:layout_constraintEnd_toStartOf="@+id/issues_link_button"
       app:layout_constraintHorizontal_bias="0.5"
       app:layout_constraintHorizontal_chainStyle="packed"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/receiver"
+      app:layout_constraintTop_toBottomOf="@+id/receiver_link_button"
       app:shapeAppearance="?shapeAppearanceCornerExtraSmall"
       />
 
     <com.google.android.material.button.MaterialButton
-      android:id="@+id/issues"
+      android:id="@+id/issues_link_button"
       style="@style/Widget.Material3.Button.TextButton"
       android:layout_width="80dp"
       android:layout_height="wrap_content"
@@ -185,15 +185,15 @@
       app:iconGravity="top"
       app:iconSize="36dp"
       app:iconTint="?colorSecondary"
-      app:layout_constraintEnd_toStartOf="@+id/review"
+      app:layout_constraintEnd_toStartOf="@+id/review_link_button"
       app:layout_constraintHorizontal_bias="0.5"
-      app:layout_constraintStart_toEndOf="@+id/source"
-      app:layout_constraintTop_toBottomOf="@+id/receiver"
+      app:layout_constraintStart_toEndOf="@+id/source_link_button"
+      app:layout_constraintTop_toBottomOf="@+id/receiver_link_button"
       app:shapeAppearance="?shapeAppearanceCornerExtraSmall"
       />
 
     <com.google.android.material.button.MaterialButton
-      android:id="@+id/review"
+      android:id="@+id/review_link_button"
       style="@style/Widget.Material3.Button.TextButton"
       android:layout_width="80dp"
       android:layout_height="wrap_content"
@@ -208,20 +208,20 @@
       app:iconTint="?colorSecondary"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintHorizontal_bias="0.5"
-      app:layout_constraintStart_toEndOf="@+id/issues"
-      app:layout_constraintTop_toBottomOf="@+id/receiver"
+      app:layout_constraintStart_toEndOf="@+id/issues_link_button"
+      app:layout_constraintTop_toBottomOf="@+id/receiver_link_button"
       app:shapeAppearance="?shapeAppearanceCornerExtraSmall"
       />
 
     <com.google.android.material.card.MaterialCardView
-      android:id="@+id/card_author_details"
+      android:id="@+id/author_details_card"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginHorizontal="16dp"
       android:layout_marginTop="24dp"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/review"
+      app:layout_constraintTop_toBottomOf="@+id/review_link_button"
       app:strokeWidth="0dp"
       >
 
@@ -231,7 +231,7 @@
         >
 
         <com.google.android.material.textview.MaterialTextView
-          android:id="@+id/designed_n_developed_by"
+          android:id="@+id/by_text"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginHorizontal="@dimen/card_inset_horizontal"
@@ -244,7 +244,7 @@
           />
 
         <com.google.android.material.textview.MaterialTextView
-          android:id="@+id/flag"
+          android:id="@+id/flag_emoji_text"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginHorizontal="@dimen/card_inset_horizontal"
@@ -253,12 +253,12 @@
           android:textAppearance="?textAppearanceLabelMedium"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintHorizontal_bias="1.0"
-          app:layout_constraintStart_toEndOf="@+id/designed_n_developed_by"
+          app:layout_constraintStart_toEndOf="@+id/by_text"
           app:layout_constraintTop_toTopOf="parent"
           />
 
         <com.google.android.material.textview.MaterialTextView
-          android:id="@+id/author_name"
+          android:id="@+id/author_name_text"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginHorizontal="@dimen/card_inset_horizontal"
@@ -267,11 +267,11 @@
           android:textAppearance="?textAppearanceHeadlineSmall"
           android:textColor="?colorPrimary"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/designed_n_developed_by"
+          app:layout_constraintTop_toBottomOf="@+id/by_text"
           />
 
         <com.google.android.material.button.MaterialButton
-          android:id="@+id/author_website"
+          android:id="@+id/author_website_link_button"
           style="@style/Widget.Material3.Button.TextButton"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
@@ -289,7 +289,7 @@
           app:iconSize="16dp"
           app:iconTint="?colorSecondary"
           app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/flag"
+          app:layout_constraintTop_toBottomOf="@+id/flag_emoji_text"
           app:shapeAppearance="?shapeAppearanceCornerSmall"
           tools:ignore="TouchTargetSizeCheck"
           tools:text="anissan.com"
@@ -306,12 +306,12 @@
           app:dividerThickness="1.5dp"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/author_name"
+          app:layout_constraintTop_toBottomOf="@+id/author_name_text"
           />
 
         <!-- Twitter -->
         <com.google.android.material.button.MaterialButton
-          android:id="@+id/twitter"
+          android:id="@+id/twitter_link_button"
           style="@style/Widget.Material3.Button.TextButton"
           android:layout_width="0dp"
           android:layout_height="wrap_content"
@@ -337,7 +337,7 @@
 
         <!--  LinkedIn -->
         <com.google.android.material.button.MaterialButton
-          android:id="@+id/linkedin"
+          android:id="@+id/linkedin_link_button"
           style="@style/Widget.Material3.Button.TextButton"
           android:layout_width="0dp"
           android:layout_height="wrap_content"
@@ -356,13 +356,13 @@
           app:iconTint="?colorSecondary"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/twitter"
+          app:layout_constraintTop_toBottomOf="@+id/twitter_link_button"
           app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.None"
           tools:ignore="VisualLintButtonSize"
           />
 
         <com.google.android.material.button.MaterialButton
-          android:id="@+id/other_app"
+          android:id="@+id/check_out_app_link_button"
           style="@style/Widget.Material3.Button.TextButton"
           android:layout_width="0dp"
           android:layout_height="wrap_content"
@@ -381,7 +381,7 @@
           app:iconTint="?colorSecondary"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/linkedin"
+          app:layout_constraintTop_toBottomOf="@+id/linkedin_link_button"
           app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.None"
           tools:ignore="VisualLintButtonSize"
           />
@@ -394,17 +394,17 @@
       android:layout_height="wrap_content"
       android:layout_marginHorizontal="16dp"
       android:layout_marginVertical="8dp"
-      app:constraint_referenced_ids="license,policy,tos"
+      app:constraint_referenced_ids="license_chip,policy_link_chip,tos_link_chip"
       app:flow_horizontalGap="8dp"
       app:flow_horizontalStyle="packed"
       app:flow_wrapMode="chain"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/card_author_details"
+      app:layout_constraintTop_toBottomOf="@+id/author_details_card"
       />
 
     <com.google.android.material.chip.Chip
-      android:id="@+id/license"
+      android:id="@+id/license_chip"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="@string/licenses"
@@ -415,7 +415,7 @@
       />
 
     <com.google.android.material.chip.Chip
-      android:id="@+id/policy"
+      android:id="@+id/policy_link_chip"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="@string/privacy_policy"
@@ -427,7 +427,7 @@
       />
 
     <com.google.android.material.chip.Chip
-      android:id="@+id/tos"
+      android:id="@+id/tos_link_chip"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="@string/tos"

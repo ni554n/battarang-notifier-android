@@ -11,7 +11,7 @@ import com.anissan.battarang.ui.MainActivity
 import com.google.android.material.color.MaterialColors
 
 fun MainActivity.setupLowBatteryLevelCheckbox() {
-  binding.checkBoxBatteryLevelLow.run {
+  binding.lowBatteryLevelCheckbox.run {
     isChecked = localKvStore.isLowBatteryNotificationEnabled
 
     // Formatting the "LOW" portion as bold with color
@@ -39,7 +39,7 @@ fun MainActivity.setupLowBatteryLevelCheckbox() {
       )
     }
 
-    bindClicksFrom(binding.cardBatteryLevelLow)
+    bindClicksFrom(binding.lowBatteryLevelCard)
 
     setOnCheckedChangeListener { _: CompoundButton, isChecked: Boolean ->
       localKvStore.isLowBatteryNotificationEnabled = isChecked

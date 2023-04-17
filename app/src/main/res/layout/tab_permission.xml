@@ -11,7 +11,7 @@
   >
 
   <LinearLayout
-    android:id="@+id/layout_optimizer_config"
+    android:id="@+id/permission_options_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:baselineAligned="false"
@@ -20,7 +20,7 @@
 
     <!-- Ignore Battery Optimization -->
     <com.google.android.material.card.MaterialCardView
-      android:id="@+id/card_ignore_battery_optimization"
+      android:id="@+id/ignore_battery_optimization_card"
       style="?materialCardViewFilledStyle"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -71,7 +71,7 @@
         </LinearLayout>
 
         <com.google.android.material.materialswitch.MaterialSwitch
-          android:id="@+id/switch_ignore_battery_optimization"
+          android:id="@+id/ignore_battery_optimization_switch"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:padding="8dp"
@@ -84,7 +84,7 @@
 
     <!-- App hibernation -->
     <com.google.android.material.card.MaterialCardView
-      android:id="@+id/card_disable_hibernation"
+      android:id="@+id/disable_hibernation_card"
       style="?materialCardViewFilledStyle"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -134,7 +134,7 @@
         </LinearLayout>
 
         <com.google.android.material.materialswitch.MaterialSwitch
-          android:id="@+id/switch_disable_hibernation"
+          android:id="@+id/disable_hibernation_switch"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:padding="8dp"
@@ -146,7 +146,7 @@
 
     <!-- Auto Start -->
     <com.google.android.material.card.MaterialCardView
-      android:id="@+id/card_allow_auto_start"
+      android:id="@+id/allow_auto_start_card"
       style="?materialCardViewFilledStyle"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"

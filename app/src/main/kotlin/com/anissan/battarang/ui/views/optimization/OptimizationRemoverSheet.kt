@@ -89,14 +89,14 @@ class OptimizationRemoverSheet : BottomSheetDialogFragment() {
   }
 
   override fun onDestroy() {
-    viewBindings?.viewPager?.unregisterOnPageChangeCallback(tabChangeCallback)
+    viewBindings?.tabViewPager?.unregisterOnPageChangeCallback(tabChangeCallback)
     viewBindings = null
 
     super.onDestroy()
   }
 
   private fun SheetOptimizationRemoverBinding.setupTabViewPager() {
-    viewPager.run {
+    tabViewPager.run {
       adapter = tabAdapter
 
       registerOnPageChangeCallback(tabChangeCallback)
@@ -117,7 +117,7 @@ class OptimizationRemoverSheet : BottomSheetDialogFragment() {
     }
 
     // Linking up the Tab names and swiping behavior with the ViewPager.
-    TabLayoutMediator(tabLayout, viewPager) { tab: TabLayout.Tab, position: Int ->
+    TabLayoutMediator(tabLayout, tabViewPager) { tab: TabLayout.Tab, position: Int ->
       when (position) {
         0 -> tab.text = PermissionTabViewHolder.TAB_TITLE
         1 -> tab.text = TutorialTabViewHolder.TAB_TITLE

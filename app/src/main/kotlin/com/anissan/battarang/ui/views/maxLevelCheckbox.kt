@@ -13,9 +13,9 @@ import com.google.android.material.elevation.SurfaceColors
 import com.google.android.material.slider.Slider
 
 fun MainActivity.setupMaxBatteryLevelCheckbox() {
-  binding.cardConfig.setCardBackgroundColor(SurfaceColors.SURFACE_2.getColor(this))
+  binding.configOptionsCard.setCardBackgroundColor(SurfaceColors.SURFACE_2.getColor(this))
 
-  binding.checkBoxMaxBatteryLevel.run {
+  binding.maxBatteryLevelCheckbox.run {
     isChecked = localKvStore.isMaxLevelNotificationEnabled
 
     /**
@@ -50,14 +50,14 @@ fun MainActivity.setupMaxBatteryLevelCheckbox() {
 
     val tildeEnd = tildeStart + 1 // ~|%
 
-    binding.checkBoxMaxBatteryLevel.text = maxLevelSpannableStringBuilder.insert(
+    binding.maxBatteryLevelCheckbox.text = maxLevelSpannableStringBuilder.insert(
       tildeEnd,
       localKvStore.maxChargingLevelPercentage.toString(),
     )
 
     bindMaxLevelSlider(maxLevelSpannableStringBuilder, tildeEnd)
 
-    bindClicksFrom(binding.cardBatteryLevelReached)
+    bindClicksFrom(binding.maxBatteryLevelCard)
 
     setOnCheckedChangeListener { _: CompoundButton, isChecked: Boolean ->
       localKvStore.isMaxLevelNotificationEnabled = isChecked
@@ -69,7 +69,7 @@ private fun MainActivity.bindMaxLevelSlider(
   maxLevelSpannableStringBuilder: SpannableStringBuilder,
   tildeEnd: Int,
 ) {
-  binding.batteryLevelSlider.run {
+  binding.maxBatteryLevelSlider.run {
     val savedMaxLevel: Int = localKvStore.maxChargingLevelPercentage
     value = savedMaxLevel.toFloat()
 
@@ -83,7 +83,7 @@ private fun MainActivity.bindMaxLevelSlider(
 
       val updatedLevelValueString = "$updatedLevelValue"
 
-      binding.checkBoxMaxBatteryLevel.text = maxLevelSpannableStringBuilder.replace(
+      binding.maxBatteryLevelCheckbox.text = maxLevelSpannableStringBuilder.replace(
         tildeEnd, // ~|85%
         tildeEnd + currentMaxLevel, // ~85|%
         updatedLevelValueString,

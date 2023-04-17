@@ -36,7 +36,7 @@ class PermissionTabViewHolder(
 
   init {
     permissionBinding.apply {
-      layoutOptimizerConfig.applyInsetter {
+      permissionOptionsLayout.applyInsetter {
         type(navigationBars = true) {
           margin(vertical = true)
         }
@@ -50,15 +50,15 @@ class PermissionTabViewHolder(
 
   @SuppressLint("BatteryLife")
   private fun TabPermissionBinding.setupIgnoreOptimizationSwitch() {
-    switchIgnoreBatteryOptimization.run {
+    ignoreBatteryOptimizationSwitch.run {
       if (Build.VERSION.SDK_INT < 23) {
-        cardIgnoreBatteryOptimization.disableCard()
+        ignoreBatteryOptimizationCard.disableCard()
         isEnabled = false
         return
       }
 
       disableSwitchDragging()
-      bindClicksFrom(cardIgnoreBatteryOptimization)
+      bindClicksFrom(ignoreBatteryOptimizationCard)
 
       setOnClickListener { switch: View ->
         val intent = Intent()
@@ -88,12 +88,12 @@ class PermissionTabViewHolder(
 
 
   private fun TabPermissionBinding.setupDisableHibernation() {
-    switchDisableHibernation.run {
+    disableHibernationSwitch.run {
       disableSwitchDragging()
 
-      bindClicksFrom(cardDisableHibernation)
+      bindClicksFrom(disableHibernationCard)
 
-      cardDisableHibernation.disableIfAppHibernationUnSupported(this)
+      disableHibernationCard.disableIfAppHibernationUnSupported(this)
 
       val optionName = when (Build.VERSION.SDK_INT) {
         in 23..30 -> "Remove permissions if app isn't used"
@@ -107,7 +107,7 @@ class PermissionTabViewHolder(
 
         activityResultLauncher.launch(intent)
 
-        val onOffText: String = if (switchDisableHibernation.isChecked) "OFF" else "ON"
+        val onOffText: String = if (isChecked) "OFF" else "ON"
         Toast.makeText(context, "Turn $onOffText: \"$optionName\"", Toast.LENGTH_LONG).show()
       }
     }
@@ -152,10 +152,10 @@ class PermissionTabViewHolder(
     val autoStartPermissionHelper = AutoStartPermissionHelper.getInstance()
 
     if (autoStartPermissionHelper.isAutoStartPermissionAvailable(context, false).not()) {
-      cardAllowAutoStart.disableCard()
+      allowAutoStartCard.disableCard()
     }
 
-    cardAllowAutoStart.setOnClickListener {
+    allowAutoStartCard.setOnClickListener {
       autoStartPermissionHelper.getAutoStartPermission(context, open = true)
     }
   }
@@ -184,7 +184,7 @@ class PermissionTabViewHolder(
   }
 
   fun refreshSwitchStates() {
-    permissionBinding.switchIgnoreBatteryOptimization.refreshIgnoreOptimizationSwitch()
-    permissionBinding.switchDisableHibernation.refreshDisableHibernationSwitch()
+    permissionBinding.ignoreBatteryOptimizationSwitch.refreshIgnoreOptimizationSwitch()
+    permissionBinding.disableHibernationSwitch.refreshDisableHibernationSwitch()
   }
 }

@@ -8,8 +8,8 @@ import com.anissan.battarang.ui.MainActivity
 import com.anissan.battarang.ui.views.pairing.showPairingDialog
 import dev.chrisbanes.insetter.applyInsetter
 
-fun MainActivity.setupPairingFab() {
-  binding.fabPair.run {
+fun MainActivity.setupPairReceiverFab() {
+  binding.pairReceiverFab.run {
     applyInsetter {
       type(navigationBars = true) {
         margin(horizontal = true, vertical = true)
@@ -23,7 +23,7 @@ fun MainActivity.setupPairingFab() {
 
   binding.nestedScrollView.setOnScrollChangeListener(
     NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
-      binding.fabPair.run {
+      binding.pairReceiverFab.run {
         if (scrollY > oldScrollY) {
           if (isExtended) shrink()
         } else if (isExtended.not()) extend()
@@ -35,7 +35,7 @@ fun MainActivity.setupPairingFab() {
   ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _: View, insets: WindowInsetsCompat ->
     if (!paired) {
       val isKeyboardVisible = insets.isVisible(WindowInsetsCompat.Type.ime())
-      if (isKeyboardVisible) binding.fabPair.hide() else binding.fabPair.show()
+      if (isKeyboardVisible) binding.pairReceiverFab.hide() else binding.pairReceiverFab.show()
     }
 
     insets

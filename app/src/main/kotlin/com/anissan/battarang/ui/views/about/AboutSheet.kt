@@ -50,30 +50,30 @@ class AboutSheet : BottomSheetDialogFragment() {
   }
 
   private fun SheetAboutBinding.setupViews() {
-    cardAuthorDetails.setCardBackgroundColor(SurfaceColors.SURFACE_3.getColor(requireContext()))
+    authorDetailsCard.setCardBackgroundColor(SurfaceColors.SURFACE_3.getColor(requireContext()))
 
-    receiver.setOnClickListener { openLinkInBrowser(BuildConfig.RECEIVER_WEBSITE) }
-    telegram.setOnClickListener { openLinkInBrowser(BuildConfig.TELEGRAM_BOT_URL) }
+    receiverLinkButton.setOnClickListener { openLinkInBrowser(BuildConfig.RECEIVER_WEBSITE) }
+    telegramLinkButton.setOnClickListener { openLinkInBrowser(BuildConfig.TELEGRAM_BOT_URL) }
 
-    source.setOnClickListener { openLinkInBrowser(BuildConfig.GITHUB_URL) }
-    issues.setOnClickListener { openLinkInBrowser(BuildConfig.ISSUES_URL) }
-    review.setOnClickListener { openLinkInBrowser(BuildConfig.PLAY_STORE_LINK) }
+    sourceLinkButton.setOnClickListener { openLinkInBrowser(BuildConfig.GITHUB_URL) }
+    issuesLinkButton.setOnClickListener { openLinkInBrowser(BuildConfig.ISSUES_URL) }
+    reviewLinkButton.setOnClickListener { openLinkInBrowser(BuildConfig.PLAY_STORE_LINK) }
 
-    authorName.setOnClickListener { openLinkInBrowser(BuildConfig.AUTHOR_WEBSITE) }
-    authorWebsite.text = URI(BuildConfig.AUTHOR_WEBSITE).host
-    authorWebsite.setOnClickListener { openLinkInBrowser(BuildConfig.AUTHOR_WEBSITE) }
-    twitter.setOnClickListener { openLinkInBrowser(BuildConfig.AUTHOR_TWITTER) }
-    linkedin.setOnClickListener { openLinkInBrowser(BuildConfig.AUTHOR_LINKEDIN) }
+    authorNameText.setOnClickListener { openLinkInBrowser(BuildConfig.AUTHOR_WEBSITE) }
+    authorWebsiteLinkButton.text = URI(BuildConfig.AUTHOR_WEBSITE).host
+    authorWebsiteLinkButton.setOnClickListener { openLinkInBrowser(BuildConfig.AUTHOR_WEBSITE) }
+    twitterLinkButton.setOnClickListener { openLinkInBrowser(BuildConfig.AUTHOR_TWITTER) }
+    linkedinLinkButton.setOnClickListener { openLinkInBrowser(BuildConfig.AUTHOR_LINKEDIN) }
 
-    license.setOnClickListener {
+    licenseChip.setOnClickListener {
       LibsBuilder()
         .withActivityTitle(getString(R.string.licenses))
         .withSearchEnabled(true)
         .start(requireContext())
     }
 
-    policy.setOnClickListener { openLinkInBrowser(BuildConfig.PRIVACY_POLICY_URL) }
-    tos.setOnClickListener { openLinkInBrowser(BuildConfig.TOS_URL) }
+    policyLinkChip.setOnClickListener { openLinkInBrowser(BuildConfig.PRIVACY_POLICY_URL) }
+    tosLinkChip.setOnClickListener { openLinkInBrowser(BuildConfig.TOS_URL) }
   }
 
   private fun openLinkInBrowser(url: String) {

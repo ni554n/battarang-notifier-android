@@ -13,7 +13,7 @@ import com.google.android.material.progressindicator.IndeterminateDrawable
 import com.google.android.material.snackbar.Snackbar
 
 fun MainActivity.setupButtonBar() {
-  binding.cardButtonBar.setCardBackgroundColor(SurfaceColors.SURFACE_2.getColor(this))
+  binding.buttonBarCard.setCardBackgroundColor(SurfaceColors.SURFACE_2.getColor(this))
 
   unpairButton()
   testButton()
@@ -65,7 +65,7 @@ fun MainActivity.testButton() {
     }
   }
 
-  binding.serviceNameTextView.text = localKvStore.pairedServiceName
+  binding.serviceNameText.text = localKvStore.pairedServiceName
 }
 
 fun MainActivity.aboutButton() {

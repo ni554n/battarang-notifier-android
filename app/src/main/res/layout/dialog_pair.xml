@@ -17,7 +17,7 @@
     >
 
     <com.google.android.material.button.MaterialButton
-      android:id="@+id/receiver_link"
+      android:id="@+id/receiver_link_button"
       style="@style/Widget.Material3.Button.OutlinedButton"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"

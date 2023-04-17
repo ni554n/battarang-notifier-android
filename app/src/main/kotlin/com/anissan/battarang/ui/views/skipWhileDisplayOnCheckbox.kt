@@ -11,7 +11,7 @@ import com.anissan.battarang.ui.MainActivity
 import com.google.android.material.color.MaterialColors
 
 fun MainActivity.setupSkipIfDisplayOnToggleCheckbox() {
-  binding.checkBoxSkipWhileDisplayOn.run {
+  binding.skipWhileDisplayOnCheckbox.run {
     isChecked = localKvStore.isSkipWhileDisplayOnEnabled
 
     // Formatting the "ON" portion bold with color
@@ -39,7 +39,7 @@ fun MainActivity.setupSkipIfDisplayOnToggleCheckbox() {
       )
     }
 
-    bindClicksFrom(binding.cardSkipWhileDisplayOn)
+    bindClicksFrom(binding.skipWhileDisplayOnCard)
 
     setOnCheckedChangeListener { _: CompoundButton, isChecked: Boolean ->
       localKvStore.isSkipWhileDisplayOnEnabled = isChecked

@@ -24,11 +24,10 @@ import com.anissan.battarang.ui.views.setupButtonBar
 import com.anissan.battarang.ui.views.setupDeviceNameInput
 import com.anissan.battarang.ui.views.setupLowBatteryLevelCheckbox
 import com.anissan.battarang.ui.views.setupMaxBatteryLevelCheckbox
-import com.anissan.battarang.ui.views.setupPairingFab
-import com.anissan.battarang.ui.views.setupServiceToggle
+import com.anissan.battarang.ui.views.setupNotifierServiceToggle
+import com.anissan.battarang.ui.views.setupPairReceiverFab
 import com.anissan.battarang.ui.views.setupSkipIfDisplayOnToggleCheckbox
 import com.google.android.material.snackbar.Snackbar
-
 import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity() {
@@ -59,7 +58,7 @@ class MainActivity : AppCompatActivity() {
 
     setupAppBar()
 
-    setupServiceToggle()
+    setupNotifierServiceToggle()
 
     setupDeviceNameInput()
 
@@ -69,7 +68,7 @@ class MainActivity : AppCompatActivity() {
 
     setupButtonBar()
 
-    setupPairingFab()
+    setupPairReceiverFab()
   }
 
   override fun onStart() {
@@ -94,9 +93,9 @@ class MainActivity : AppCompatActivity() {
 
         unpairButton.visibility = View.VISIBLE
         testButton.visibility = View.VISIBLE
-        serviceNameTextView.text = localKvStore.pairedServiceName
+        serviceNameText.text = localKvStore.pairedServiceName
 
-        fabPair.hide()
+        pairReceiverFab.hide()
 
         receiverApiClient.sendNotification(MessageType.PAIRED) { response: String? ->
           if (response == null) {
@@ -111,33 +110,32 @@ class MainActivity : AppCompatActivity() {
 
         unpairButton.visibility = View.GONE
         testButton.visibility = View.GONE
-        serviceNameTextView.text = ""
+        serviceNameText.text = ""
 
-        fabPair.show()
+        pairReceiverFab.show()
       }
     }
   }
 
   fun refreshServiceState() {
-    binding.run {
-      // At least one of the "NOTIFY WHEN" option needs to be checked for the switch to be enabled.
-      val isNotifyWhenEnabled =
-        localKvStore.isMaxLevelNotificationEnabled || localKvStore.isLowBatteryNotificationEnabled
+    val isAnyNotifyOptionChecked =
+      localKvStore.isMaxLevelNotificationEnabled || localKvStore.isLowBatteryNotificationEnabled
 
-      val shouldServiceBeEnabled = isNotifyWhenEnabled && paired
+    val shouldServiceBeEnabled = isAnyNotifyOptionChecked && paired
+    val shouldServiceStart = shouldServiceBeEnabled && localKvStore.isMonitoringServiceEnabled
 
-      cardNotificationService.apply {
-        alpha = if (shouldServiceBeEnabled) 1f else 0.6f
-        isEnabled = isNotifyWhenEnabled
-      }
-
-      switchNotificationService.isEnabled = shouldServiceBeEnabled
-      switchNotificationService.isChecked =
-        shouldServiceBeEnabled && localKvStore.isMonitoringServiceEnabled
-
-      if (switchNotificationService.isChecked) BroadcastReceiverRegistererService.start(this@MainActivity)
-      else BroadcastReceiverRegistererService.stop(this@MainActivity)
+    binding.notifierServiceCard.apply {
+      isEnabled = isAnyNotifyOptionChecked
+      alpha = if (shouldServiceBeEnabled) 1f else 0.6f
     }
+
+    binding.notifierServiceSwitch.apply {
+      isEnabled = shouldServiceBeEnabled
+      isChecked = shouldServiceStart
+    }
+
+    if (shouldServiceStart) BroadcastReceiverRegistererService.start(this@MainActivity)
+    else BroadcastReceiverRegistererService.stop(this@MainActivity)
   }
 
   override fun onStop() {
@@ -147,7 +145,7 @@ class MainActivity : AppCompatActivity() {
   }
 
   override fun onSaveInstanceState(outState: Bundle) {
-    binding.editTextDeviceName.run {
+    binding.deviceNameInput.run {
       if (hasFocus()) saveEditedText(localKvStore)
     }
 
@@ -171,7 +169,8 @@ class MainActivity : AppCompatActivity() {
   fun showSnackbar(text: String, length: Int = Snackbar.LENGTH_LONG) {
     binding.run {
       Snackbar.make(root, text, length).apply {
-        anchorView = if (fabPair.visibility == View.VISIBLE) fabPair else cardButtonBar
+        anchorView =
+          if (pairReceiverFab.visibility == View.VISIBLE) pairReceiverFab else buttonBarCard
       }.show()
     }
   }

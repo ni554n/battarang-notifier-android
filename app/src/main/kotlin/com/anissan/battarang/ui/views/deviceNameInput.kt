@@ -10,17 +10,17 @@ import com.google.android.material.elevation.SurfaceColors
 import com.google.android.material.textfield.TextInputEditText
 
 fun MainActivity.setupDeviceNameInput() {
-  binding.textInputLayoutDeviceName.apply {
+  binding.deviceNameLayout.apply {
     boxBackgroundColor = SurfaceColors.SURFACE_2.getColor(this@setupDeviceNameInput)
 
     isEndIconVisible = false
 
     setEndIconOnClickListener {
-      binding.editTextDeviceName.clearFocus()
+      binding.deviceNameInput.clearFocus()
     }
   }
 
-  binding.editTextDeviceName.apply {
+  binding.deviceNameInput.apply {
     setText(localKvStore.deviceName)
 
     setOnEditorActionListener { _, actionId: Int, _ ->
@@ -33,7 +33,7 @@ fun MainActivity.setupDeviceNameInput() {
     }
 
     setOnFocusChangeListener { _: View?, hasFocus: Boolean ->
-      binding.textInputLayoutDeviceName.isEndIconVisible = hasFocus
+      binding.deviceNameLayout.isEndIconVisible = hasFocus
 
       if (!hasFocus) {
         saveEditedText(localKvStore)

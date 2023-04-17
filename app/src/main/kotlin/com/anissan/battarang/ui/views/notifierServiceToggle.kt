@@ -5,7 +5,7 @@ import com.anissan.battarang.ui.MainActivity
 import com.anissan.battarang.ui.views.pairing.showPairingDialog
 import dev.chrisbanes.insetter.applyInsetter
 
-fun MainActivity.setupServiceToggle() {
+fun MainActivity.setupNotifierServiceToggle() {
   binding.nestedScrollView.applyInsetter {
     type(navigationBars = true) {
       margin(horizontal = true)
@@ -18,7 +18,7 @@ fun MainActivity.setupServiceToggle() {
     }
   }
 
-  binding.cardNotificationService.apply {
+  binding.notifierServiceCard.apply {
     applyInsetter {
       type(navigationBars = true) {
         padding(horizontal = true)
@@ -27,7 +27,7 @@ fun MainActivity.setupServiceToggle() {
 
     setOnClickListener {
       if (paired) {
-        binding.switchNotificationService.performClick()
+        binding.notifierServiceSwitch.performClick()
       } else {
         // Giving an option to open the Pairing Dialog even though this card looks disabled in this state.
         // Not going to enable the Switch itself because it turns on instantly when clicked.
@@ -36,7 +36,7 @@ fun MainActivity.setupServiceToggle() {
     }
   }
 
-  binding.switchNotificationService.setOnCheckedChangeListener { _: CompoundButton, isChecked: Boolean ->
+  binding.notifierServiceSwitch.setOnCheckedChangeListener { _: CompoundButton, isChecked: Boolean ->
     localKvStore.isMonitoringServiceEnabled = isChecked
   }
 

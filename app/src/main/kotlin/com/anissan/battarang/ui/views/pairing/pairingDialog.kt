@@ -21,7 +21,7 @@ private lateinit var pairingDialog: AlertDialog
 fun MainActivity.showPairingDialog() {
   val dialogContentView = DialogPairBinding.inflate(layoutInflater)
 
-  dialogContentView.receiverLink.apply {
+  dialogContentView.receiverLinkButton.apply {
     text = URI(BuildConfig.RECEIVER_WEBSITE_SHORT_LINK).host
 
     setOnClickListener {
