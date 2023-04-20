@@ -39,7 +39,7 @@
   <color name="md_theme_dark_outlineVariant">#404942</color>
   <color name="md_theme_dark_background">#191C1A</color>
   <color name="md_theme_dark_onBackground">#E1E3DE</color>
-  <color name="md_theme_dark_surface">#191C1A</color>
+  <color name="md_theme_dark_surface">#071919</color> <!-- Custom -->
   <color name="md_theme_dark_onSurface">#E1E3DE</color>
   <color name="md_theme_dark_surfaceDim">#111412</color>
   <color name="md_theme_dark_surfaceBright">#373A37</color>
@@ -48,9 +48,8 @@
   <color name="md_theme_dark_surfaceInverse">#E1E3DE</color>
   <color name="md_theme_dark_onSurfaceInverse">#2E312E</color>
   <color name="md_theme_dark_surfaceContainer">#1D201E</color>
-  <color name="md_theme_dark_surfaceContainerLow">#191C1A</color>
+  <color name="md_theme_dark_surfaceContainerLow">#071919</color> <!-- Custom -->
   <color name="md_theme_dark_surfaceContainerLowest">#0C0F0D</color>
   <color name="md_theme_dark_surfaceContainerHigh">#282B28</color>
   <color name="md_theme_dark_surfaceContainerHighest">#323533</color>
 </resources>
-

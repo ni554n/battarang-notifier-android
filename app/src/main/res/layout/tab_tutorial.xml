@@ -8,7 +8,6 @@
   app:dokiBackgroundColor="?colorSurfaceContainerLow"
   app:dokiButtonsTextColor="?colorOnSurface"
   app:dokiDividerColor="?colorSurfaceVariant"
-  app:dokiHeaderBackgroundColor="?colorSurfaceContainer"
   app:dokiInactiveIconsColor="?colorPrimaryContainer"
   app:dokiPrimaryTextColor="?colorOnSurface"
   app:dokiSecondaryTextColor="?colorOnSurfaceVariant"
