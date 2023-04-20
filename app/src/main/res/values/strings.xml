@@ -1,5 +1,6 @@
 <resources>
   <string name="app_name">Battarang</string>
+  <string name="app_label">@string/app_name</string>
 
   <!-- Configurations -->
 
