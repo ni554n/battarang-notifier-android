@@ -6,12 +6,12 @@ plugins {
 
 android {
   namespace 'com.anissan.battarang'
-  buildToolsVersion '33.0.1'
-  compileSdkVersion "android-UpsideDownCake"
+  buildToolsVersion '34.0.0 rc3'
 
   defaultConfig {
     minSdkVersion 21
     targetSdkVersion 33
+    compileSdkPreview 'UpsideDownCake'
     versionCode 1
     versionName '0.1.0'
 
@@ -53,12 +53,12 @@ android {
 }
 
 dependencies {
-  implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.8.20'
+  implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.8.21'
   implementation 'org.jetbrains:annotations:24.0.1'
 
   implementation 'androidx.appcompat:appcompat:1.7.0-alpha02'
   implementation 'androidx.core:core-ktx:1.10.0'
-  implementation 'androidx.fragment:fragment-ktx:1.6.0-alpha09'
+  implementation 'androidx.fragment:fragment-ktx:1.6.0-beta01'
   implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
   implementation 'androidx.viewpager2:viewpager2:1.1.0-beta01'
   implementation 'com.google.android.material:material:1.10.0-alpha01'
