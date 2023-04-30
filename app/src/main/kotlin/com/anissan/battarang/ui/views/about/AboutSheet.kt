@@ -83,4 +83,12 @@ class AboutSheet : BottomSheetDialogFragment() {
       logW { "No browser installed on the device so can't open the link." }
     }
   }
+
+  override fun onStart() {
+    super.onStart()
+
+    // The sheet dialog is initially set to WRAP_CONTENT, which leaves a big gap at the bottom on Fullscreen mode.
+    dialog?.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)?.layoutParams?.height =
+      ViewGroup.LayoutParams.MATCH_PARENT
+  }
 }
