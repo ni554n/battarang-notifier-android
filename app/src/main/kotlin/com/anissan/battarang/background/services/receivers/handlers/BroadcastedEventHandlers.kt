@@ -84,9 +84,13 @@ class BroadcastedEventHandlers(
   }
 
   fun notifyAfterLevelReached() {
-    if (shouldSkipNotification()) return
+    if (shouldSkipNotification()) {
+      logV { "Skipping this time as the display is on, but continuing the alarm..." }
+      return
+    }
 
     val batteryLevel: Int = currentBatteryLevel
+    logV { "Battery Level: $batteryLevel" }
 
     if (batteryLevel < localKvStore.maxChargingLevelPercentage) return
 

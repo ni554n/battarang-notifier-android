@@ -29,10 +29,7 @@ class OptimizationRemoverSheet : BottomSheetDialogFragment() {
 
   companion object {
     fun show(fragmentManager: FragmentManager) {
-      OptimizationRemoverSheet().show(
-        fragmentManager,
-        "Bottom Sheet for Removing Battery Optimizations"
-      )
+      OptimizationRemoverSheet().show(fragmentManager, "optimization_remover_sheet")
     }
   }
 

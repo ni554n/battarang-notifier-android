@@ -51,7 +51,7 @@
 
     <!--  To receive the event triggered by the alarm, Manifest entry is required.  -->
     <receiver
-      android:name="com.anissan.battarang.background.services.receivers.BatteryLevelPollingAlarmReceiver"
+      android:name=".background.services.receivers.BatteryLevelPollingAlarmReceiver"
       android:exported="false"
       />
 

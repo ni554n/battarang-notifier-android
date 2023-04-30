@@ -14,6 +14,7 @@ import android.os.IBinder
 import android.provider.Settings
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.anissan.battarang.R
 import com.anissan.battarang.background.BootEventReceiver.Companion.resumeAfterBoot
@@ -39,13 +40,13 @@ class BroadcastReceiverRegistererService : Service() {
     // Since Oreo, foreground services with a persistent notification is required for long
     // running tasks. It's all in here:
     // https://developer.android.com/guide/components/foreground-services
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-      startForeground(128, buildServiceNotification())
-    }
+    if (Build.VERSION.SDK_INT >= 26) startForeground(128, buildServiceNotification())
 
-    registerReceiver(
+    ContextCompat.registerReceiver(
+      this,
       batteryStatusReceiver,
       batteryStatusReceiver.intentFiltersBasedOnPreference,
+      ContextCompat.RECEIVER_NOT_EXPORTED,
     )
 
     LocalBroadcastManager.getInstance(this)
@@ -56,8 +57,8 @@ class BroadcastReceiverRegistererService : Service() {
 
     logV { "Registered the implicit Broadcast Receivers." }
 
-    // Corner case: if the charger is already connected before starting this service, then manually
-    // start the battery level polling alarm.
+    /* Edge case: if the charger is already connected before starting this service, then manually
+       start the battery level polling alarm. */
 
     val currentBatteryStatus: Int? =
       registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED))?.getIntExtra(
@@ -75,7 +76,14 @@ class BroadcastReceiverRegistererService : Service() {
 
   override fun onDestroy() {
     unregisterReceiver(batteryStatusReceiver)
-    LocalBroadcastManager.getInstance(this).unregisterReceiver(batteryLevelPollingAlarmReceiver)
+
+    LocalBroadcastManager.getInstance(this).run {
+      // If an alarm is already in progress, only stopping this service won't stop the alarm.
+      // It needs to be stopped explicitly.
+      sendBroadcast(Intent(BatteryLevelPollingAlarmReceiver.ACTION_STOP_ALARM))
+
+      unregisterReceiver(batteryLevelPollingAlarmReceiver)
+    }
 
     resumeAfterBoot(false)
 
@@ -90,7 +98,7 @@ class BroadcastReceiverRegistererService : Service() {
     fun start(context: Context) {
       thisServiceIntent = Intent(context, BroadcastReceiverRegistererService::class.java)
 
-      if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N_MR1) {
+      if (Build.VERSION.SDK_INT >= 26) {
         context.startForegroundService(thisServiceIntent)
       } else {
         context.startService(thisServiceIntent)
@@ -100,15 +108,10 @@ class BroadcastReceiverRegistererService : Service() {
     }
 
     fun stop(context: Context) {
-      if (Companion::thisServiceIntent.isInitialized.not()) return
-
-      // If an alarm is already in progress, only stopping this service won't stop the alarm.
-      // It needs to be stopped explicitly.
-      LocalBroadcastManager.getInstance(context)
-        .sendBroadcast(Intent(BatteryLevelPollingAlarmReceiver.ACTION_STOP_ALARM))
-
-      context.stopService(thisServiceIntent)
-      logV { "Stopped the foreground service." }
+      if (Companion::thisServiceIntent.isInitialized) {
+        context.stopService(thisServiceIntent)
+        logV { "Stopped the foreground service." }
+      }
     }
   }
 }

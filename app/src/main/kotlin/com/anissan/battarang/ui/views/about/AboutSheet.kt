@@ -7,11 +7,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.FragmentManager
 import com.anissan.battarang.BuildConfig
 import com.anissan.battarang.R
 import com.anissan.battarang.databinding.SheetAboutBinding
-import com.anissan.battarang.utils.logW
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.elevation.SurfaceColors
@@ -24,7 +24,7 @@ class AboutSheet : BottomSheetDialogFragment() {
 
   companion object {
     fun show(fragmentManager: FragmentManager) {
-      AboutSheet().show(fragmentManager, "Bottom Sheet for About")
+      AboutSheet().show(fragmentManager, "about_sheet")
     }
   }
 
@@ -80,7 +80,11 @@ class AboutSheet : BottomSheetDialogFragment() {
     try {
       startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
     } catch (e: ActivityNotFoundException) {
-      logW { "No browser installed on the device so can't open the link." }
+      Toast.makeText(
+        requireContext(),
+        "No browser found on the device to open the link.",
+        Toast.LENGTH_LONG,
+      ).show()
     }
   }
 
