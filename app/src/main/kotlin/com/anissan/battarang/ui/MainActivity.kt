@@ -118,6 +118,8 @@ class MainActivity : AppCompatActivity() {
   }
 
   fun refreshServiceState() {
+    BroadcastReceiverRegistererService.stop(this@MainActivity)
+
     val isAnyNotifyOptionChecked =
       localKvStore.isMaxLevelNotificationEnabled || localKvStore.isLowBatteryNotificationEnabled
 
@@ -135,7 +137,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     if (shouldServiceStart) BroadcastReceiverRegistererService.start(this@MainActivity)
-    else BroadcastReceiverRegistererService.stop(this@MainActivity)
   }
 
   override fun onStop() {
