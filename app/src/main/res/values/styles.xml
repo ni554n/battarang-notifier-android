@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
   <style name="CustomSnackbar" parent="@style/Widget.Material3.Snackbar">
     <item name="backgroundTint">?colorOnSecondaryContainer</item>
   </style>
@@ -51,9 +50,5 @@
 
   <style name="ServiceToggleCard" parent="Widget.Material3.CardView.Filled">
     <item name="cardBackgroundColor">?colorPrimaryContainer</item>
-  </style>
-
-  <style name="TextViewOnLightCard" parent="Widget.AppCompat.TextView">
-    <item name="android:textColor">?colorOnSecondaryContainer</item>
   </style>
 </resources>

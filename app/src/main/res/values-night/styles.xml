@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
   <style name="ServiceToggleCard" parent="Widget.Material3.CardView.Filled">
     <item name="theme">@style/ThemeOverlay.Material3.Light</item>
     <item name="cardBackgroundColor">?colorOnPrimaryContainer</item>
-  </style>
-
-  <style name="TextViewOnLightCard" parent="Widget.AppCompat.TextView">
-    <item name="android:textColor">?colorPrimaryContainer</item>
   </style>
 </resources>

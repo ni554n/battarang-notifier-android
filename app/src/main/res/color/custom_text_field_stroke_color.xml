@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:color="?colorPrimaryInverse" android:state_focused="true" /> <!-- Active -->
-  <item android:color="?colorSurface" android:state_hovered="true" /> <!-- Hovered -->
-  <item android:alpha="0.38" android:color="?colorSurface" android:state_enabled="false" /> <!-- Disabled -->
-  <item android:color="?colorPrimary" /> <!-- Default, need to be the last -->
-</selector>

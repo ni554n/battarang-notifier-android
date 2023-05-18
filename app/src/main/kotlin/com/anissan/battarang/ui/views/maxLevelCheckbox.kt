@@ -30,8 +30,8 @@ fun MainActivity.setupMaxBatteryLevelCheckbox() {
     val percentEnd = maxLevelSpannableStringBuilder.length // ... ~%|
     val tildeStart = percentEnd - 2 // ... |~%
 
-    val colorSecondary =
-      MaterialColors.getColor(this, com.google.android.material.R.attr.colorPrimary)
+    val textColor =
+      MaterialColors.getColor(this, com.google.android.material.R.attr.colorOnSurfaceVariant)
 
     maxLevelSpannableStringBuilder.setSpan(
       StyleSpan(Typeface.BOLD),
@@ -41,7 +41,7 @@ fun MainActivity.setupMaxBatteryLevelCheckbox() {
     )
 
     maxLevelSpannableStringBuilder.setSpan(
-      ForegroundColorSpan(colorSecondary),
+      ForegroundColorSpan(textColor),
       tildeStart,
       percentEnd,
       Spannable.SPAN_EXCLUSIVE_EXCLUSIVE,

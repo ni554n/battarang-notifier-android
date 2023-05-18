@@ -24,11 +24,12 @@
       android:letterSpacing="0.03"
       android:paddingVertical="16dp"
       android:textAppearance="?textAppearanceTitleMedium"
-      android:textColor="?colorPrimary"
-      app:backgroundTint="?colorSecondaryContainer"
+      android:textColor="?colorOnSurfaceVariant"
+      app:backgroundTint="?colorSurfaceVariant"
       app:icon="@drawable/ic_copy"
       app:iconGravity="textEnd"
       app:iconPadding="8dp"
+      app:iconTint="?colorOnSurfaceVariant"
       app:shapeAppearance="?shapeAppearanceCornerMedium"
       app:strokeColor="?colorPrimary"
       tools:text="b.anissan.com"
@@ -42,7 +43,7 @@
       android:layout_marginTop="16dp"
       android:text="@string/pair_dialog_content"
       android:textAlignment="center"
-      android:textColor="?colorOnSecondaryContainer"
+      android:textColor="?colorOnSurfaceVariant"
       />
   </LinearLayout>
 </androidx.core.widget.NestedScrollView>

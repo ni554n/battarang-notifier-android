@@ -26,13 +26,13 @@ fun MainActivity.setupLowBatteryLevelCheckbox() {
         Spannable.SPAN_EXCLUSIVE_EXCLUSIVE,
       )
 
-      val colorSecondary = MaterialColors.getColor(
+      val textColor = MaterialColors.getColor(
         this@run,
-        com.google.android.material.R.attr.colorPrimary,
+        com.google.android.material.R.attr.colorOnSurfaceVariant,
       )
 
       setSpan(
-        ForegroundColorSpan(colorSecondary),
+        ForegroundColorSpan(textColor),
         lStart,
         wEnd,
         Spannable.SPAN_EXCLUSIVE_EXCLUSIVE,

@@ -56,7 +56,7 @@
             android:layout_height="wrap_content"
             android:text="@string/ignore_battery_optimization"
             android:textAppearance="?textAppearanceTitleLarge"
-            android:textColor="?colorOnSecondaryContainer"
+            android:textColor="?colorOnSurfaceVariant"
             android:textSize="20sp"
             />
 
@@ -119,7 +119,7 @@
             android:layout_height="wrap_content"
             android:text="@string/disable_app_hibernation"
             android:textAppearance="?textAppearanceTitleLarge"
-            android:textColor="?colorOnSecondaryContainer"
+            android:textColor="?colorOnSurfaceVariant"
             android:textSize="20sp"
             />
 
@@ -182,7 +182,7 @@
             android:layout_height="wrap_content"
             android:text="@string/allow_autostart"
             android:textAppearance="?textAppearanceTitleLarge"
-            android:textColor="?colorOnSecondaryContainer"
+            android:textColor="?colorOnSurfaceVariant"
             android:textSize="20sp"
             />
 

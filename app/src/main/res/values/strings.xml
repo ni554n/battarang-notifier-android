@@ -70,7 +70,7 @@
   <!-- About Sheet -->
   <string name="review">Review</string>
   <string name="battarang_notifier">Battarang Notifier</string>
-  <string name="description">Sends battery notifications to the</string>
+  <string name="description">Sends battery notifications to</string>
   <string name="receiver">Receiver</string>
   <string name="or">or</string>
   <string name="telegram">Telegram</string>
