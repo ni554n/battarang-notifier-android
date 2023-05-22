@@ -12,7 +12,7 @@
 
   <style name="CenteredDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog.Centered">
     <!--  Title icon color  -->
-    <item name="tint">?colorPrimary</item>
+    <item name="tint">?colorOnSurfaceVariant</item>
 
     <item name="materialAlertDialogTitleTextStyle">@style/CustomTitleCentered</item>
     <item name="materialAlertDialogBodyTextStyle">@style/CustomBodyText</item>
@@ -20,7 +20,7 @@
 
   <style name="CustomTitleCentered" parent="@style/MaterialAlertDialog.MaterialComponents.Title.Text.CenterStacked">
     <item name="android:textAppearance">?textAppearanceTitleLarge</item>
-    <item name="android:textColor">?colorPrimary</item>
+    <item name="android:textColor">?colorOnSurfaceVariant</item>
   </style>
 
   <style name="CustomBodyText">
