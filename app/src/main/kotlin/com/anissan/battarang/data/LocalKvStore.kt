@@ -42,7 +42,7 @@ class LocalKvStore(context: Context) : SimpleKrate(context),
     by booleanPref(PrefKey.MAX_LEVEL_NOTIFICATION_TOGGLE.name).withDefault(true)
 
   var maxChargingLevelPercentage: Int
-    by intPref(PrefKey.MAX_LEVEL_PERCENTAGE.name).withDefault(85)
+    by intPref(PrefKey.MAX_LEVEL_PERCENTAGE.name).withDefault(90)
 
   var isLowBatteryNotificationEnabled: Boolean
     by booleanPref(PrefKey.LOW_BATTERY_NOTIFICATION_TOGGLE.name).withDefault(true)
