@@ -6,7 +6,6 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:scrollbars="vertical"
-  tools:context=".ui.MainActivity"
   >
 
   <LinearLayout
@@ -25,14 +24,32 @@
       android:paddingVertical="16dp"
       android:textAppearance="?textAppearanceTitleMedium"
       android:textColor="?colorPrimary"
-      app:backgroundTint="?colorSurface"
       app:icon="@drawable/ic_copy"
       app:iconGravity="textEnd"
       app:iconPadding="8dp"
       app:iconTint="?colorPrimary"
       app:shapeAppearance="?shapeAppearanceCornerMedium"
       app:strokeColor="?colorPrimary"
+      tools:ignore="VisualLintButtonSize"
       tools:text="b.anissan.com"
+      />
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/telegram_link_button"
+      style="@style/Widget.Material3.Button.TextButton"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:letterSpacing="0.03"
+      android:paddingVertical="8dp"
+      android:text="@string/telegram_bot"
+      android:textAppearance="?textAppearanceTitleMedium"
+      android:textColor="?colorPrimary"
+      app:icon="@drawable/ic_telegram"
+      app:iconGravity="textEnd"
+      app:iconPadding="8dp"
+      app:iconTint="?colorPrimary"
+      app:shapeAppearance="?shapeAppearanceCornerMedium"
+      app:strokeColor="?colorPrimary"
       tools:ignore="VisualLintButtonSize"
       />
 
@@ -40,7 +57,7 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginHorizontal="8dp"
-      android:layout_marginTop="16dp"
+      android:layout_marginTop="8dp"
       android:maxWidth="@dimen/dialog_text_max_width"
       android:text="@string/pair_dialog_content"
       android:textAlignment="center"

@@ -37,7 +37,9 @@
   <!-- Pairing Dialog -->
 
   <string name="pair_with_device">Pair Receiver</string>
-  <string name="pair_dialog_title">Visit this link from the other device</string>
+  <string name="pair_dialog_title">Pair with a Receiver</string>
+  <string name="telegram_bot">Telegram Bot</string>
+  <string name="telegram_app_not_found">Telegram isn\'t installed. Try the other link.</string>
   <string name="pair_dialog_content">Select a receiver service to generate a pairing code and then scan or paste the code here.\n\nIf pairing is successful, you\'ll receive a confirmation on the receiver device.</string>
   <string name="pair_dialog_paste_button">Paste instead</string>
   <string name="pair_dialog_scan_button">Scan QR</string>
