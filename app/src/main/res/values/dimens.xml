@@ -2,4 +2,8 @@
 <resources>
   <dimen name="card_max_width">464dp</dimen>
   <dimen name="card_inset_horizontal">16dp</dimen>
+
+  <!-- Dialog max width is set to 460dp by default, which looks too wide in tablet+ IMO.
+       But setting this on dialog text somehow reduces the width without actually enforcing the max width. -->
+  <dimen name="dialog_text_max_width">260dp</dimen>
 </resources>

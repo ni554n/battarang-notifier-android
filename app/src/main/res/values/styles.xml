@@ -25,6 +25,7 @@
 
   <style name="CustomBodyText">
     <item name="android:textColor">?colorOnSecondaryContainer</item>
+    <item name="android:maxWidth">@dimen/dialog_text_max_width</item>
   </style>
 
   <style name="PairingDialog" parent="CenteredDialog">

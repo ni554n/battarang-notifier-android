@@ -41,6 +41,7 @@
       android:layout_height="wrap_content"
       android:layout_marginHorizontal="8dp"
       android:layout_marginTop="16dp"
+      android:maxWidth="@dimen/dialog_text_max_width"
       android:text="@string/pair_dialog_content"
       android:textAlignment="center"
       android:textColor="?colorOnSurfaceVariant"
