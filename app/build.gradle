@@ -13,7 +13,7 @@ android {
     targetSdkVersion 33
     compileSdkPreview 'UpsideDownCake'
     versionCode 1
-    versionName '0.1.0'
+    versionName '1.0.0'
 
     // Generate "BuildConfig.*" properties
     Properties buildConfigProperties = new Properties()
@@ -34,6 +34,7 @@ android {
 
     release {
       minifyEnabled true
+      shrinkResources true
       proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
     }
   }
