@@ -48,7 +48,7 @@
   <string name="quickie_overlay_string">Scan pairing code</string>
 
   <!-- Battery Optimization Request Dialog  -->
-  <string name="optimization_exemption_title">Battery Restrictions</string>
+  <string name="optimization_exemption_title">Keep it Running</string>
   <string name="optimization_exemption_dialog">Automation apps like this are subject to battery optimization rules imposed by both device makers and Android itself.\n\nAs a result, your system may interrupt the notifier service from running indefinitely, even though it only waits for battery events without performing any actions.</string>
   <string name="optimization_exemption_button">Remove these Restrictions</string>
 
@@ -85,4 +85,5 @@
   <string name="licenses">Licenses</string>
   <string name="privacy_policy">Privacy Policy</string>
   <string name="tos">Terms of Service</string>
+  <string name="no_browser_found">No browser found on the device to open the link.</string>
 </resources>

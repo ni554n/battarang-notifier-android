@@ -80,11 +80,7 @@ class AboutSheet : BottomSheetDialogFragment() {
     try {
       startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
     } catch (e: ActivityNotFoundException) {
-      Toast.makeText(
-        requireContext(),
-        "No browser found on the device to open the link.",
-        Toast.LENGTH_LONG,
-      ).show()
+      Toast.makeText(requireContext(), R.string.no_browser_found, Toast.LENGTH_LONG).show()
     }
   }
 
