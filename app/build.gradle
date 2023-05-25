@@ -63,7 +63,7 @@ dependencies {
   implementation 'androidx.viewpager2:viewpager2:1.1.0-beta02'
   implementation 'com.google.android.material:material:1.10.0-alpha03'
 
-  // `com.google.common.util.concurrent.ListenableFuture` used in PermissionTabViewHolder
+  // `com.google.common.util.concurrent.ListenableFuture` imported in PermissionTabViewHolder
   implementation 'com.google.guava:guava:31.1-android'
 
   implementation 'io.insert-koin:koin-android:3.4.0'
@@ -74,6 +74,6 @@ dependencies {
   implementation 'com.mikepenz:aboutlibraries:10.7.0'
   implementation 'hu.autsoft:krate:2.0.0'
 
-  // Using an unreleased feature from this version
+  // This snapshot version can set the app name for Doki API to use in instructions
   implementation 'dev.doubledot.doki:library:c18efeb'
 }
