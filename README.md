@@ -1,15 +1,9 @@
 # Battarang Notifier for Android
 
-Battarang sends notifications to another device
-via [Browser Push Notification](https://battarang.anissan.com)
-or [Telegram Bot](https://t.me/battarang_bot) when
-your Android's battery is low or full. Visit [battarang.anissan.com](https://battarang.anissan.com)
-for more info.
-<br>
-
 ![Battarang Features](.docs/features.png)
 
 <p align="center">
+   Visit <a href="https://battarang.anissan.com">battarang.anissan.com</a> for more info.<br>
    Please consider purchasing it from <a href="https://play.google.com/store/apps/details?id=com.anissan.battarang">Play Store</a> if you want auto updates as well as support the development.
 </p>
 
