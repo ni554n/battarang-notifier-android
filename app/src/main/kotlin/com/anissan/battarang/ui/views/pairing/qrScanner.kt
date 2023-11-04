@@ -25,7 +25,7 @@ fun MainActivity.registerQrScanner() {
           showSnackbar(R.string.camera_unavailable)
         }
 
-        is QRResult.QRSuccess -> onQrSuccess(scanResult.content.rawValue)
+        is QRResult.QRSuccess -> onQrSuccess(scanResult.content.rawValue!!)
       }
     }
 }
