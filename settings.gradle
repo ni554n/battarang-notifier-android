@@ -1,9 +1,9 @@
 // https://developer.android.com/studio/build
 pluginManagement {
   repositories {
-    gradlePluginPortal()
     google()
     mavenCentral()
+    gradlePluginPortal()
   }
 }
 
