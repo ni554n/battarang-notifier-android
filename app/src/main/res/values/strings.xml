@@ -23,7 +23,7 @@
 
   <string name="about">About</string>
 
-  <!-- Notification Channel -->
+  <!-- Notification Service -->
 
   <string name="notifier_service_channel">Notifier Service</string>
   <string name="notifier_service_channel_description">It is safe to turn off or minimize this channel</string>
@@ -37,7 +37,7 @@
   <!-- Pairing Dialog -->
 
   <string name="pair_with_device">Pair Receiver</string>
-  <string name="pair_dialog_title">Pair with a Receiver</string>
+  <string name="pair_dialog_title">Choose one Receiver</string>
   <string name="telegram_bot">Telegram Bot</string>
   <string name="telegram_app_not_found">Telegram isn\'t installed. Try the other link.</string>
   <string name="pair_dialog_content">Select a receiver service to generate a pairing code and then scan or paste the code here.\n\nIf pairing is successful, you\'ll receive a confirmation on the receiver device.</string>

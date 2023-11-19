@@ -10,8 +10,9 @@ private lateinit var optimizationRequestDialog: AlertDialog
 
 fun MainActivity.showOptimizationRequestDialog() {
   optimizationRequestDialog = MaterialAlertDialogBuilder(this, R.style.CenteredDialog)
+    .setCancelable(false)
     .setIcon(R.drawable.ic_heart)
-    .setTitle(getString(R.string.optimization_exemption_title))
+    .setTitle(R.string.optimization_exemption_title)
     .setMessage(R.string.optimization_exemption_dialog)
     .setPositiveButton(R.string.optimization_exemption_button) { _, _ ->
       OptimizationRemoverSheet.show(supportFragmentManager)

@@ -50,7 +50,7 @@ fun MainActivity.showPairingDialog() {
 
   pairingDialog = MaterialAlertDialogBuilder(this, R.style.PairingDialog)
     .setIcon(R.drawable.ic_external_link)
-    .setTitle(getString(R.string.pair_dialog_title))
+    .setTitle(R.string.pair_dialog_title)
     .setView(dialogContentView.root)
     .setNeutralButton(getString(R.string.pair_dialog_paste_button)) { _, _ ->
       val clipboard = (getSystemService(AppCompatActivity.CLIPBOARD_SERVICE)) as? ClipboardManager
