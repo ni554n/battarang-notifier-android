@@ -1,11 +1,17 @@
 package com.anissan.battarang.ui.views
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.NestedScrollView
 import com.anissan.battarang.ui.MainActivity
 import com.anissan.battarang.ui.views.pairing.showPairingDialog
+import com.anissan.battarang.ui.views.permission.registerForRequestingPermission
+import com.anissan.battarang.ui.views.permission.requestNotificationPermission
 import dev.chrisbanes.insetter.applyInsetter
 
 fun MainActivity.setupPairReceiverFab() {
@@ -18,7 +24,14 @@ fun MainActivity.setupPairReceiverFab() {
 
     if (paired) hide() else show()
 
-    setOnClickListener { showPairingDialog() }
+    if (Build.VERSION.SDK_INT > 33 && (ContextCompat.checkSelfPermission(
+        this@setupPairReceiverFab,
+        Manifest.permission.POST_NOTIFICATIONS
+      ) != PackageManager.PERMISSION_GRANTED)
+    ) {
+      val requestPermissionLauncher = registerForRequestingPermission()
+      setOnClickListener { requestNotificationPermission(requestPermissionLauncher) }
+    } else setOnClickListener { showPairingDialog() }
   }
 
   binding.nestedScrollView.setOnScrollChangeListener(

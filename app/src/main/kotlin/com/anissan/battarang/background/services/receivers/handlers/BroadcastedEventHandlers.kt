@@ -1,6 +1,9 @@
 package com.anissan.battarang.background.services.receivers.handlers
 
+import android.annotation.SuppressLint
 import android.app.AlarmManager
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
@@ -9,11 +12,15 @@ import android.os.BatteryManager
 import android.os.Build
 import android.os.SystemClock
 import android.view.Display
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import com.anissan.battarang.R
 import com.anissan.battarang.background.services.receivers.BatteryLevelPollingAlarmReceiver
 import com.anissan.battarang.background.services.receivers.BatteryStatusReceiver
 import com.anissan.battarang.data.LocalKvStore
 import com.anissan.battarang.network.MessageType
 import com.anissan.battarang.network.ReceiverApiClient
+import com.anissan.battarang.ui.MainActivity
 import com.anissan.battarang.utils.logV
 
 /**
@@ -80,7 +87,7 @@ class BroadcastedEventHandlers(
   fun notifyBatteryIsLow() {
     if (shouldSkipNotification()) return
 
-    receiverApiClient.sendNotification(MessageType.LOW)
+    receiverApiClient.sendNotification(MessageType.LOW, null, ::notifyUpdates)
   }
 
   fun notifyAfterLevelReached() {
@@ -95,8 +102,9 @@ class BroadcastedEventHandlers(
     if (batteryLevel < localKvStore.maxChargingLevelPercentage) return
 
     stopBatteryLevelPollingAlarm()
-    receiverApiClient.sendNotification(MessageType.FULL, batteryLevel)
+    receiverApiClient.sendNotification(MessageType.FULL, batteryLevel, ::notifyUpdates)
   }
+
 
   /**
    * Determines if notifications should be sent based on user preference and the current display state.
@@ -110,5 +118,57 @@ class BroadcastedEventHandlers(
     }
 
     return false
+  }
+
+  @SuppressLint("MissingPermission")
+  private fun notifyUpdates(responseBody: String?) {
+    // A server response delimited with `||` means it should be posted as notification.
+    val message = responseBody?.split("||")
+    if (message?.size != 2) return
+
+    val (title, description) = message
+    if (NotificationManagerCompat.from(context).areNotificationsEnabled().not()) return
+
+    // A new activity will be created on every notification click regardless of an existing activity.
+    val notificationTapActionPendingIntent: PendingIntent = PendingIntent.getActivity(
+      context,
+      128,
+      Intent(context, MainActivity::class.java),
+      PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+    )
+
+    val notification = NotificationCompat.Builder(context, context.createServiceUpdateChannel())
+      .setAutoCancel(true)
+      .setContentTitle(title.trim())
+      .setStyle(NotificationCompat.BigTextStyle().bigText(description.trim()))
+      .setSmallIcon(R.drawable.ic_notification_service)
+      .setContentIntent(notificationTapActionPendingIntent)
+      .build()
+
+    with(NotificationManagerCompat.from(context)) {
+      notify(404, notification)
+    }
+  }
+
+  /**
+   * This function is safe to call multiple times as the Channels get created only once.
+   */
+  private fun Context.createServiceUpdateChannel(): String {
+    val channelId = "SERVICE_UPDATE"
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).createNotificationChannel(
+        NotificationChannel(
+          channelId,
+          getString(R.string.service_update_channel),
+          NotificationManager.IMPORTANCE_DEFAULT,
+        ).apply {
+          description = getString(R.string.service_update_channel_description)
+          setShowBadge(true)
+        }
+      )
+    }
+
+    return channelId
   }
 }

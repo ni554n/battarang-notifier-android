@@ -59,7 +59,14 @@ fun MainActivity.testButton() {
         icon = sendIcon
 
         if (response == null) showSnackbar(R.string.network_error)
-        else showSnackbar(response)
+        else {
+          val message = response.split("||")
+
+          showSnackbar(
+            if (message.size == 2)
+              message.joinToString(". ") { it.trim() }
+            else response)
+        }
       }
     }
   }

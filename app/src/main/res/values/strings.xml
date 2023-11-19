@@ -49,6 +49,14 @@
   <string name="camera_permission_missing">You need to provide the camera permission from app settings.</string>
   <string name="quickie_overlay_string">Scan pairing code</string>
 
+  <!-- Service Update Notification -->
+
+  <string name="service_update_channel">Service Update</string>
+  <string name="service_update_channel_description">Notifies when there\'s any critical update</string>
+
+  <string name="notification_permission_rational_dialog_title">Notification should be enabled</string>
+  <string name="notification_permission_rational_dialog_description">If there\'s a new app update or the Receiver becomes unpaired for any reason, Battarang won\'t be able to notify you without this permission.</string>
+
   <!-- Battery Optimization Request Dialog  -->
   <string name="optimization_exemption_title">Keep it Running</string>
   <string name="optimization_exemption_dialog">Automation apps like this are subject to battery optimization rules imposed by both device makers and Android itself.\n\nAs a result, your system may interrupt the notifier service from running indefinitely, even though it only waits for battery events without performing any actions.</string>
