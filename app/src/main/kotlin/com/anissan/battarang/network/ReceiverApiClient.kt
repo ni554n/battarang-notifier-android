@@ -50,6 +50,7 @@ class ReceiverApiClient(
         "triggeredAt" to SimpleDateFormat("hh:mm a (EEEE)", Locale.getDefault()).format(Date()),
         "batteryLevel" to "$batteryLevel",
         "lastTgMessageId" to localKvStore.lastTelegramMessageId,
+        "appVersionCode" to BuildConfig.VERSION_CODE.toString(),
       ).forEach { (parameter: String, value: String?) ->
         if (value.isNullOrBlank().not()) addQueryParameter(parameter, value)
       }
