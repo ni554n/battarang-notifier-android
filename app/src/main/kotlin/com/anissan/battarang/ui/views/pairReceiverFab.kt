@@ -24,7 +24,7 @@ fun MainActivity.setupPairReceiverFab() {
 
     if (paired) hide() else show()
 
-    if (Build.VERSION.SDK_INT > 33 && (ContextCompat.checkSelfPermission(
+    if (Build.VERSION.SDK_INT >= 33 && (ContextCompat.checkSelfPermission(
         this@setupPairReceiverFab,
         Manifest.permission.POST_NOTIFICATIONS
       ) != PackageManager.PERMISSION_GRANTED)
