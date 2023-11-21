@@ -64,7 +64,7 @@
       >
       <property
         android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
-        android:value="To register implicit broadcast receivers for listening to events such as Power and Battery status."
+        android:value="To register implicit broadcast receivers for listening to Power and Battery events."
         />
     </service>
   </application>
