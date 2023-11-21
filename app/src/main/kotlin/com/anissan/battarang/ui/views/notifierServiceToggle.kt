@@ -2,7 +2,6 @@ package com.anissan.battarang.ui.views
 
 import android.widget.CompoundButton
 import com.anissan.battarang.ui.MainActivity
-import com.anissan.battarang.ui.views.pairing.showPairingDialog
 import dev.chrisbanes.insetter.applyInsetter
 
 fun MainActivity.setupNotifierServiceToggle() {
@@ -28,10 +27,6 @@ fun MainActivity.setupNotifierServiceToggle() {
     setOnClickListener {
       if (paired) {
         binding.notifierServiceSwitch.performClick()
-      } else {
-        // Giving an option to open the Pairing Dialog even though this card looks disabled in this state.
-        // Not going to enable the Switch itself because it turns on instantly when clicked.
-        showPairingDialog()
       }
     }
   }
