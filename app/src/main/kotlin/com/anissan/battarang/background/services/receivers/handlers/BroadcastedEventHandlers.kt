@@ -120,14 +120,19 @@ class BroadcastedEventHandlers(
     return false
   }
 
+  companion object {
+    const val NOTIFICATION_ID = 404
+  }
+
   @SuppressLint("MissingPermission")
   private fun notifyUpdates(responseBody: String?) {
+    if (NotificationManagerCompat.from(context).areNotificationsEnabled().not()) return
+
     // A server response delimited with `||` means it should be posted as notification.
     val message = responseBody?.split("||")
-    if (message?.size != 2) return
+    if (message?.size != 3) return
 
-    val (title, description) = message
-    if (NotificationManagerCompat.from(context).areNotificationsEnabled().not()) return
+    val (action, title, description) = message.map { it.trim() }
 
     // A new activity will be created on every notification click regardless of an existing activity.
     val notificationTapActionPendingIntent: PendingIntent = PendingIntent.getActivity(
@@ -137,17 +142,23 @@ class BroadcastedEventHandlers(
       PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
     )
 
+    val notificationActionPendingIntent: PendingIntent = PendingIntent.getActivity(
+      context,
+      129,
+      Intent(context, MainActivity::class.java).setAction(action),
+      PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+    )
+
     val notification = NotificationCompat.Builder(context, context.createServiceUpdateChannel())
       .setAutoCancel(true)
-      .setContentTitle(title.trim())
-      .setStyle(NotificationCompat.BigTextStyle().bigText(description.trim()))
+      .setContentTitle(title)
+      .setStyle(NotificationCompat.BigTextStyle().bigText(description))
       .setSmallIcon(R.drawable.ic_notification_service)
       .setContentIntent(notificationTapActionPendingIntent)
+      .addAction(0, action, notificationActionPendingIntent)
       .build()
 
-    with(NotificationManagerCompat.from(context)) {
-      notify(404, notification)
-    }
+    NotificationManagerCompat.from(context).notify(NOTIFICATION_ID, notification)
   }
 
   /**

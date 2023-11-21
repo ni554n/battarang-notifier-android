@@ -63,8 +63,8 @@ fun MainActivity.testButton() {
           val message = response.split("||")
 
           showSnackbar(
-            if (message.size == 2)
-              message.joinToString(". ") { it.trim() }
+            if (message.size == 3)
+              message.drop(1).joinToString(". ") { it.trim() }
             else response)
         }
       }

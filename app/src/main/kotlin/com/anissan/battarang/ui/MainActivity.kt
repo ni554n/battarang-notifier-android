@@ -1,17 +1,21 @@
 package com.anissan.battarang.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.view.WindowCompat
 import com.anissan.battarang.R
 import com.anissan.battarang.background.services.BroadcastReceiverRegistererService
+import com.anissan.battarang.background.services.receivers.handlers.BroadcastedEventHandlers
 import com.anissan.battarang.data.LocalKvStore
 import com.anissan.battarang.data.PrefKey
 import com.anissan.battarang.databinding.ActivityMainBinding
 import com.anissan.battarang.network.MessageType
 import com.anissan.battarang.network.ReceiverApiClient
+import com.anissan.battarang.ui.views.about.AboutSheet
 import com.anissan.battarang.ui.views.optimization.restoreOptimizationRequestDialogState
 import com.anissan.battarang.ui.views.optimization.saveOptimizationRequestDialogState
 import com.anissan.battarang.ui.views.optimization.showOptimizationRequestDialog
@@ -143,6 +147,21 @@ class MainActivity : AppCompatActivity() {
     super.onStop()
 
     localKvStore.stopObservingChanges()
+  }
+
+  override fun onNewIntent(intent: Intent?) {
+    super.onNewIntent(intent)
+
+    /**
+     * Notification actions are set from here:
+     * @see com.anissan.battarang.background.services.receivers.handlers.BroadcastedEventHandlers.notifyUpdates
+     */
+    when (intent?.action) {
+      "Update" -> AboutSheet.show(supportFragmentManager)
+      "Unpair" -> localKvStore.receiverToken = null
+    }
+
+    NotificationManagerCompat.from(this).cancel(BroadcastedEventHandlers.NOTIFICATION_ID)
   }
 
   override fun onSaveInstanceState(outState: Bundle) {
