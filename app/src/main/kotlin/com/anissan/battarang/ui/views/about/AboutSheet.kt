@@ -64,6 +64,7 @@ class AboutSheet : BottomSheetDialogFragment() {
     authorWebsiteLinkButton.setOnClickListener { openLinkInBrowser(BuildConfig.AUTHOR_WEBSITE) }
     twitterLinkButton.setOnClickListener { openLinkInBrowser(BuildConfig.AUTHOR_TWITTER) }
     linkedinLinkButton.setOnClickListener { openLinkInBrowser(BuildConfig.AUTHOR_LINKEDIN) }
+    checkOutOtherProjectsButton.setOnClickListener { openLinkInBrowser(BuildConfig.AUTHOR_OTHER_PROJECTS) }
 
     licenseChip.setOnClickListener {
       LibsBuilder()

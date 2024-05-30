@@ -359,12 +359,10 @@
           />
 
         <com.google.android.material.button.MaterialButton
-          android:id="@+id/check_out_app_link_button"
+          android:id="@+id/check_out_other_projects_button"
           style="@style/Widget.Material3.Button.TextButton"
           android:layout_width="0dp"
           android:layout_height="wrap_content"
-          android:alpha="0.6"
-          android:enabled="false"
           android:gravity="start"
           android:insetLeft="0dp"
           android:insetTop="0dp"
