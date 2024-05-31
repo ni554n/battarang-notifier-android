@@ -48,7 +48,7 @@ class ReceiverApiClient(
         "receiverToken" to localKvStore.receiverToken,
         "deviceName" to localKvStore.deviceName,
         "triggeredAt" to SimpleDateFormat("hh:mm a (EEEE)", Locale.getDefault()).format(Date()),
-        "batteryLevel" to "$batteryLevel",
+        "batteryLevel" to "${batteryLevel ?: "low"}",
         "lastTgMessageId" to localKvStore.lastTelegramMessageId,
         "androidAppVersionCode" to BuildConfig.VERSION_CODE.toString(),
       ).forEach { (parameter: String, value: String?) ->

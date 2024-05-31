@@ -59,12 +59,12 @@ class LocalKvStore(context: Context) : SimpleKrate(context),
   /** This ID is going to be used to delete the last sent message to keep the message history at minimum. */
   var lastTelegramMessageId: String? by stringPref(PrefKey.LAST_MESSAGE_ID.name)
 
-  /** Must be one of the [SupportedService]. */
+  /** Must be one of the [SupportedService.FCM] or [SupportedService.TG]. */
   var pairedServiceTag: String? by stringPref(PrefKey.PAIRED_SERVICE_TAG.name)
 
   val pairedServiceName: String
     get() {
-      return if (receiverToken === null) "" else SupportedService.valueOf(pairedServiceTag!!).serviceName
+      return if (receiverToken == null) "" else SupportedService.valueOf(pairedServiceTag!!).serviceName
     }
 
   //endregion
