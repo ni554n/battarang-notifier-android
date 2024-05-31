@@ -1,12 +1,13 @@
-package com.anissan.battarang.background.services.receivers.handlers
+package com.anissan.battarang.background.receivers.handlers
 
-import android.annotation.SuppressLint
+import android.Manifest
 import android.app.AlarmManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.hardware.display.DisplayManager
 import android.os.BatteryManager
 import android.os.Build
@@ -14,19 +15,15 @@ import android.os.SystemClock
 import android.view.Display
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import com.anissan.battarang.R
-import com.anissan.battarang.background.services.receivers.BatteryLevelPollingAlarmReceiver
-import com.anissan.battarang.background.services.receivers.BatteryStatusReceiver
+import com.anissan.battarang.background.receivers.BatteryLevelCheckerAlarmReceiver
 import com.anissan.battarang.data.LocalKvStore
 import com.anissan.battarang.network.MessageType
 import com.anissan.battarang.network.ReceiverApiClient
 import com.anissan.battarang.ui.MainActivity
 import com.anissan.battarang.utils.logV
 
-/**
- * Collection of event handler functions used in both [BatteryLevelPollingAlarmReceiver] & [BatteryStatusReceiver]
- * in one place.
- */
 class BroadcastedEventHandlers(
   private val context: Context,
   private val localKvStore: LocalKvStore,
@@ -38,8 +35,8 @@ class BroadcastedEventHandlers(
   private val alarmId: Int = 64
 
   private val levelCheckerIntent: Intent =
-    Intent(context, BatteryLevelPollingAlarmReceiver::class.java)
-      .setAction(BatteryLevelPollingAlarmReceiver.ACTION_CHECK_BATTERY_LEVEL)
+    Intent(context, BatteryLevelCheckerAlarmReceiver::class.java)
+      .setAction(BatteryLevelCheckerAlarmReceiver.ACTION_CHECK_BATTERY_LEVEL)
 
   // From Android 12+, it is mandatory to add a mutability flag on pending intents.
   // FLAG_IMMUTABLE added in API 23.
@@ -74,34 +71,34 @@ class BroadcastedEventHandlers(
     logV { "Requested to stop the periodic alarm" }
 
     batteryLevelPollingAlarm.cancel(
-      PendingIntent.getBroadcast(
-        context,
-        alarmId,
-        levelCheckerIntent,
-        pendingIntentFlag,
-      )
+      PendingIntent.getBroadcast(context, alarmId, levelCheckerIntent, pendingIntentFlag)
     )
+
     logV { "Stopped the periodic battery level checker alarm" }
   }
 
   fun notifyBatteryIsLow() {
-    if (shouldSkipNotification()) return
+    if (shouldSkipNotification()) {
+      logV { "Skipping sending battery low notification as the display is on" }
+      return
+    }
 
     receiverApiClient.sendNotification(MessageType.LOW, null, ::notifyUpdates)
   }
 
-  fun notifyAfterLevelReached() {
-    if (shouldSkipNotification()) {
-      logV { "Skipping this time as the display is on, but continuing the alarm..." }
-      return
-    }
-
+  fun notifyIfMaxLevelReached() {
     val batteryLevel: Int = currentBatteryLevel
     logV { "Battery Level: $batteryLevel" }
 
     if (batteryLevel < localKvStore.maxChargingLevelPercentage) return
 
+    if (shouldSkipNotification()) {
+      logV { "Skipping sending battery max reached notification as the display is on" }
+      return
+    }
+
     stopBatteryLevelPollingAlarm()
+
     receiverApiClient.sendNotification(MessageType.FULL, batteryLevel, ::notifyUpdates)
   }
 
@@ -124,9 +121,15 @@ class BroadcastedEventHandlers(
     const val NOTIFICATION_ID = 404
   }
 
-  @SuppressLint("MissingPermission")
   private fun notifyUpdates(responseBody: String?) {
-    if (NotificationManagerCompat.from(context).areNotificationsEnabled().not()) return
+    if (ContextCompat.checkSelfPermission(
+        context,
+        Manifest.permission.POST_NOTIFICATIONS,
+      ) != PackageManager.PERMISSION_GRANTED
+    ) {
+      logV { "Skipping notifying updates as user has explicitly disabled notifications from app settings" }
+      return
+    }
 
     // A server response delimited with `||` means it should be posted as notification.
     val message = responseBody?.split("||")

@@ -5,9 +5,11 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.PackageManager
 import android.os.BatteryManager
 import android.os.Build
 import android.os.IBinder
@@ -15,11 +17,13 @@ import android.provider.Settings
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.anissan.battarang.R
-import com.anissan.battarang.background.BootEventReceiver.Companion.resumeAfterBoot
-import com.anissan.battarang.background.services.receivers.BatteryLevelPollingAlarmReceiver
-import com.anissan.battarang.background.services.receivers.BatteryStatusReceiver
+import com.anissan.battarang.background.receivers.BatteryLowReceiver
+import com.anissan.battarang.background.receivers.BootEventReceiver
+import com.anissan.battarang.background.receivers.ChargerConnectedReceiver
+import com.anissan.battarang.background.receivers.ChargerConnectionReceiver
+import com.anissan.battarang.background.receivers.handlers.BroadcastedEventHandlers
+import com.anissan.battarang.data.LocalKvStore
 import com.anissan.battarang.ui.MainActivity
 import com.anissan.battarang.utils.logV
 import org.koin.android.ext.android.inject
@@ -32,62 +36,94 @@ import org.koin.android.ext.android.inject
  * This service can be started and stopped easily with the helper functions in companion object.
  */
 class BroadcastReceiverRegistererService : Service() {
-  private val batteryStatusReceiver: BatteryStatusReceiver by inject()
-  private val batteryLevelPollingAlarmReceiver: BatteryLevelPollingAlarmReceiver by inject()
+  private val localKvStore: LocalKvStore by inject()
+  private val batteryLowReceiver: BatteryLowReceiver by inject()
+  private val chargerConnectedReceiver: ChargerConnectedReceiver by inject()
+  private val chargerConnectionReceiver: ChargerConnectionReceiver by inject()
+  private val broadcastedEventHandlers: BroadcastedEventHandlers by inject()
 
   override fun onCreate() {
+    resumeServiceAfterBoot(true)
+
     // Background services can be killed by the System at anytime.
     // Since Oreo, foreground services with a persistent notification is required for long
     // running tasks. It's all in here:
     // https://developer.android.com/guide/components/foreground-services
     if (Build.VERSION.SDK_INT >= 26) startForeground(128, buildServiceNotification())
 
-    ContextCompat.registerReceiver(
-      this,
-      batteryStatusReceiver,
-      batteryStatusReceiver.intentFiltersBasedOnPreference,
-      ContextCompat.RECEIVER_NOT_EXPORTED,
-    )
-
-    LocalBroadcastManager.getInstance(this)
-      .registerReceiver(
-        batteryLevelPollingAlarmReceiver,
-        batteryLevelPollingAlarmReceiver.intentFilters,
+    if (localKvStore.isLowBatteryNotificationEnabled) {
+      ContextCompat.registerReceiver(
+        this,
+        batteryLowReceiver,
+        IntentFilter(Intent.ACTION_BATTERY_LOW),
+        ContextCompat.RECEIVER_NOT_EXPORTED,
       )
-
-    logV { "Registered the implicit Broadcast Receivers." }
-
-    /* Edge case: if the charger is already connected before starting this service, then manually
-       start the battery level polling alarm. */
-
-    val currentBatteryStatus: Int? =
-      registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED))?.getIntExtra(
-        BatteryManager.EXTRA_STATUS,
-        -1,
-      )
-
-    if (currentBatteryStatus == BatteryManager.BATTERY_STATUS_CHARGING) {
-      LocalBroadcastManager.getInstance(this)
-        .sendBroadcast(Intent(BatteryLevelPollingAlarmReceiver.ACTION_BATTERY_STATUS_CHARGING))
     }
 
-    resumeAfterBoot(true)
+    if (localKvStore.isMaxLevelNotificationEnabled) {
+      ContextCompat.registerReceiver(
+        this,
+        chargerConnectionReceiver,
+        IntentFilter().apply {
+          addAction(Intent.ACTION_POWER_CONNECTED)
+          addAction(Intent.ACTION_POWER_DISCONNECTED)
+        },
+        ContextCompat.RECEIVER_NOT_EXPORTED,
+      )
+
+      /* Edge Case */
+      // If the charger is already connected before starting this service, then manually
+      // start the battery level polling.
+
+      val currentBatteryStatus: Int? =
+        registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED))?.getIntExtra(
+          BatteryManager.EXTRA_STATUS,
+          -1,
+        )
+
+      if (currentBatteryStatus == BatteryManager.BATTERY_STATUS_CHARGING) {
+        broadcastedEventHandlers.startBatteryLevelPollingAlarm()
+      }
+    }
+
+    logV { "Registered the implicit Broadcast Receivers." }
   }
 
   override fun onDestroy() {
-    unregisterReceiver(batteryStatusReceiver)
+    resumeServiceAfterBoot(false)
 
-    LocalBroadcastManager.getInstance(this).run {
+    try {
       // If an alarm is already in progress, only stopping this service won't stop the alarm.
-      // It needs to be stopped explicitly.
-      sendBroadcast(Intent(BatteryLevelPollingAlarmReceiver.ACTION_STOP_ALARM))
+      broadcastedEventHandlers.stopBatteryLevelPollingAlarm()
 
-      unregisterReceiver(batteryLevelPollingAlarmReceiver)
+      unregisterReceiver(chargerConnectionReceiver)
+      unregisterReceiver(batteryLowReceiver)
+      unregisterReceiver(chargerConnectedReceiver)
+    } catch (_: Exception) {
     }
 
-    resumeAfterBoot(false)
-
     super.onDestroy()
+  }
+
+  /**
+   * Instead of managing a separate state for syncing the service status preference with
+   * the receiver, we are going to enable or disable the boot receiver component itself.
+   * So, if the boot receiver component is enabled, we can enable the notification service
+   * straight away.
+   * */
+  private fun resumeServiceAfterBoot(toggle: Boolean) {
+    val state =
+      if (toggle) PackageManager.COMPONENT_ENABLED_STATE_ENABLED
+      else PackageManager.COMPONENT_ENABLED_STATE_DISABLED
+
+    packageManager.setComponentEnabledSetting(
+      ComponentName(this, BootEventReceiver::class.java),
+      state,
+      PackageManager.DONT_KILL_APP,
+    )
+
+    val stateStatus: String = if (toggle) "enabled" else "disabled"
+    logV { "Boot event Receiver Component is now $stateStatus." }
   }
 
   override fun onBind(intent: Intent): IBinder? = null

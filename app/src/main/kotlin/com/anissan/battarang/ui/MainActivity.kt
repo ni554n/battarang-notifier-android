@@ -8,8 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.view.WindowCompat
 import com.anissan.battarang.R
+import com.anissan.battarang.background.receivers.handlers.BroadcastedEventHandlers
 import com.anissan.battarang.background.services.BroadcastReceiverRegistererService
-import com.anissan.battarang.background.services.receivers.handlers.BroadcastedEventHandlers
 import com.anissan.battarang.data.LocalKvStore
 import com.anissan.battarang.data.PrefKey
 import com.anissan.battarang.databinding.ActivityMainBinding
@@ -154,7 +154,7 @@ class MainActivity : AppCompatActivity() {
 
     /**
      * Notification actions are set from here:
-     * @see com.anissan.battarang.background.services.receivers.handlers.BroadcastedEventHandlers.notifyUpdates
+     * @see com.anissan.battarang.background.receivers.handlers.BroadcastedEventHandlers.notifyUpdates
      */
     when (intent?.action) {
       "Update" -> AboutSheet.show(supportFragmentManager)

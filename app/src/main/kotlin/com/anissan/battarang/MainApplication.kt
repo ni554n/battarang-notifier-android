@@ -3,9 +3,11 @@ package com.anissan.battarang
 import android.app.Application
 import android.os.PowerManager
 import androidx.appcompat.app.AppCompatDelegate
-import com.anissan.battarang.background.services.receivers.BatteryLevelPollingAlarmReceiver
-import com.anissan.battarang.background.services.receivers.BatteryStatusReceiver
-import com.anissan.battarang.background.services.receivers.handlers.BroadcastedEventHandlers
+import com.anissan.battarang.background.receivers.BatteryLevelCheckerAlarmReceiver
+import com.anissan.battarang.background.receivers.BatteryLowReceiver
+import com.anissan.battarang.background.receivers.ChargerConnectedReceiver
+import com.anissan.battarang.background.receivers.ChargerConnectionReceiver
+import com.anissan.battarang.background.receivers.handlers.BroadcastedEventHandlers
 import com.anissan.battarang.data.LocalKvStore
 import com.anissan.battarang.network.ReceiverApiClient
 import com.anissan.battarang.utils.SystemLogBackend
@@ -48,8 +50,10 @@ class MainApplication : Application() {
           )
         }
 
-        singleOf(::BatteryStatusReceiver)
-        singleOf(::BatteryLevelPollingAlarmReceiver)
+        singleOf(::BatteryLowReceiver)
+        singleOf(::ChargerConnectedReceiver)
+        singleOf(::ChargerConnectionReceiver)
+        singleOf(::BatteryLevelCheckerAlarmReceiver)
         singleOf(::BroadcastedEventHandlers)
       })
     }
