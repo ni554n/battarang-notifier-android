@@ -4,6 +4,7 @@
 !.idea/dictionaries/
 !.idea/codeStyles/
 !.idea/inspectionProfiles/
+.kotlin/
 
 # Gradle files
 .gradle/
