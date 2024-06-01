@@ -12,8 +12,8 @@ android {
   defaultConfig {
     targetSdkVersion 34
     minSdkVersion 21
-    versionCode 4 // Don't forget to also update the backend
-    versionName '1.5.2'
+    versionCode 5 // Don't forget to also update the backend
+    versionName '1.7.0'
 
     // Generate "BuildConfig.*" properties
     Properties buildConfigProperties = new Properties()
