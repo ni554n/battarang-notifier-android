@@ -114,7 +114,7 @@ class PermissionTabViewHolder(
   }
 
   private fun MaterialCardView.disableIfAppHibernationUnSupported(materialSwitch: MaterialSwitch) {
-    val future = PackageManagerCompat.getUnusedAppRestrictionsStatus(context)
+    val future: ListenableFuture<Int> = PackageManagerCompat.getUnusedAppRestrictionsStatus(context)
     try {
       future.addListener(
         {
