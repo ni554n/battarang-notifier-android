@@ -15,7 +15,7 @@
 
 1. **Download** the latest APK from [GitHub Releases](https://github.com/ni554n/battarang-notifier-android/releases) or consider purchasing it from the [Play Store](https://play.google.com/store/apps/details?id=com.anissan.battarang) for automatic updates and to support development.
 2. **Install** the app on your sender device (or multiple devices).
-3. To **Pair it with a recevier** device or Telegram, visit [battarang.anissan.com](https://battarang.anissan.com) from another device and follow the instructions.
+3. To **Pair it with a receiver** device or Telegram, visit [battarang.anissan.com](https://battarang.anissan.com) from another device and follow the instructions.
 
 > [!TIP]
 >
