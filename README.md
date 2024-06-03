@@ -1,11 +1,27 @@
-# Battarang Notifier for Android
+<h1 align="center">Battarang Notifier for Android</h1>
+
+<div align="center">
+  <a href="https://github.com/ni554n/battarang-notifier-android/releases"><img alt="GitHub Downloads" src="https://img.shields.io/github/downloads/ni554n/battarang-notifier-android/total?style=flat&logo=github&labelColor=%23031919&color=%2391d7b3"></a>
+  <a href="https://play.google.com/store/apps/details?id=com.anissan.battarang"><img  alt="GitHub Downloads" src="https://img.shields.io/endpoint?color=%2391d7b3&logo=google-play&labelColor=%23031919&url=https%3A%2F%2Fplay.cuzi.workers.dev%2Fplay%3Fi%3Dcom.anissan.battarang%26gl%3DUS%26hl%3Den%26l%3Dplay%2520store%26m%3D%24installs"></a>
+</div>
+
+<br>
+
+<p align="center">🔔🪫 Sync battery notifications across devices 🔋🔔</p>
 
 ![Battarang Features](.docs/features.png)
 
-<p align="center">
-   Visit <a href="https://battarang.anissan.com">battarang.anissan.com</a> for more info.<br>
-   Please consider purchasing it from <a href="https://play.google.com/store/apps/details?id=com.anissan.battarang">Play Store</a> if you want auto updates as well as support the development.
-</p>
+## Setup
+
+1. **Download** the latest APK from [GitHub Releases](https://github.com/ni554n/battarang-notifier-android/releases) or consider purchasing it from the [Play Store](https://play.google.com/store/apps/details?id=com.anissan.battarang) for automatic updates and to support development.
+2. **Install** the app on your sender device (or multiple devices).
+3. To **Pair it with a recevier** device or Telegram, visit [battarang.anissan.com](https://battarang.anissan.com) from another device and follow the instructions.
+
+> [!TIP]
+>
+> Sam Beckman created an awesome review and setup tutorial for Battarang on [YouTube](https://www.youtube.com/watch?v=xthkvsnNb-8&t=237s)
+>
+> <a href="https://www.youtube.com/watch?v=xthkvsnNb-8&t=237s"><img src=".docs/sam_beckman_review_thumbnail.jpg" width="300"></a>
 
 ## Architecture
 
