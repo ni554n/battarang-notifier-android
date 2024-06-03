@@ -7,7 +7,7 @@
 
 <br>
 
-<p align="center">🔔🪫 Sync battery notifications across devices 🔋🔔</p>
+<p align="center">🔔🔋 Sync battery notifications across devices 🪫🔔</p>
 
 ![Battarang Features](.docs/features.png)
 
