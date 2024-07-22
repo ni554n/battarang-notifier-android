@@ -1,0 +1,99 @@
+<resources>
+  <string name="app_name">battarang</string>
+  <string name="app_label">@string/app_name</string>
+
+  <!-- Configurations -->
+
+  <string name="notification_service">خدمة الإشعارات</string>
+
+  <string name="label_device_name">اسم الجهاز</string>
+
+  <string name="notify_when">الإشعار عند</string>
+  <string name="battery_level_reaches_template">مستوى البطارية يصل إلى ~%</string>
+  <string name="battery_level_slider">شريط التمرير لضبط مستوى البطارية</string>
+  <string name="battery_is_low_template">البطارية منخفضة</string>
+  <string name="label_but">لكن يجب</string>
+  <string name="skip_if_display_on_template">تجاوز أثناء تشغيل الشاشة</string>
+
+  <string name="unpair">فصل الاقتران</string>
+  <string name="unpair_instruction">اضغط واستمر لفترة وجيزة لفصل الاقتران</string>
+
+  <string name="send_test_notification">إرسال إشعار تجريبي</string>
+  <string name="network_error">فشل الشبكة!\nتحقق مما إذا كان الإنترنت يعمل.</string>
+
+  <string name="about">حول</string>
+
+  <!-- Notification Service -->
+
+  <string name="notifier_service_channel">خدمة الإشعارات</string>
+  <string name="notifier_service_channel_description">من الآمن إيقاف أو تصغير هذا القناة</string>
+
+  <string name="service_notification_ticker">بدأت خدمة إشعارات باتارانغ</string>
+  <string name="service_notification_content_title">انتظار أحداث البطارية</string>
+  <string name="service_notification_content_text">هذه الخدمة الخاملة ضرورية للحفاظ على تشغيل خدمة الإشعارات إلى أجل غير مسمى. من الآمن تصغير أو إيقاف هذا الإشعار من الإعدادات.</string>
+
+  <string name="service_notification_channel_settings">إخفاء هذا الإشعار</string>
+
+  <!-- Pairing Dialog -->
+
+  <string name="pair_with_device">اقتران مع الجهاز</string>
+  <string name="pair_dialog_title">اختر جهاز استقبال واحد</string>
+  <string name="telegram_bot">بوت تيليجرام</string>
+  <string name="telegram_app_not_found">لم يتم تثبيت تيليجرام. حاول الرابط الآخر.</string>
+  <string name="pair_dialog_content">اختر خدمة استقبال لتوليد رمز الاقتران ثم قم بمسح أو لصق الرمز هنا.\n\nإذا نجح الاقتران، ستتلقى تأكيدًا على جهاز الاستقبال.</string>
+  <string name="pair_dialog_paste_button">لصق بدلاً من ذلك</string>
+  <string name="pair_dialog_scan_button">مسح QR</string>
+
+  <string name="invalid_token">رمز الاقتران غير صالح.\nتأكد من مسحه أو نسخه بشكل صحيح.</string>
+  <string name="camera_unavailable">لا يمكن فتح الكاميرا.\nانسخ الرمز يدويًا واضغط على "لصق بدلاً من ذلك".</string>
+  <string name="camera_permission_missing">يجب توفير إذن الكاميرا من إعدادات التطبيق.</string>
+  <string name="quickie_overlay_string">مسح رمز الاقتران</string>
+
+  <!-- Service Update Notification -->
+
+  <string name="service_update_channel">تحديث الخدمة</string>
+  <string name="service_update_channel_description">يُعلم عند وجود أي تحديث مهم</string>
+
+  <string name="notification_permission_rational_dialog_title">يجب تمكين الإشعارات</string>
+  <string name="notification_permission_rational_dialog_description">إذا كان هناك تحديث جديد للتطبيق أو تم فصل الجهاز المستقبل لأي سبب، لن يتمكن باتارانغ من إشعارك بدون هذا الإذن.</string>
+
+  <!-- Battery Optimization Request Dialog  -->
+  <string name="optimization_exemption_title">ابقِه قيد التشغيل</string>
+  <string name="optimization_exemption_dialog">التطبيقات التلقائية مثل هذا تخضع لقواعد تحسين البطارية التي يفرضها مصنعو الأجهزة وأندرويد نفسه.\n\nنتيجة لذلك، قد يقوم نظامك بمقاطعة خدمة الإشعارات من التشغيل إلى أجل غير مسمى، حتى وإن كانت تنتظر فقط أحداث البطارية دون القيام بأي إجراءات.</string>
+  <string name="optimization_exemption_button">إزالة هذه القيود</string>
+
+  <string name="remove_battery_restrictions_menu">إزالة قيود البطارية</string>
+
+  <!-- Battery Restrictions Remover Sheet -->
+
+  <string name="ignore_battery_optimization">تجاهل تحسين البطارية</string>
+  <string name="ignore_battery_optimization_text">إذا لم يتم استخدام جهازك لفترة طويلة، قد يقوم النظام بإيقاف هذه الخدمة حتى يكون الجهاز نشطًا مرة أخرى. لن تتلقى أي إشعارات خلال ذلك الوقت إذا لم يتم منح هذا الإذن.</string>
+
+  <string name="disable_app_hibernation">تعطيل سبات التطبيق</string>
+  <string name="app_hibernation_text">إذا لم تقم بفتح تطبيق بانتظام، قد يقوم النظام بإيقافه حتى تقوم بفتحه مرة أخرى. نظرًا لأن هذا تطبيق تلقائي لا يتطلب تفاعل المستخدم، من المهم تعطيل السبات لهذا التطبيق.</string>
+
+  <string name="allow_autostart">السماح بالتشغيل التلقائي</string>
+  <string name="allow_autostart_text">بعض الشركات المصنعة تحتفظ بقائمة بيضاء من التطبيقات المعروفة التي يمكنها استئناف خدماتها بعد إعادة تشغيل الهاتف. لن تتمكن هذه الخدمة من إعادة التشغيل إذا لم يتم السماح بذلك بشكل صريح.</string>
+
+  <string name="instruction">السماح بهذه الخيارات يجب أن يكون كافيًا لخدمة مستمرة. إذا لم يكن كذلك، يرجى زيارة علامة التبويب التعليمية للحصول على إرشادات شاملة خطوة بخطوة.</string>
+
+  <!-- About Sheet -->
+  <string name="review">مراجعة</string>
+  <string name="battarang_notifier">مُخطِر باتارانغ</string>
+  <string name="description">يرسل إشعارات البطارية إلى</string>
+  <string name="receiver">جهاز الاستقبال</string>
+  <string name="or">أو</string>
+  <string name="telegram">تيليجرام</string>
+  <string name="source">المصدر</string>
+  <string name="issues">القضايا</string>
+  <string name="by">تصميم وتطوير بواسطة</string>
+  <string name="author_name">نيسان أ.</string>
+  <string name="author_country">🇧🇩</string>
+  <string name="follow_on_twitter">تابعني على تويتر</string>
+  <string name="connect_on_linkedin">تواصل معي على لينكد إن</string>
+  <string name="check_out">تحقق من مشاريعي الأخرى</string>
+  <string name="licenses">التراخيص</string>
+  <string name="privacy_policy">سياسة الخصوصية</string>
+  <string name="tos">شروط الخدمة</string>
+  <string name="no_browser_found">لم يتم العثور على متصفح على الجهاز لفتح الرابط.</string>
+</resources>
