@@ -1,6 +1,7 @@
 package com.anissan.battarang.ui
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -47,8 +48,12 @@ class MainActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
-    // Requesting this layout to be laid out edge-to-edge.
-    WindowCompat.setDecorFitsSystemWindows(window, false)
+    WindowCompat.enableEdgeToEdge(window)
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+      // Otherwise a translucent scrim will be applied on three-button navigation bar.
+      window.isNavigationBarContrastEnforced = false
+    }
 
     binding = ActivityMainBinding.inflate(layoutInflater)
     setContentView(binding.root)
@@ -86,7 +91,7 @@ class MainActivity : AppCompatActivity() {
         PrefKey.NOTIFICATION_SERVICE_TOGGLE.name,
         PrefKey.MAX_LEVEL_NOTIFICATION_TOGGLE.name,
         PrefKey.LOW_BATTERY_NOTIFICATION_TOGGLE.name,
-        -> refreshServiceState()
+          -> refreshServiceState()
       }
     }
   }
