@@ -78,6 +78,11 @@ class BroadcastedEventHandlers(
   }
 
   fun notifyBatteryIsLow() {
+    val batteryLevel: Int = currentBatteryLevel
+    logV { "Battery Level: $batteryLevel" }
+
+    if (batteryLevel > 20) return
+
     if (shouldSkipNotification()) {
       logV { "Skipping sending battery low notification as the display is on" }
       return
