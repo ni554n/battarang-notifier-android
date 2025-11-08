@@ -14,8 +14,8 @@ android {
   defaultConfig {
     targetSdk = 36
     minSdk = 21
-    versionCode = 6 // Set a reminder to update the backend version after full rollout
-    versionName = '1.8.0'
+    versionCode = 7 // Set a reminder to update the backend version after full rollout
+    versionName = '1.8.2'
 
     // Generate "BuildConfig.*" properties
     Properties buildConfigProperties = new Properties()
