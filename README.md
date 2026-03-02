@@ -45,9 +45,9 @@ to minimize the changes to a few places as possible.
 
 ## Information
 
-**Author:** [Nissan Ahmed](https://anissan.com) ([@ni554n](https://twitter.com/ni554n))
+**Author:** Nissan Ahmed ([@ni554n](https://x.com/ni554n))
 
-**Donate:** [PayPal](https://paypal.me/ni554n)
+**Website:** [anissan.com](https://anissan.com)
 <img src="https://ping.anissan.com/?repo=battarang-notifier-android" width="0" height="0" align="right">
 
 ## License
