@@ -1,6 +1,5 @@
 plugins {
   id 'com.android.application'
-  id 'org.jetbrains.kotlin.android'
   id 'com.mikepenz.aboutlibraries.plugin'
 }
 
@@ -8,7 +7,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 android {
   namespace = 'com.anissan.battarang'
-  buildToolsVersion = '36.0.0'
+  buildToolsVersion = '37.0.0'
   compileSdk = 36
 
   defaultConfig {
